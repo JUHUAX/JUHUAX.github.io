@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Semantic-Informed Driver Fuzzing Without Both the Hardware Devices and the Emulators - Blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="中文译名：不需要硬件设备和模拟器的语义驱动模糊 作者：Wenjia Zhao 单位：西安交通大学 国家： #中国 年份： #2022年 来源： #NDSS会议 关键字： #fuzzing #仿真托管 代码地址：secsysresearch/DRFuzz (github.com) 笔记建立时间： 2023-03-13 10:24
+摘要 背景：
+驱动接收来自用户空间或硬件的复杂且不可信的输入 驱动代码本身不可靠，开发开发人员经验少，开发结束后难测试 目的：构建不需要设备的驱动 fuzzing 系统 方法：
+通过 semantic-informed 机制可以高效生成可以通过验证链的输入，所以不需要硬件设备了 推断合法的输入值 推断输入字节的时间使用顺序来缩小变异空间 使用错误状态作为反馈来指导 fuzzing 通过验证链 semantic-informed 机制是通用的 可以生成半畸形输入来提高覆盖率 效果：在 214 个 Linux 驱动程序上评估 DR. FUZZ。在 24 小时的时间预算下，DR. FUZZ 可以在没有相应设备的情况下成功初始化和启用大多数驱动程序，而现有的 fuzzer 如 syzkaller 在任何情况下都无法成功。DR. FUZZ 在其他方面也明显优于现有的甚至配备了设备或模拟器的驱动程序模糊器: 它将代码覆盖率提高了 70%，吞吐量提高了 18%。通过 DR. FUZZ，我们还在这些 Linux 驱动程序中发现了 46 个新错误。
+1引言 背景：驱动程序关键且脆弱 现状：当前的驱动 fuzzing 都需要硬件或者模拟器
+硬件难搞 模拟器支持的不多 即使有硬件或者模拟器，但是生成的输入不够畸形，难以触发漏洞 方法：" />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="Semantic-Informed Driver Fuzzing Without Both the Hardware Devices and the Emulators" />
+<meta property="og:description" content="中文译名：不需要硬件设备和模拟器的语义驱动模糊 作者：Wenjia Zhao 单位：西安交通大学 国家： #中国 年份： #2022年 来源： #NDSS会议 关键字： #fuzzing #仿真托管 代码地址：secsysresearch/DRFuzz (github.com) 笔记建立时间： 2023-03-13 10:24
+摘要 背景：
+驱动接收来自用户空间或硬件的复杂且不可信的输入 驱动代码本身不可靠，开发开发人员经验少，开发结束后难测试 目的：构建不需要设备的驱动 fuzzing 系统 方法：
+通过 semantic-informed 机制可以高效生成可以通过验证链的输入，所以不需要硬件设备了 推断合法的输入值 推断输入字节的时间使用顺序来缩小变异空间 使用错误状态作为反馈来指导 fuzzing 通过验证链 semantic-informed 机制是通用的 可以生成半畸形输入来提高覆盖率 效果：在 214 个 Linux 驱动程序上评估 DR. FUZZ。在 24 小时的时间预算下，DR. FUZZ 可以在没有相应设备的情况下成功初始化和启用大多数驱动程序，而现有的 fuzzer 如 syzkaller 在任何情况下都无法成功。DR. FUZZ 在其他方面也明显优于现有的甚至配备了设备或模拟器的驱动程序模糊器: 它将代码覆盖率提高了 70%，吞吐量提高了 18%。通过 DR. FUZZ，我们还在这些 Linux 驱动程序中发现了 46 个新错误。
+1引言 背景：驱动程序关键且脆弱 现状：当前的驱动 fuzzing 都需要硬件或者模拟器
+硬件难搞 模拟器支持的不多 即使有硬件或者模拟器，但是生成的输入不够畸形，难以触发漏洞 方法：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/semantic-informed-driver-fuzzing-without-both-the-hardware-devices-and-the-emulators/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-06-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-06-22T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Semantic-Informed Driver Fuzzing Without Both the Hardware Devices and the Emulators"/>
+<meta name="twitter:description" content="中文译名：不需要硬件设备和模拟器的语义驱动模糊 作者：Wenjia Zhao 单位：西安交通大学 国家： #中国 年份： #2022年 来源： #NDSS会议 关键字： #fuzzing #仿真托管 代码地址：secsysresearch/DRFuzz (github.com) 笔记建立时间： 2023-03-13 10:24
+摘要 背景：
+驱动接收来自用户空间或硬件的复杂且不可信的输入 驱动代码本身不可靠，开发开发人员经验少，开发结束后难测试 目的：构建不需要设备的驱动 fuzzing 系统 方法：
+通过 semantic-informed 机制可以高效生成可以通过验证链的输入，所以不需要硬件设备了 推断合法的输入值 推断输入字节的时间使用顺序来缩小变异空间 使用错误状态作为反馈来指导 fuzzing 通过验证链 semantic-informed 机制是通用的 可以生成半畸形输入来提高覆盖率 效果：在 214 个 Linux 驱动程序上评估 DR. FUZZ。在 24 小时的时间预算下，DR. FUZZ 可以在没有相应设备的情况下成功初始化和启用大多数驱动程序，而现有的 fuzzer 如 syzkaller 在任何情况下都无法成功。DR. FUZZ 在其他方面也明显优于现有的甚至配备了设备或模拟器的驱动程序模糊器: 它将代码覆盖率提高了 70%，吞吐量提高了 18%。通过 DR. FUZZ，我们还在这些 Linux 驱动程序中发现了 46 个新错误。
+1引言 背景：驱动程序关键且脆弱 现状：当前的驱动 fuzzing 都需要硬件或者模拟器
+硬件难搞 模拟器支持的不多 即使有硬件或者模拟器，但是生成的输入不够畸形，难以触发漏洞 方法："/>
+
+	
+        <link href="https://example.com/css/fonts.11a1877508139eac0b5b4852ceb110c35641b3533321e66e39149e901ed5756b.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://example.com/css/main.d902908ac6e0fab67957de5db5aea1b6455b19ae2ca98eac4c95a4a0fdc02238.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://example.com/css/dark.c95c5dcf5f32f8b67bd36f7dab66680e068fce2b303087294114aabf7a7c080b.css" media="(prefers-color-scheme: dark)"  />
+	
+
+	
+	
+
+	
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://example.com">Blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">All posts</a>
+		
+		<a href="/categories">Categories</a>
+		
+		<a href="/tags">Tags</a>
+		
+		<a href="/about">About</a>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">Semantic-Informed Driver Fuzzing Without Both the Hardware Devices and the Emulators</h1>
+			<div class="meta">Posted on Jun 22, 2023</div>
+		</div>
+		
+
+		<section class="body">
+			<p>中文译名：不需要硬件设备和模拟器的语义驱动模糊
+作者：Wenjia Zhao
+单位：西安交通大学
+国家： #中国
+年份： #2022年
+来源： #NDSS会议
+关键字： #fuzzing #仿真托管
+代码地址：<a href="https://github.com/secsysresearch/DRFuzz">secsysresearch/DRFuzz (github.com)</a>
+笔记建立时间： 2023-03-13  10:24</p>
+<h1 id="摘要">摘要</h1>
+<p>背景：</p>
+<ul>
+<li>驱动接收来自用户空间或硬件的复杂且不可信的输入</li>
+<li>驱动代码本身不可靠，开发开发人员经验少，开发结束后难测试</li>
+</ul>
+<p>目的：构建不需要设备的驱动 fuzzing 系统
+方法：</p>
+<ul>
+<li>通过 semantic-informed 机制可以高效生成可以通过验证链的输入，所以不需要硬件设备了
+<ul>
+<li>推断合法的输入值</li>
+<li>推断输入字节的时间使用顺序来缩小变异空间</li>
+<li>使用错误状态作为反馈来指导 fuzzing 通过验证链</li>
+</ul>
+</li>
+<li>semantic-informed 机制是通用的</li>
+<li>可以生成半畸形输入来提高覆盖率</li>
+</ul>
+<p>效果：在 214 个 Linux 驱动程序上评估 DR. FUZZ。在 24 小时的时间预算下，DR. FUZZ 可以在没有相应设备的情况下成功初始化和启用大多数驱动程序，而现有的 fuzzer 如 syzkaller 在任何情况下都无法成功。DR. FUZZ 在其他方面也明显优于现有的甚至配备了设备或模拟器的驱动程序模糊器: 它将代码覆盖率提高了 70%，吞吐量提高了 18%。通过 DR. FUZZ，我们还在这些 Linux 驱动程序中发现了 46 个新错误。</p>
+<h1 id="1引言">1引言</h1>
+<p>背景：驱动程序关键且脆弱
+现状：当前的驱动 fuzzing 都需要硬件或者模拟器</p>
+<ul>
+<li>硬件难搞</li>
+<li>模拟器支持的不多</li>
+<li>即使有硬件或者模拟器，但是生成的输入不够畸形，难以触发漏洞</li>
+</ul>
+<p>方法：</p>
+<ul>
+<li>关键在于输入要通过验证链，通过验证链就意味着驱动初始化成功</li>
+<li>Semantic-informed 机制推断不同的语义信息来有效的生成合法的输入</li>
+<li>为了减小过大的输入空间，作者采用一下三种方法
+<ul>
+<li>字节级，字段敏感的值推断和映射：字段敏感分析构建 I/O 依赖图，基于图通过字节级的分析推断字段的可能值；并且将字段映射到特定地址的输入字节。</li>
+<li>基于时间序列的字节优先的推断：观察到验证链遵循某种时序模型，基于此推断字节的（变异）优先级，每次变异专注于某几个字节，以此来减小变异空间</li>
+<li>错误状态作为 fuzzing 反馈：将错误状态反馈和代码覆盖结合来引导模糊器</li>
+</ul>
+</li>
+<li>重用语义通知机制作为半畸形输入生成器，以提高驱动模糊的代码覆盖率和吞吐量。
+<ul>
+<li>高覆盖率驱动程序 fuzzer 需要格式良好的输入来到达深度路径，但也需要格式不良的输入来触发宽路径。</li>
+</ul>
+</li>
+</ul>
+<h1 id="2-设备驱动程序的表征研究">2 设备驱动程序的表征研究</h1>
+<h2 id="a-the-linux-kernel-device-model">A The Linux Kernel Device Model</h2>
+<p><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230313161046.png" alt="image.png">
+上图是 LKDM (Linux Kernel Device Model)</p>
+<ul>
+<li>每层都有不同的数据结构来表示设备状态和记录可用的操作（利用函数指针）</li>
+<li>这种层次结构极大地简化了设备管理——总线驱动程序定义了设备驱动程序应该实现的接口，内核使用这些接口来管理设备。</li>
+<li>设备模型表明，设备是通过一组数据结构和在相应驱动程序中实现的操作来统一组织和管理的。</li>
+</ul>
+<h2 id="b-the-two-stage-workflow-of-drivers">B The Two-Stage Workflow of Drivers</h2>
+<p>工作流有两个阶段: 驱动程序初始化和驱动程序与设备之间的通信。
+阶段一：结构中心初始化</p>
+<ul>
+<li>Kernel 首先通过扫描总线发现设备，根据设备特性匹配相应驱动</li>
+<li>总线驱动根据设备输入构建基本设备结构，设备驱动基于此构建更具体的结构</li>
+<li>总线驱动调用设备驱动的结构来对设备初始化，分配必要资源</li>
+<li>一旦初始化完成，内核就可以通过这些设备结构和驱动程序中相应的操作函数与设备交互。</li>
+</ul>
+<p>阶段二：驱动和设备之间的通信</p>
+<ul>
+<li>内核可以通过驱动函数来检查设备状态和与设备通信</li>
+<li>大多数设备会提供用户空间的接口，用户程序也可以通过系统调用或者用户空间的接口来操作设备</li>
+</ul>
+<h2 id="c-is-device-free-driver-fuzzing-feasible--the-inputvalidation-chains">C Is Device-Free Driver Fuzzing Feasible? – The InputValidation Chains!</h2>
+<p>想要成功初始化驱动，就要通过验证链。作者依据对验证链的分析，发现了一下几个特点：</p>
+<ul>
+<li>时序输入的使用：对输入字节的验证和使用按时间顺序依次发生，并且每个验证和使用都只针对一个或几个字节，而不是全部字节——fuzzing 不需要变异整个字节，而可能是一个字节一个字节地变异，这将极大地减少变异空间。</li>
+<li>硬编码的 I/O 地址-值映射：总线和驱动从设备读入地址和数据大小来初始化设备对应的数据结构。地址和数据大小是硬编码写在驱动中的常数，恢复这些常数会帮助作者构建设备的特定偏移量的输入和它们在驱动程序代码中的引用之间的映射。（我理解为传染总线驱动的代码地址和设备驱动中的代码之间的映射）</li>
+<li>普遍的错误处理：依据驱动返回的错误状态来推断 fuzzer 生成的输入中的字节值是否正确。</li>
+<li>其他发现：在初始化中驱动会采用 MMIO 或 DMA 的方式来访问设备 I/O 地址空间。</li>
+</ul>
+<h1 id="3-dr-fuzz-的-overview">3 DR. FUZZ 的 overview</h1>
+<h2 id="a-技术挑战">A 技术挑战</h2>
+<p>DR. FUZZ 的核心是利用 fuzzing 生成正确的输入来构建正确的设备相关结构。正确的输入意味着内核需要知道 (1) 从哪个地址读取，(2) 应该读取什么值。</p>
+<ul>
+<li>挑战 1：极其复杂的数据结构导致输入空间大</li>
+<li>挑战 2：复杂多样的 I/O 寻址</li>
+</ul>
+<h2 id="b-解决方法概述">B 解决方法概述</h2>
+<ul>
+<li>挑战 1：尽量减少相关数据结构的数量，以及它们字段的可能值的范围。
+<ul>
+<li>通过精确的静态分析来构建依赖于 I/O 的图来识别驱动程序中与设备相关的数据结构以及这些数据结构中与 I/O 相关的字段。</li>
+<li>然后提取这些字段，保留感兴趣的字段</li>
+<li>通过字节级和字段敏感的分析来确定字段的验证链</li>
+<li>通过分析验证链，使用字段敏感分析从分支语句中收集约束 (即依赖值)，这有助于确定字段的候选值集。</li>
+<li>基于验证链遵循时序的特点，作者提出字节优先（时序）推断，以确定哪些字段的哪些字节应当首先构造，这可以显著减少输入突变空间。</li>
+</ul>
+</li>
+<li>挑战 2：在获得候选值和字节优先级信息之后，我们还需要将此信息与设备的特定 I/O 地址相关联，以便我们可以在正确的地址处准备值。
+<ul>
+<li>首先识别 I/O 地址在驱动程序代码中硬编码的字段（咋识别？），将这些字段映射到 I/O 端口/MMIO 语句的常数参数，这就构成了 I/O 地址-值映射。（这个映射时用来指明上面生成的值放到哪个 I/O 地址）</li>
+<li>对于没有硬编码映射的情况，采用动态映射分析。</li>
+</ul>
+</li>
+</ul>
+<h2 id="c-框架和组件">C 框架和组件</h2>
+<p><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230314104628.png" alt="image.png">
+分为两个部分：</p>
+<ul>
+<li>Semantic-iniformed 机制：该部分静态地收集语义信息，指示驱动程序代码，在运行时获得反馈，并改变当前输入</li>
+<li>驱动模糊框架：它管理 VM 的运行，并通过设备适配器将 fuzzer 输出注入 VM 内核，在这个框架中，最重要和最独特的设计是 I/O 拦截和数据注入。它首先拦截目标设备 I/O 访问，然后将地址和大小转发给 fuzzer。然后，该框架使用 fuzzer 输出作为设备输入，将数据注入 QEMU 虚拟内存区域。</li>
+</ul>
+<h4 id="语义分析">语义分析</h4>
+<ul>
+<li>提取多种有用的语义信息并生成语义库（图中 1b），语义库包含了推断的值。</li>
+<li>在驱动代码插桩捕捉错误状态（1a）</li>
+</ul>
+<h4 id="fuzzer">Fuzzer</h4>
+<ul>
+<li>管理 VM 快照——用于每次变异后的运行</li>
+<li>生成输入数据</li>
+<li>接受错误状态进行变异</li>
+</ul>
+<h4 id="设备适配器">设备适配器</h4>
+<ul>
+<li>由于不同总线上的设备地址不同，设备适配器负责将给定的假设备地址“附加”到适当的总线上。hypervisor 将 I/O 端口/MMIO/DMA 的所有输入/输出转发到适配器，fuzzer 将突变数据作为设备输入注入，并通过这个适配器中断到设备驱动程序</li>
+</ul>
+<h4 id="修改的-kvm-模块">修改的 KVM 模块</h4>
+<p>修改后的 KVM 模块捕获并解析执行新的 VMCALL 指令导致的虚拟机退出。这些 VMCALL 指令由语义分析工具插入到驱动程序中 (1a)。当驱动程序执行触发这些 VMCALL 指令时，vm 退出发生，该模块从 vm 退出传递的寄存器 RCX 中提取一个参数。该参数表示出口 (4) 的位置。最后，KVM 模型将 KVM 出口信息发送给 fuzzer，引导其突变 (5)。</p>
+<h4 id="用户模式代理">用户模式代理</h4>
+<p>代理是运行在虚拟机用户空间中的程序。当驱动程序初始化时，控制流被转移到这个程序。它自动执行预定义的系统调用来触发驱动程序函数的执行。</p>
+<h1 id="4-semantic-informed-mechanism">4 SEMANTIC-INFORMED MECHANISM</h1>
+<p><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230314110856.png" alt="image.png"></p>
+<h2 id="a-语义分析">A 语义分析</h2>
+<h3 id="字节级和字段敏感值推断-">字节级和字段敏感值推断 :</h3>
+<ul>
+<li>识别依赖于 I/ o 的字段并构建图形
+<ul>
+<li>采用对驱动程序中数据结构的所有字段使用后向字段敏感的数据流分析来识别依赖于 I/O 的字段
+<ul>
+<li>反向分析的目标是找到一个字段的源，如果源是设备输入，即 I/O 指令的目的操作数，我们就确认相应的字段依赖于 I/O。</li>
+<li>根据数据流得到一个依赖于 I/ o 的图 (如图 5 的左侧所示)。它的节点表示一个字段变量，边表示两个变量之间的数据流。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>识别验证链、关键字段及其值
+<ul>
+<li>目的：识别验证链会使用到的字段，并且收集预期的有效值</li>
+<li>方法：作者认为验证链具有特定的模式——是否为条件语句，是否具有分支。（图五右侧）得到关键字段后，作者将验证视为字段约束，使用静态的过程间和字段敏感的数据流分析来收集字段的约束。
+<ul>
+<li>换言之，基于上面构建的 I/O 依赖图，分析并收集图中关键字段相关的分支条件，得到可能的有效值。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230314170708.png" alt="image.png"></p>
+<h3 id="io-地址-字段映射">I/O 地址-字段映射</h3>
+<h4 id="处理硬编码映射">处理硬编码映射。</h4>
+<ul>
+<li>目的：上面的步骤只是知道了关键字段和关键字段对应的可能值，那么 fuzzer 如何将值填到相应字段呢，就要找对应 I/O 地址。</li>
+<li>方法：同样利用 I/O 依赖图来找到字段的来源——填充该字段的 I/O 指令，此指令的源操作数是该字段对应的 I/O 地址。</li>
+</ul>
+<h4 id="处理动态映射">处理动态映射</h4>
+<p>除了具有硬编码 I/O 地址的字段外，还有一些字段的对应 I/O 地址是动态生成的。在这种情况下，仅靠静态分析无法计算出 I/O 地址。为了解决这一问题，我们提出了一种动态地址映射技术。基本思想是，如果 DR. FUZZ 没有在正确的 I/O 地址准备正确的值，则必须有一个错误状态 (即失败)，该状态将作为反馈收集在 DR. FUZZ 中。我们将错误状态信息设计为包含一个将反馈给模糊器的特殊参数。该参数包括导致初始化失败的关键字段信息。为此，我们首先对关键字段进行编号，然后在路径状态反馈期间使用代码插装将数字写入相关寄存器，以完成参数传输。关于错误状态反馈的更多细节将在§IV-B1 中介绍。</p>
+<h3 id="字节优先推断">字节优先推断</h3>
+<p>上面的技术虽然也减小了输入空间，但是，首先，它的结果可能不精确，所以模糊器仍然需要测试它们。第二，由于缺乏语义信息，部分输入无法推断。</p>
+<h4 id="验证链的时序模式">验证链的时序模式</h4>
+<p>验证链遵循特定的时间模式。</p>
+<ul>
+<li>首先，从读取设备开始执行代码。读取从 I/O 地址 (AddrV) 获得一个值 (V)。</li>
+<li>其次，值 (V) 将被用作源操作数和位掩码，用于位操作，以生成新的中间值 (I = V &amp;bitmask)。</li>
+<li>第三，这个值 (I) 将在使用值 (V) 之前进行验证。</li>
+<li>第四，使用值。在这种执行模式中，值 (V) 被读入一次，但随后会被引用。</li>
+</ul>
+<h4 id="提取时序">提取时序</h4>
+<p>为了提取字节优先级语义，我们需要将字段与时态模式匹配。
+我们检查 I/O 依赖图中的节点，并针对节点识别相关操作，包括位掩码、验证和使用情况，得到使用字段的时间顺序。
+然后重用§IV-A2 中构造的 I/O 地址字段映射，最终恢复输入中字节的优先级</p>
+<h2 id="b-语义-informing">B 语义 informing</h2>
+<h3 id="b1路径状态作为模糊反馈">B.1路径状态作为模糊反馈</h3>
+<p>我们将状态分为两种类型，正常状态或错误状态。正常状态是指初始化代码路径仍然可以被输入触发，而错误状态是指驱动程序已经进入故障状态，如果 fuzzer 沿着方向继续，初始化将无法进行。</p>
+<h4 id="错误位置">错误位置</h4>
+<p>错误状态反馈可以为模糊器提供以下有用的信息。</p>
+<ul>
+<li>fuzzer 可以尽快知道驱动初始化失败了</li>
+<li>fuzzer 可以更准确地知道是哪个输入导致了初始化失败，这可以使 fuzzer 在选择下一个输入时更有效。</li>
+<li>作者指出当驱动程序执行失败的时候，上游收到的返回值是非零值，所以使用驱动程序函数的非零返回值作为标志来指示驱动程序的错误状态。</li>
+</ul>
+<h4 id="收集错误状态">收集错误状态</h4>
+<ul>
+<li>首先收集驱动函数返回错误的位置，在这些位置插入一小段 vmcall 代码</li>
+<li>驱动发生错误后，这段代码让系统退出，DR. FUZZ 通知 fuzzer，传递包含有用信息的参数给状态分析器
+<ul>
+<li>此参数可以指示输入是否满足期望值，状态分析器使用此参数提示字节优先级突变，以便为下一个输入改进突变。</li>
+</ul>
+</li>
+</ul>
+<h3 id="b2-新变异策略">B.2 新变异策略</h3>
+<p>代码覆盖率引导和错误状态引导两种策略交替使用，在驱动初始化的阶段使用错误状态引导，当在错误状态反馈下没有进展后，转移到代码覆盖引导。</p>
+<h1 id="实施">实施</h1>
+<p>基于 LLVM 实现语义分析和插桩，基于 syzkaller 实现语义通知机制。</p>
+<ul>
+<li>
+<p>设备适配器</p>
+<ul>
+<li>我们在 QEMU 中将适配器作为一个模块来实现。适配器向 QEMU 的 VM 出口处理程序注册一些 I/O 处理程序; 这些处理程序解析由于访问适配器的 IO 端口/MMIO/DMA 地址而导致的退出事件。来自客户操作系统内核的每个读/写操作都被分派到适配器提供的注册函数。同时，适配器创建多个 memoryregion 用于将 fuzzer 输出传递到目标 I/O 地址。适配器通过文件套接字读取模糊生成的数据，并将值写入 MemoryRegions。</li>
+</ul>
+</li>
+<li>
+<p>用户模式代理</p>
+<ul>
+<li>它的实现是特定于设备的; 即根据具体设备的功能提供相应的模糊逻辑。因此，其模糊逻辑应由驱动测试人员提供。代理的实现可以确定它是否可以触发驱动程序提供的一些功能。由于代理的具体实现不是我们的重点，因此我们重用 syzkaller 的 syscall 生成器来自动生成用户模式代理。</li>
+</ul>
+</li>
+<li>
+<p>语义分析</p>
+<ul>
+<li>首先配置内核以启用设备驱动程序</li>
+<li>生成驱动程序代码的 IR 文件。这些 IR 文件将通过 LLVM pass 进行分析。</li>
+<li>LLVM pass 将语义信息输出到语料库文件。fuzzer 根据这个文件生成适当的值作为设备输出。</li>
+</ul>
+</li>
+<li>
+<p>虚拟机快照</p>
+<ul>
+<li>在模糊化过程中，我们使用了两个虚拟机快照。第一个是在设备初始化阶段。为了提高吞吐量，我们跳过了一些与内核相关的初始化代码。我们在实际的总线扫描开始时创建一个快照。当 fuzzer 收到错误反馈时，我们从快照重新开始执行。</li>
+<li>第二个快照是在设备驱动程序初始化之后; 也就是说，在相关探测函数成功执行之后，我们将创建用户模式代理的实际点的快照，这样用户空间程序就可以更快地执行，而无需重新执行内核。</li>
+</ul>
+</li>
+</ul>
+<h1 id="评价">评价</h1>
+<h2 id="a-驱动初始化的效率">A 驱动初始化的效率</h2>
+<p><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230315163658.png" alt="image.png">
+DRFUZZ 可以成功 match 所有的驱动程序，初始化成功 70%的程序。
+I2C 总线的驱动程序初始化成功率较高，因为协议比较简单，对于其他协议作者指出再给 3 个小时（实验设定 24 个小时）可以再成功初始化 6 个
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230315164456.png" alt="image.png">
+从上图中可以看出，值推断只能完成部分驱动程序的初始化。虽然值推断在匹配中是有效的，但它在完成整个初始化时是无效的——仅值推断不能成功地初始化。在字节优先级技术的帮助下，匹配了更多的设备驱动程序。然而，如果没有状态反馈的帮助，仅靠字节优先级很难产生很好的结果，只有在同时启用这三者时才能产生最好的结果。</p>
+<p>目的：
+方法：
+意义：
+效果：</p>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB">论文阅读</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"></div>
+  <div class="footer-info">
+    2023  © Athul |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+
+
+</div>
+    </body>
+</html>

@@ -1,263 +1,202 @@
 <!DOCTYPE html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<html
-  class="not-ready text-sm lg:text-base"
-  style="--bg: #faf6f1"
-  lang="en-us"
->
-  <head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, shrink-to-fit=no"
-  />
-
-  
-  <title>My New Hugo Site</title>
-
-  
-  <meta name="theme-color" />
-
-  
-  
-  
-  
-  <meta
-    name="description"
-    content="A personal blog"
-  />
-  <meta name="author" content="My New Hugo Site" />
-  
-
-  
-  
-  
-  
-  
-  
-  <link rel="preload stylesheet" as="style" href="http://example.org/main.min.css" />
-
-  
-
-  
-   
-  <link rel="preload" as="image" href="http://example.org/theme.png" />
-
-  
-  
-  
-  
-
-  
-  
-
-  
-  
-
-  
-  <link rel="icon" href="http://example.org/favicon.ico" />
-  <link rel="apple-touch-icon" href="http://example.org/apple-touch-icon.png" />
-
-  
-  <meta name="generator" content="Hugo 0.113.0">
-
-  
-  
-  <link
-    rel="alternate"
-    type="application/rss&#43;xml"
-    href="http://example.org/index.xml"
-    title="My New Hugo Site"
-  />
-  
-
-  
-  
-  
-  
-  
-  
-  
-  <meta property="og:title" content="My New Hugo Site" />
+<html>
+	<head>
+	<meta name="generator" content="Hugo 0.113.0">
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Blog | Home </title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="" />
+	<meta property="og:image" content=""/>
+	<link rel="alternate" type="application/rss+xml" href="https://example.com/index.xml" title="Blog" />
+	<meta property="og:title" content="Blog" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="http://example.org/" />
-
-  
-  <meta itemprop="name" content="My New Hugo Site">
-<meta itemprop="description" content="">
-  
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="My New Hugo Site"/>
+<meta property="og:url" content="https://example.com/" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Blog"/>
 <meta name="twitter:description" content=""/>
 
-  
-  
+	
+        <link href="https://example.com/css/fonts.11a1877508139eac0b5b4852ceb110c35641b3533321e66e39149e901ed5756b.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://example.com/css/main.d902908ac6e0fab67957de5db5aea1b6455b19ae2ca98eac4c95a4a0fdc02238.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://example.com/css/dark.c95c5dcf5f32f8b67bd36f7dab66680e068fce2b303087294114aabf7a7c080b.css" media="(prefers-color-scheme: dark)"  />
+	
+
+	
+	
+
+	
+	
+	
+	
 </head>
 
-  <body class="text-black duration-200 ease-out dark:text-white">
-    <header class="mx-auto flex h-[5rem] max-w-3xl px-8 lg:justify-center">
-  <div class="relative z-50 mr-auto flex items-center">
-    <a
-      class="-translate-x-[1px] -translate-y-[1px] text-2xl font-semibold"
-      href="http://example.org/"
-      >My New Hugo Site</a
-    >
-    <div
-      class="btn-dark text-[0] ml-4 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.png)_left_center/_auto_theme('spacing.6')_no-repeat] [transition:_background-position_0.4s_steps(5)] dark:[background-position:right]"
-      role="button"
-      aria-label="Dark"
-    ></div>
-  </div>
-
-  <div
-    class="btn-menu relative z-50 -mr-8 flex h-[5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
-    role="button"
-    aria-label="Menu"
-  ></div>
-
-  
-  <script>
-    
-    const htmlClass = document.documentElement.classList;
-    setTimeout(() => {
-      htmlClass.remove('not-ready');
-    }, 10);
-
-    
-    const btnMenu = document.querySelector('.btn-menu');
-    btnMenu.addEventListener('click', () => {
-      htmlClass.toggle('open');
-    });
-
-    
-    const metaTheme = document.querySelector('meta[name="theme-color"]');
-    const lightBg = `"#faf6f1"`.replace(/"/g, '');
-    const setDark = (isDark) => {
-      metaTheme.setAttribute('content', isDark ? '#000' : lightBg);
-      htmlClass[isDark ? 'add' : 'remove']('dark');
-      localStorage.setItem('dark', isDark);
-    };
-
-    
-    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-    if (htmlClass.contains('dark')) {
-      setDark(true);
-    } else {
-      const darkVal = localStorage.getItem('dark');
-      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
-    }
-
-    
-    darkScheme.addEventListener('change', (event) => {
-      setDark(event.matches);
-    });
-
-    
-    const btnDark = document.querySelector('.btn-dark');
-    btnDark.addEventListener('click', () => {
-      setDark(localStorage.getItem('dark') !== 'true');
-    });
-  </script>
-
-  <div
-    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full select-none flex-col justify-center pb-16 duration-200 dark:bg-black lg:static lg:h-auto lg:flex-row lg:!bg-transparent lg:pb-0 lg:transition-none"
-  >
-    
-    
-
-    
-  </div>
+	<body>
+		<div class="content">
+			<header>
+	<div class="main">
+		<a href="https://example.com">Blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">All posts</a>
+		
+		<a href="/categories">Categories</a>
+		
+		<a href="/tags">Tags</a>
+		
+		<a href="/about">About</a>
+		
+		
+	</nav>
 </header>
 
+			
+			<main class="list">
+				<div class="site-description"><p>JUHUA</p></div>
+				
+				
+				
+				<section class="list-item">
+					<h1 class="title"><a href="/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/aflnet-a-greybox-fuzzer-for-network-protocols/">AFLNET: A Greybox Fuzzer for Network Protocols 论文笔记</a></h1>
+					<time>Jun 23, 2023</time>
+					<br><div class="description">
+	
+	AFLNET是一个状态灰盒模糊器，使自动状态模型推理和覆盖引导模糊协同工作; 模糊化有助于生成新的消息序列来覆盖新的状态，并使状态模型逐渐更加完整。同时，动态构建的状态模型通过使用保留消息序列的状态覆盖和代码覆盖信息，帮助将模糊测试推向更重要的代码部分。
+	
+</div>
+					<a class="readmore" href="/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/aflnet-a-greybox-fuzzer-for-network-protocols/">Read more ⟶</a>
+				</section>
+				
+				<section class="list-item">
+					<h1 class="title"><a href="/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/%E7%AE%97%E6%B3%95/csp/13%E5%B9%B412%E6%9C%88ccf%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%BD%AF%E4%BB%B6%E8%83%BD%E5%8A%9B%E8%AE%A4%E8%AF%81/">13年12月CCF计算机软件能力认证</a></h1>
+					<time>Jun 22, 2023</time>
+					<br><div class="description">
+	
+	
+	
+</div>
+					<a class="readmore" href="/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/%E7%AE%97%E6%B3%95/csp/13%E5%B9%B412%E6%9C%88ccf%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%BD%AF%E4%BB%B6%E8%83%BD%E5%8A%9B%E8%AE%A4%E8%AF%81/">Read more ⟶</a>
+				</section>
+				
+				<section class="list-item">
+					<h1 class="title"><a href="/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/aflgo-directed-greybox-fuzzing/">AFLGO Directed Greybox Fuzzing</a></h1>
+					<time>Jun 22, 2023</time>
+					<br><div class="description">
+	
+	
+	
+</div>
+					<a class="readmore" href="/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/aflgo-directed-greybox-fuzzing/">Read more ⟶</a>
+				</section>
+				
+				<section class="list-item">
+					<h1 class="title"><a href="/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/android-smarttvs-vulnerability-discovery-via-log-guided-fuzzing/">Android SmartTVs Vulnerability Discovery via Log-Guided Fuzzing</a></h1>
+					<time>Jun 22, 2023</time>
+					<br><div class="description">
+	
+	
+	
+</div>
+					<a class="readmore" href="/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/android-smarttvs-vulnerability-discovery-via-log-guided-fuzzing/">Read more ⟶</a>
+				</section>
+				
+				<section class="list-item">
+					<h1 class="title"><a href="/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/automated-exploitable-heap-layout-generation-for-heap-overflows-through-manipulation-distance-guided-fuzzing/">Automated Exploitable Heap Layout Generation for Heap Overflows Through Manipulation Distance-Guided Fuzzing</a></h1>
+					<time>Jun 22, 2023</time>
+					<br><div class="description">
+	
+	
+	
+</div>
+					<a class="readmore" href="/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/automated-exploitable-heap-layout-generation-for-heap-overflows-through-manipulation-distance-guided-fuzzing/">Read more ⟶</a>
+				</section>
+				
+				<section class="list-item">
+					<h1 class="title"><a href="/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/automated-extraction-of-software-names-from-vulnerability-reports-using-lstm-and-expert-system/">Automated Extraction of Software Names from Vulnerability Reports using LSTM and Expert System</a></h1>
+					<time>Jun 22, 2023</time>
+					<br><div class="description">
+	
+	
+	
+</div>
+					<a class="readmore" href="/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/automated-extraction-of-software-names-from-vulnerability-reports-using-lstm-and-expert-system/">Read more ⟶</a>
+				</section>
+				
+				<section class="list-item">
+					<h1 class="title"><a href="/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/beacon-directed-grey-box-fuzzing-with-provable-path-pruning/">BEACON Directed Grey-Box Fuzzing with Provable Path Pruning</a></h1>
+					<time>Jun 22, 2023</time>
+					<br><div class="description">
+	
+	
+	
+</div>
+					<a class="readmore" href="/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/beacon-directed-grey-box-fuzzing-with-provable-path-pruning/">Read more ⟶</a>
+				</section>
+				
+				<section class="list-item">
+					<h1 class="title"><a href="/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/idea/dgf-generate-poc-base-known-information/">DGF generate POC base known information</a></h1>
+					<time>Jun 22, 2023</time>
+					<br><div class="description">
+	
+	
+	
+</div>
+					<a class="readmore" href="/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/idea/dgf-generate-poc-base-known-information/">Read more ⟶</a>
+				</section>
+				
+				<section class="list-item">
+					<h1 class="title"><a href="/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/evil-exploiting-software-via-natural-language/">EVIL Exploiting Software via Natural Language</a></h1>
+					<time>Jun 22, 2023</time>
+					<br><div class="description">
+	
+	
+	
+</div>
+					<a class="readmore" href="/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/evil-exploiting-software-via-natural-language/">Read more ⟶</a>
+				</section>
+				
+				<section class="list-item">
+					<h1 class="title"><a href="/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/extractor_-extracting-attack-behavior-from-threat-reports/">Extractor_ Extracting Attack Behavior from Threat Reports</a></h1>
+					<time>Jun 22, 2023</time>
+					<br><div class="description">
+	
+	
+	
+</div>
+					<a class="readmore" href="/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/extractor_-extracting-attack-behavior-from-threat-reports/">Read more ⟶</a>
+				</section>
+				
+				
 
-    <main
-      class="prose prose-neutral relative mx-auto min-h-[calc(100%-10rem)] max-w-3xl px-8 pb-24 pt-16 dark:prose-invert"
-    >
-      
+<ul class="pagination">
+	<span class="page-item page-prev">
+	
+	</span>
+	<span class="page-item page-next">
+	
+    <a href="/page/2/" class="page-link" aria-label="Next"><span aria-hidden="true">Next →</span></a>
+	
+	</span>
+</ul>
 
 
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-<section class="relative my-10 first-of-type:mt-0 last-of-type:mb-0">
-  
-  <h2 class="!my-0 pb-1 font-bold !leading-none">Test</h2>
-  <time class="text-sm opacity-60"
-    >Jun 11, 2023</time
-  >
-  <a class="absolute inset-0 text-[0]" href="http://example.org/post/test/">Test</a>
-</section>
-
-
-
-
-
-
-    </main>
-
-    <footer
-  class="opaco mx-auto flex h-[5rem] max-w-3xl items-center px-8 text-[0.9em] opacity-60"
->
-  <div class="mr-auto">
-    &copy; 2023
-    <a class="link" href="http://example.org/">My New Hugo Site</a>
+			</main>
+			<footer>
+  <div style="display:flex"></div>
+  <div class="footer-info">
+    2023  © Athul |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
   </div>
-  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
-    >Powered by Hugo️️</a
-  >️
-  <a
-    class="link"
-    href="https://github.com/nanxiaobei/hugo-paper"
-    rel="noopener"
-    target="_blank"
-    >Theme Paper</a
-  >
 </footer>
 
-  </body>
+
+
+		</div>
+		
+	</body>
 </html>

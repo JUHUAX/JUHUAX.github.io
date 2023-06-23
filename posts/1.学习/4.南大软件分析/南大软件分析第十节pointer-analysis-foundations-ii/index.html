@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>南大软件分析第十节——Pointer Analysis - Foundations II - Blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="视频：南京大学《软件分析》课程10（Pointer Analysis - Foundations II）哔哩哔哩_bilibili PPT： https://cs.nju.edu.cn/tiantan/software-analysis/PTA-FD.pdf 笔记参考：(34条消息) 【课程笔记】南大软件分析课程—16课时完整版_bsauce的博客-CSDN博客_南京大学软件分析 【课程笔记】南大软件分析课程7——指针分析基础（课时9/10） - 简书 (jianshu.com) 书接上回
+指针分析如何处理函数调用 老师再次提及了 CHA 算法的缺陷，CHA 是基于声明类型，所以不精准，可能会引入冗余的调用边和指针关系。
+因为声明类型可能是父类，而实例化的实际是个子类，当变量调用子类方法的时候，CHA 分析的时候会将父类的所有子类都纳入变量的指向关系，这样就多了很多实际没有的调用边和指针关系 所以相对于 CHA，基于 pt (a)的指针分析要更加精准，以过程间指针分析和 CG 构造同时进行，动态的去传播和添加指向关系，这样构成的调用图就没有冗余边了。
+调用语句规则 概括来说就是四步走
+dispatch 来找到方法 k 是到底是哪个函数 传 receiver object（第四行）：把 x 指向的对象 oi（就是第一行的 pt (x)）传入 m 函数的 this 变量 传参数 （第二行和第五行）：把每个参数指向的对象 ou 传给函数 m 的参数，mpj 意思是 m 的第 j 个参数，同时建立 PFG 边 传返回值（第三行和第六行）：pt (mret)传给 pt (r)，同时建立 PFG 边 问题：为什么 PFG 中不添加 x-&gt;mthis 边？此时的 x 指向的那些 oi 和 m 具有相同的对象，所以可以流向 mthis，但是 PFG 是动态构建的，之后 x 可能指向了和 m 不是同一类的对象，那么此时将这些对象流向 mthis 是不对的。" />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="南大软件分析第十节——Pointer Analysis - Foundations II" />
+<meta property="og:description" content="视频：南京大学《软件分析》课程10（Pointer Analysis - Foundations II）哔哩哔哩_bilibili PPT： https://cs.nju.edu.cn/tiantan/software-analysis/PTA-FD.pdf 笔记参考：(34条消息) 【课程笔记】南大软件分析课程—16课时完整版_bsauce的博客-CSDN博客_南京大学软件分析 【课程笔记】南大软件分析课程7——指针分析基础（课时9/10） - 简书 (jianshu.com) 书接上回
+指针分析如何处理函数调用 老师再次提及了 CHA 算法的缺陷，CHA 是基于声明类型，所以不精准，可能会引入冗余的调用边和指针关系。
+因为声明类型可能是父类，而实例化的实际是个子类，当变量调用子类方法的时候，CHA 分析的时候会将父类的所有子类都纳入变量的指向关系，这样就多了很多实际没有的调用边和指针关系 所以相对于 CHA，基于 pt (a)的指针分析要更加精准，以过程间指针分析和 CG 构造同时进行，动态的去传播和添加指向关系，这样构成的调用图就没有冗余边了。
+调用语句规则 概括来说就是四步走
+dispatch 来找到方法 k 是到底是哪个函数 传 receiver object（第四行）：把 x 指向的对象 oi（就是第一行的 pt (x)）传入 m 函数的 this 变量 传参数 （第二行和第五行）：把每个参数指向的对象 ou 传给函数 m 的参数，mpj 意思是 m 的第 j 个参数，同时建立 PFG 边 传返回值（第三行和第六行）：pt (mret)传给 pt (r)，同时建立 PFG 边 问题：为什么 PFG 中不添加 x-&gt;mthis 边？此时的 x 指向的那些 oi 和 m 具有相同的对象，所以可以流向 mthis，但是 PFG 是动态构建的，之后 x 可能指向了和 m 不是同一类的对象，那么此时将这些对象流向 mthis 是不对的。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E5%8D%81%E8%8A%82pointer-analysis-foundations-ii/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-06-11T02:01:58+05:30" />
+<meta property="article:modified_time" content="2023-06-11T02:01:58+05:30" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="南大软件分析第十节——Pointer Analysis - Foundations II"/>
+<meta name="twitter:description" content="视频：南京大学《软件分析》课程10（Pointer Analysis - Foundations II）哔哩哔哩_bilibili PPT： https://cs.nju.edu.cn/tiantan/software-analysis/PTA-FD.pdf 笔记参考：(34条消息) 【课程笔记】南大软件分析课程—16课时完整版_bsauce的博客-CSDN博客_南京大学软件分析 【课程笔记】南大软件分析课程7——指针分析基础（课时9/10） - 简书 (jianshu.com) 书接上回
+指针分析如何处理函数调用 老师再次提及了 CHA 算法的缺陷，CHA 是基于声明类型，所以不精准，可能会引入冗余的调用边和指针关系。
+因为声明类型可能是父类，而实例化的实际是个子类，当变量调用子类方法的时候，CHA 分析的时候会将父类的所有子类都纳入变量的指向关系，这样就多了很多实际没有的调用边和指针关系 所以相对于 CHA，基于 pt (a)的指针分析要更加精准，以过程间指针分析和 CG 构造同时进行，动态的去传播和添加指向关系，这样构成的调用图就没有冗余边了。
+调用语句规则 概括来说就是四步走
+dispatch 来找到方法 k 是到底是哪个函数 传 receiver object（第四行）：把 x 指向的对象 oi（就是第一行的 pt (x)）传入 m 函数的 this 变量 传参数 （第二行和第五行）：把每个参数指向的对象 ou 传给函数 m 的参数，mpj 意思是 m 的第 j 个参数，同时建立 PFG 边 传返回值（第三行和第六行）：pt (mret)传给 pt (r)，同时建立 PFG 边 问题：为什么 PFG 中不添加 x-&gt;mthis 边？此时的 x 指向的那些 oi 和 m 具有相同的对象，所以可以流向 mthis，但是 PFG 是动态构建的，之后 x 可能指向了和 m 不是同一类的对象，那么此时将这些对象流向 mthis 是不对的。"/>
+
+	
+        <link href="https://example.com/css/fonts.11a1877508139eac0b5b4852ceb110c35641b3533321e66e39149e901ed5756b.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://example.com/css/main.d902908ac6e0fab67957de5db5aea1b6455b19ae2ca98eac4c95a4a0fdc02238.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://example.com/css/dark.c95c5dcf5f32f8b67bd36f7dab66680e068fce2b303087294114aabf7a7c080b.css" media="(prefers-color-scheme: dark)"  />
+	
+
+	
+	
+
+	
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://example.com">Blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">All posts</a>
+		
+		<a href="/categories">Categories</a>
+		
+		<a href="/tags">Tags</a>
+		
+		<a href="/about">About</a>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">南大软件分析第十节——Pointer Analysis - Foundations II</h1>
+			<div class="meta">Posted on Jun 11, 2023</div>
+		</div>
+		
+
+		<section class="body">
+			<p>视频：<a href="https://www.bilibili.com/video/BV1fb4y1i7HY/?spm_id_from=333.788&amp;vd_source=a3f6a4e5f57d8b5aa5eea112e1eeef1f">南京大学《软件分析》课程10（Pointer Analysis - Foundations II）哔哩哔哩_bilibili</a>
+PPT： <a href="https://cs.nju.edu.cn/tiantan/software-analysis/PTA-FD.pdf">https://cs.nju.edu.cn/tiantan/software-analysis/PTA-FD.pdf</a>
+笔记参考：<a href="https://blog.csdn.net/panhewu9919/article/details/106007155?spm=1001.2101.3001.6650.2&amp;utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2-106007155-blog-105689689.pc_relevant_3mothn_strategy_and_data_recovery&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2-106007155-blog-105689689.pc_relevant_3mothn_strategy_and_data_recovery&amp;utm_relevant_index=3">(34条消息) 【课程笔记】南大软件分析课程—16课时完整版_bsauce的博客-CSDN博客_南京大学软件分析</a>
+<a href="https://www.jianshu.com/p/5cbc5bb5c4da">【课程笔记】南大软件分析课程7——指针分析基础（课时9/10） - 简书 (jianshu.com)</a>
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230408211334.png" alt="image.png">
+书接上回</p>
+<h2 id="指针分析如何处理函数调用">指针分析如何处理函数调用</h2>
+<p>老师再次提及了 CHA 算法的缺陷，CHA 是基于声明类型，所以不精准，可能会引入冗余的调用边和指针关系。</p>
+<ul>
+<li>因为声明类型可能是父类，而实例化的实际是个子类，当变量调用子类方法的时候，CHA 分析的时候会将父类的所有子类都纳入变量的指向关系，这样就多了很多实际没有的调用边和指针关系</li>
+</ul>
+<p>所以相对于 CHA，基于 pt (a)的指针分析要更加精准，以过程间指针分析和 CG 构造同时进行，动态的去传播和添加指向关系，这样构成的调用图就没有冗余边了。</p>
+<h3 id="调用语句规则">调用语句规则</h3>
+<p><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230408220710.png" alt="image.png">
+概括来说就是四步走</p>
+<ul>
+<li>dispatch 来找到方法 k 是到底是哪个函数</li>
+<li>传 receiver object（第四行）：把 x 指向的对象 oi（就是第一行的 pt (x)）传入 m 函数的 this 变量</li>
+<li>传参数 （第二行和第五行）：把每个参数指向的对象 ou 传给函数 m 的参数，mpj 意思是 m 的第 j 个参数，同时建立 PFG 边</li>
+<li>传返回值（第三行和第六行）：pt (mret)传给 pt (r)，同时建立 PFG 边</li>
+</ul>
+<p><strong>问题</strong>：为什么 PFG 中不添加 x-&gt;mthis 边？此时的 x 指向的那些 oi 和 m 具有相同的对象，所以可以流向 mthis，但是 PFG 是动态构建的，之后 x 可能指向了和 m 不是同一类的对象，那么此时将这些对象流向 mthis 是不对的。</p>
+<h3 id="过程间-pta-算法">过程间 PTA 算法</h3>
+<p><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230408230153.png" alt="image.png">
+（标黄色的地方是和过程内分析不同的地方）
+符号解释</p>
+<ul>
+<li>mentry：入口 main 函数</li>
+<li>Sm：函数m中的语句</li>
+<li>S：可达语句的集合（就是RM中的语句）</li>
+<li>RM：可达函数的集合</li>
+<li>CG：调用图的边</li>
+</ul>
+<p>步骤</p>
+<ul>
+<li>从入口函数开始，首先 addreachable m_entry
+<ul>
+<li>AddReachable ()
+<ul>
+<li>将函数或对象加入集合 RM 表示该函数或对象已可达</li>
+<li>然后将 m 的语句并入集合 s 中，表示 m 中的语句都已可达</li>
+<li>处理 sm 中的 NEW 语句：将指向关系&lt;xi, {o_i}&gt;加入 WL 等待处理集合</li>
+<li>处理 sm 中的 assign 语句：向 PFG 中添加边</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>处理 WL 集合
+<ul>
+<li>取出一个待传播的指向关系&lt;n, pts&gt;</li>
+<li>去除 pts 中的 pt (n)避免重复传播</li>
+<li>将 $\Delta$ 传播到 n 的指向集合中</li>
+<li>如果 n 表示一个变量 x，并且存在 load 和 store 语句，就对 $\Delta$ 中的每个 o_i 进行 addedge</li>
+<li>如果 n 表示一个变量 x，则对 $\Delta$ 中的每个 o_i 和 x 进行 ProcessCall 操作
+<ul>
+<li>ProcessCall 用于处理变量 x 对函数的调用操作（就是本节一开始说的 CALL 语句）</li>
+<li>从 S 语句集合中变量 x 的调用语句 L（调用的函数用 k 表示）</li>
+<li>用 dispatch 去求解函数 k 到底是调用的哪个对象的哪个函数，结果用 m 表示，然后把待传播的指向关系&lt;m_this, {o_i}&gt;加入 WL</li>
+<li>如果语句 L 到 m 的边在调用图中没有，就在调用图中添加一条从 L 指向 m 的边，并且设置 m 为可达
+<ul>
+<li>对于 m 中的每个参数，都在 PFG 中添加一条实参指向形参的边</li>
+<li>添加一条 m 返回值指向调用处返回值的边</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"></div>
+  <div class="footer-info">
+    2023  © Athul |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+
+
+</div>
+    </body>
+</html>

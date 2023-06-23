@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>算法 on Blog</title>
+    <link>https://example.com/categories/%E7%AE%97%E6%B3%95/</link>
+    <description>Recent content in 算法 on Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© Athul</copyright>
+    <lastBuildDate>Thu, 22 Jun 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://example.com/categories/%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>13年12月CCF计算机软件能力认证</title>
+      <link>https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/%E7%AE%97%E6%B3%95/csp/13%E5%B9%B412%E6%9C%88ccf%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%BD%AF%E4%BB%B6%E8%83%BD%E5%8A%9B%E8%AE%A4%E8%AF%81/</link>
+      <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/%E7%AE%97%E6%B3%95/csp/13%E5%B9%B412%E6%9C%88ccf%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%BD%AF%E4%BB%B6%E8%83%BD%E5%8A%9B%E8%AE%A4%E8%AF%81/</guid>
+      <description>如此编码 #include&amp;lt;bits/stdc++.h&amp;gt; using namespace std; const int N = 25; int n,m; int a[N],c[N],b[N]; int main(){ cin&amp;gt;&amp;gt;n&amp;gt;&amp;gt;m; for(int i = 1; i &amp;lt;= n; i++) cin&amp;gt;&amp;gt;a[i]; c[0] = 1; c[1] = a[1]; for(int i = 2 ; i &amp;lt;= n; i++) c[i] = c[i-1] * a[i]; for(int i = 1; i &amp;lt;= n; i++){ b[i] = m % a[i]; m = m / a[i]; } for(int i = 1; i &amp;lt;= n; i++) cout&amp;lt;&amp;lt;b[i]&amp;lt;&amp;lt;&amp;#34; &amp;#34;; return 0; } 出现次数最多的数 #include&amp;lt;bits/stdc++.</description>
+    </item>
+    
+    <item>
+      <title>前缀和（前缀和矩阵）</title>
+      <link>https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/%E7%AE%97%E6%B3%95/%E5%89%8D%E7%BC%80%E5%92%8C%E5%89%8D%E7%BC%80%E5%92%8C%E7%9F%A9%E9%98%B5/</link>
+      <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/%E7%AE%97%E6%B3%95/%E5%89%8D%E7%BC%80%E5%92%8C%E5%89%8D%E7%BC%80%E5%92%8C%E7%9F%A9%E9%98%B5/</guid>
+      <description>前缀和 //构建前缀和数组 for (int i = 1; i &amp;lt;= n; i ++ ) s[i] = x + s[i - 1]; //计算某n个连续的数的和 sum = s[i] - s[i - n]; 前缀和矩阵 //构建前缀和矩阵 for (int i = 1; i &amp;lt;= n; i ++ ) for (int j = 1; j &amp;lt;= n; j ++ ) { int x; scanf(&amp;#34;%d&amp;#34;, &amp;amp;x); s[i][j] = x + s[i - 1][j] + s[i][j - 1] - s[i - 1][j - 1]; } //计算矩阵块的和 int get_sum(int x1, int y1, int x2, int y2) { return s[x2][y2] - s[x1 - 1][y2] - s[x2][y1 - 1] + s[x1 - 1][y1 - 1]; } //计算矩阵块的大小 int get_cnt(int x1, int y1, int x2, int y2) { return (x2 - x1 + 1) * (y2 - y1 + 1); } </description>
+    </item>
+    
+    <item>
+      <title>差分</title>
+      <link>https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/%E7%AE%97%E6%B3%95/%E5%B7%AE%E5%88%86/</link>
+      <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/%E7%AE%97%E6%B3%95/%E5%B7%AE%E5%88%86/</guid>
+      <description>参考：(17条消息) 差分 &amp;ndash;算法竞赛专题解析（32）罗勇军的博客-CSDN博客</description>
+    </item>
+    
+    <item>
+      <title>第21次CCF计算机软件能力认证</title>
+      <link>https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/%E7%AE%97%E6%B3%95/csp/%E7%AC%AC21%E6%AC%A1ccf%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%BD%AF%E4%BB%B6%E8%83%BD%E5%8A%9B%E8%AE%A4%E8%AF%81/</link>
+      <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/%E7%AE%97%E6%B3%95/csp/%E7%AC%AC21%E6%AC%A1ccf%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%BD%AF%E4%BB%B6%E8%83%BD%E5%8A%9B%E8%AE%A4%E8%AF%81/</guid>
+      <description>期末预测之安全指数 #include&amp;lt;bits/stdc++.h&amp;gt; using namespace std; int main(){ int n, sum = 0; cin&amp;gt;&amp;gt;n; while(n--){ int s, w; cin&amp;gt;&amp;gt;s&amp;gt;&amp;gt;w; sum += (s*w); } int ans = max(0, sum); cout&amp;lt;&amp;lt;ans; return 0; } n = int(input()) sum = 0 for i in range(0, n): s, w = map(int, input().split()) sum = sum + s * w ans = max(0, sum) print(ans) 期末预测之最佳阈值 关键：巧妙的将计数转变为前缀和问题 问题的关键在于如何快速的统计每一个阈值预测正确的个数？ Y 总的方法是采用前缀和的方法来统计个数，如何将分散的数据转变为可以用前缀和的数据呢，就是按照阈值对数据进行排序。这样的效果就是阈值 i 预测正确的个数就是在 i 前的数据的预测结果为 0 的个数加上在 i 后数据预测结果为 1 的个数。 那么我们维护两个前缀和数组 s1 和 s0，s1 [i]表示 i 前（包括 i）的数据中 1 的个数，s0 [i]同理。那么对于数据 i 对应的阈值来说，预测正确的个数就是 s1 [m] - s1 [i - 1] + s0[i - 1]</description>
+    </item>
+    
+    <item>
+      <title>第22次CCF-CSP计算机软件能力认证题解</title>
+      <link>https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/%E7%AE%97%E6%B3%95/csp/%E7%AC%AC22%E6%AC%A1ccf-csp%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%BD%AF%E4%BB%B6%E8%83%BD%E5%8A%9B%E8%AE%A4%E8%AF%81%E9%A2%98%E8%A7%A3/</link>
+      <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/%E7%AE%97%E6%B3%95/csp/%E7%AC%AC22%E6%AC%A1ccf-csp%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%BD%AF%E4%BB%B6%E8%83%BD%E5%8A%9B%E8%AE%A4%E8%AF%81%E9%A2%98%E8%A7%A3/</guid>
+      <description>灰度直方图 #include&amp;lt;bits/stdc++.h&amp;gt; using namespace std; const int N = 500; const int L = 256; int gray_L[L]; int main(){ int n, m, l, tmp; cin&amp;gt;&amp;gt;n&amp;gt;&amp;gt;m&amp;gt;&amp;gt;l; for(int i = 0; i &amp;lt; n; i ++){ for(int j = 0; j &amp;lt; m; j ++){ cin&amp;gt;&amp;gt;tmp; gray_L[tmp]++; } } for(int i = 0; i &amp;lt; l; i ++){ cout&amp;lt;&amp;lt;gray_L[i]&amp;lt;&amp;lt;&amp;#34; &amp;#34;; } return 0; } n, m, l = map(int, input().split()) ans = [ 0 for i in range(0, 257)] for i in range(0, n): L = list(map(int, input().</description>
+    </item>
+    
+    <item>
+      <title>第23次CCF-CSP计算机软件能力认证题解</title>
+      <link>https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/%E7%AE%97%E6%B3%95/csp/%E7%AC%AC23%E6%AC%A1ccf%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%BD%AF%E4%BB%B6%E8%83%BD%E5%8A%9B%E8%AE%A4%E8%AF%81/</link>
+      <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/%E7%AE%97%E6%B3%95/csp/%E7%AC%AC23%E6%AC%A1ccf%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%BD%AF%E4%BB%B6%E8%83%BD%E5%8A%9B%E8%AE%A4%E8%AF%81/</guid>
+      <description>数组推导 当 b[i] == a[i]的情况下，数组 a 的和是最大的情况 当 b[i] == b[i-1]的时候，a[i] == 0 的情况下，数组 a 最小 #include&amp;lt;bits/stdc++.h&amp;gt; using namespace std; const int N = 105; int a[N], b[N]; int n; int main(){ int sum_max = 0, sum_min = 0; cin &amp;gt;&amp;gt; n; cin &amp;gt;&amp;gt; b[0]; sum_max = b[0]; sum_min = b[0]; for(int i = 1; i &amp;lt; n; i++){ cin&amp;gt;&amp;gt; b[i]; sum_max += b[i]; if(b[i] != b[i - 1]) sum_min += b[i]; } cout &amp;lt;&amp;lt; sum_max &amp;lt;&amp;lt; endl &amp;lt;&amp;lt; sum_min; return 0; } 非零段划分 参考 我们可以先做下面这个题，本题算是下面这个题的简化版本。 2014.</description>
+    </item>
+    
+    <item>
+      <title>第27次CCF-CSP计算机软件能力认证题解</title>
+      <link>https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/%E7%AE%97%E6%B3%95/csp/%E7%AC%AC27%E6%AC%A1ccf%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%BD%AF%E4%BB%B6%E8%83%BD%E5%8A%9B%E8%AE%A4%E8%AF%81%E9%A2%98%E8%A7%A3/</link>
+      <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/%E7%AE%97%E6%B3%95/csp/%E7%AC%AC27%E6%AC%A1ccf%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%BD%AF%E4%BB%B6%E8%83%BD%E5%8A%9B%E8%AE%A4%E8%AF%81%E9%A2%98%E8%A7%A3/</guid>
+      <description>如此编码 #include&amp;lt;bits/stdc++.h&amp;gt; using namespace std; const int N = 25; int n,m; int a[N],c[N],b[N]; int main(){ cin&amp;gt;&amp;gt;n&amp;gt;&amp;gt;m; for(int i = 1; i &amp;lt;= n; i++) cin&amp;gt;&amp;gt;a[i]; c[0] = 1; c[1] = a[1]; for(int i = 2 ; i &amp;lt;= n; i++) c[i] = c[i-1] * a[i]; for(int i = 1; i &amp;lt;= n; i++){ b[i] = m % a[i]; m = m / a[i]; } for(int i = 1; i &amp;lt;= n; i++) cout&amp;lt;&amp;lt;b[i]&amp;lt;&amp;lt;&amp;#34; &amp;#34;; return 0; } 何以包邮 ？ 暴力循环的写法，可以过 70%的数据</description>
+    </item>
+    
+    <item>
+      <title>第二十次CCF计算机软件能力认证题解</title>
+      <link>https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/%E7%AE%97%E6%B3%95/csp/%E7%AC%AC%E4%BA%8C%E5%8D%81%E6%AC%A1ccf%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%BD%AF%E4%BB%B6%E8%83%BD%E5%8A%9B%E8%AE%A4%E8%AF%81%E9%A2%98%E8%A7%A3/</link>
+      <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/%E7%AE%97%E6%B3%95/csp/%E7%AC%AC%E4%BA%8C%E5%8D%81%E6%AC%A1ccf%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%BD%AF%E4%BB%B6%E8%83%BD%E5%8A%9B%E8%AE%A4%E8%AF%81%E9%A2%98%E8%A7%A3/</guid>
+      <description>称检测点查询 直接排序选择前三就行
+#include &amp;lt;iostream&amp;gt; #include &amp;lt;cstring&amp;gt; #include &amp;lt;algorithm&amp;gt; using namespace std; const int N = 210; int n, X, Y; struct Point { int x, y, d; int id; bool operator&amp;lt; (const Point&amp;amp; t) const { if (d != t.d) return d &amp;lt; t.d; return id &amp;lt; t.id; } }q[N]; int get_dist(int x1, int y1, int x2, int y2) { int dx = x1 - x2; int dy = y1 - y2; return dx * dx + dy * dy; } int main() { cin &amp;gt;&amp;gt; n &amp;gt;&amp;gt; X &amp;gt;&amp;gt; Y; for (int i = 0; i &amp;lt; n; i ++ ) { int x, y; cin &amp;gt;&amp;gt; x &amp;gt;&amp;gt; y; q[i] = {x, y, get_dist(X, Y, x, y), i + 1}; } sort(q, q + n); for (int i = 0; i &amp;lt; 3; i ++ ) cout &amp;lt;&amp;lt; q[i].</description>
+    </item>
+    
+    <item>
+      <title>邻接表</title>
+      <link>https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/%E7%AE%97%E6%B3%95/%E9%82%BB%E6%8E%A5%E8%A1%A8/</link>
+      <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/%E7%AE%97%E6%B3%95/%E9%82%BB%E6%8E%A5%E8%A1%A8/</guid>
+      <description>模板代码 int idx； int h[N], e[N], ne[N], w[N;] // 注意这里要初始化 head 为 -1 memset(h, 0xff, sizeof(h)); // 加入有向边 (x, y)，权值为 z void add(int x, int y, int z) { // 真实数据 e[idx] = y, w[idx] = z; // 在表头 x 处插入 ne[idx] = h[x], h[x] = idx++; } // 访问从 x 出发的所有边，注意这里终止条件的不同 for (int i = h[x]; ~i; i = ne[i]) {//~i表示i不等于-1 int y = e[i], z = w[i]; } 邻接表构成的数据结构图示 注意这里有个容易搞混的点，每条链表上挂的是从对应头结点的所有出边，而不是图中的一条路径。</description>
+    </item>
+    
+    <item>
+      <title>闫氏DP分析法</title>
+      <link>https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/%E7%AE%97%E6%B3%95/%E9%97%AB%E6%B0%8Fdp%E5%88%86%E6%9E%90%E6%B3%95/</link>
+      <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/%E7%AE%97%E6%B3%95/%E9%97%AB%E6%B0%8Fdp%E5%88%86%E6%9E%90%E6%B3%95/</guid>
+      <description>题干：N 个物品，每个物品有对应的价值和体积，背包容量为 V，如何选择物品使得在不超过背包容量的前提下，价值之和最大。 每个物品都可以选和不选，两种选择，那么一共有 $2^N$ 两种方案，所以题目是一个有限集合的最值问题，所以可以用 y 氏 DP 法来分析
+步骤一：状态表示 $f(i,j)$
+确定集合：（i 和 j 表示的意思）在只考虑前 i 个物品，并且物品总体积不超过 j 的选法的集合 属性：（$f(i,j)$ 的值代表的意思，和题意相关）当前集合中的最大价值 步骤二：状态计算 那么 $f(i,j)$ 如何计算呢，对于上述的集合，我们可以分为两个子集 一个子集是没有选择物品 i 的集合 如果不选择物品 i，那么我们只需要找到只考虑前 $i-1$ 个物品，并且物品总体积不超过 j 的选法集合中的最大价值，也就是 $f(i-1,j)$ 一个子集是选择了物品 i 的集合 如果选择了物品 i，那么我们只需要找到只考虑前 $i-1$ 个物品，并且物品总体积不超过 $j-v[i]$ 的选法集合中的最大价值，也就是 $f(i-1,j-v[i])$ 然后加上物品 i 的价值 $w [i]$ $f(i-1,j-v[i])+w[i]$ 注意 j 和 v[i]的大小 板子 #include&amp;lt;iostream&amp;gt; #include&amp;lt;algorithm&amp;gt; using namespace std; const int N=1005; int n,v; int V[N],W[N]; int dp[N][N]; int main(){ cin&amp;gt;&amp;gt;n&amp;gt;&amp;gt;v; for(int i=1;i&amp;lt;=n;i++) cin&amp;gt;&amp;gt;V[i]&amp;gt;&amp;gt;W[i]; for(int i=1;i&amp;lt;=n;i++){ for(int j=0;j&amp;lt;=v;j++){ dp[i][j]=dp[i-1][j]; if(j&amp;gt;=V[i]) dp[i][j]=max(dp[i][j],dp[i-1][j-V[i]]+W[i]); } } cout&amp;lt;&amp;lt;dp[n][v]; return 0; } 优化 #include&amp;lt;iostream&amp;gt; #include&amp;lt;algorithm&amp;gt; using namespace std; const int N=1005; int n,v; int V[N],W[N]; int dp[N]; int main(){ cin&amp;gt;&amp;gt;n&amp;gt;&amp;gt;v; for(int i=1;i&amp;lt;=n;i++) cin&amp;gt;&amp;gt;V[i]&amp;gt;&amp;gt;W[i]; for(int i=1;i&amp;lt;=n;i++) for(int j=v;j&amp;gt;=V[i];j--) dp[j]=max(dp[j],dp[j-V[i]]+W[i]); cout&amp;lt;&amp;lt;dp[v]; return 0; } </description>
+    </item>
+    
+  </channel>
+</rss>

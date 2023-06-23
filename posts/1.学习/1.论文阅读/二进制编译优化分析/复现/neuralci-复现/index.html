@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>NeuralCI 复现 - Blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="[[Fine-Grained Compiler Identification With Sequence-Oriented Neural Modeling]] 实验评估中用 NeuralBS CNN，NeuralSD CNN 和 NeuralAD CNN 来表示基础 CNN，带有缩放点积注意力的增强 CNN 和带有附加注意力的增强 CNN 在以下实验评估中使用 NeuralBS GRU，NeuralSD GRU，NeuralAD GRU 和 NeuralQU GRU（SD 和 AD 和 CNN 一样，QU 是新加的）
+识别编译器系列 family 识别编译器版本 version 识别优化级别 binaryOptimization 和 tripleOptimization
+目前存在的问题：
+Full 和 done 后缀的文件不明白用途，Binary 和 done 的区别 TensorFlow 版本不兼容，需要改部分代码 代码中的文件路径指向（所需要的）文件没有，貌似需要自己构建数据集（IDA pro 提取什么的） " />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="NeuralCI 复现" />
+<meta property="og:description" content="[[Fine-Grained Compiler Identification With Sequence-Oriented Neural Modeling]] 实验评估中用 NeuralBS CNN，NeuralSD CNN 和 NeuralAD CNN 来表示基础 CNN，带有缩放点积注意力的增强 CNN 和带有附加注意力的增强 CNN 在以下实验评估中使用 NeuralBS GRU，NeuralSD GRU，NeuralAD GRU 和 NeuralQU GRU（SD 和 AD 和 CNN 一样，QU 是新加的）
+识别编译器系列 family 识别编译器版本 version 识别优化级别 binaryOptimization 和 tripleOptimization
+目前存在的问题：
+Full 和 done 后缀的文件不明白用途，Binary 和 done 的区别 TensorFlow 版本不兼容，需要改部分代码 代码中的文件路径指向（所需要的）文件没有，貌似需要自己构建数据集（IDA pro 提取什么的） " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E5%A4%8D%E7%8E%B0/neuralci-%E5%A4%8D%E7%8E%B0/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-06-11T02:01:58+05:30" />
+<meta property="article:modified_time" content="2023-06-11T02:01:58+05:30" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="NeuralCI 复现"/>
+<meta name="twitter:description" content="[[Fine-Grained Compiler Identification With Sequence-Oriented Neural Modeling]] 实验评估中用 NeuralBS CNN，NeuralSD CNN 和 NeuralAD CNN 来表示基础 CNN，带有缩放点积注意力的增强 CNN 和带有附加注意力的增强 CNN 在以下实验评估中使用 NeuralBS GRU，NeuralSD GRU，NeuralAD GRU 和 NeuralQU GRU（SD 和 AD 和 CNN 一样，QU 是新加的）
+识别编译器系列 family 识别编译器版本 version 识别优化级别 binaryOptimization 和 tripleOptimization
+目前存在的问题：
+Full 和 done 后缀的文件不明白用途，Binary 和 done 的区别 TensorFlow 版本不兼容，需要改部分代码 代码中的文件路径指向（所需要的）文件没有，貌似需要自己构建数据集（IDA pro 提取什么的） "/>
+
+	
+        <link href="https://example.com/css/fonts.11a1877508139eac0b5b4852ceb110c35641b3533321e66e39149e901ed5756b.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://example.com/css/main.d902908ac6e0fab67957de5db5aea1b6455b19ae2ca98eac4c95a4a0fdc02238.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://example.com/css/dark.c95c5dcf5f32f8b67bd36f7dab66680e068fce2b303087294114aabf7a7c080b.css" media="(prefers-color-scheme: dark)"  />
+	
+
+	
+	
+
+	
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://example.com">Blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">All posts</a>
+		
+		<a href="/categories">Categories</a>
+		
+		<a href="/tags">Tags</a>
+		
+		<a href="/about">About</a>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">NeuralCI 复现</h1>
+			<div class="meta">Posted on Jun 11, 2023</div>
+		</div>
+		
+
+		<section class="body">
+			<p>[[Fine-Grained Compiler Identification With Sequence-Oriented Neural Modeling]]
+实验评估中用 NeuralBS CNN，NeuralSD CNN 和 NeuralAD CNN 来表示基础 CNN，带有缩放点积注意力的增强 CNN 和带有附加注意力的增强 CNN
+在以下实验评估中使用 NeuralBS GRU，NeuralSD GRU，NeuralAD GRU 和 NeuralQU GRU（SD 和 AD 和 CNN 一样，QU 是新加的）</p>
+<p>识别编译器系列 family
+识别编译器版本 version
+识别优化级别 binaryOptimization 和 tripleOptimization</p>
+<p>目前存在的问题：</p>
+<ul>
+<li>Full 和 done 后缀的文件不明白用途，Binary 和 done 的区别</li>
+<li>TensorFlow 版本不兼容，需要改部分代码</li>
+<li>代码中的文件路径指向（所需要的）文件没有，貌似需要自己构建数据集（IDA pro 提取什么的）</li>
+</ul>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/%E8%AE%BA%E6%96%87%E5%A4%8D%E7%8E%B0">论文复现</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"></div>
+  <div class="footer-info">
+    2023  © Athul |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+
+
+</div>
+    </body>
+</html>

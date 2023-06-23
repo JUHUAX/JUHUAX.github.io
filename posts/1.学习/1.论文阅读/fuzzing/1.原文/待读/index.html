@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>fuzz待读 - Blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="2023-06-22 15:53
+The Progress, Challenges, and Perspectives of Directed Greybox Fuzzing 的阅读笔记 https://zhuanlan.zhihu.com/p/415316061 What You Corrupt Is Not What You Crash_ Challenges in Fuzzing Embedded Devices 的笔记 http://www.hackdig.com/09/hack-487712.htm 针对 UAF 类漏洞的定向 Fuzz 论文分享 http://www.hackdig.com/08/hack-442272.htm Binary-level Directed Fuzzing for Use-After-Free Vulnerabilities（论文名字） 物联网固件安全缺陷检测研究进展 (2022 年) 物联网固件安全缺陷检测研究进展-Research Progress on Security Defect Detection of IoT Firmware (iie.ac.cn) ![[What You Corrupt Is Not What You Crash Challenges in Fuzzing Embedded Devices#^eea5b5]] [[What You Corrupt Is Not What You Crash_ Challenges in Fuzzing Embedded Devices." />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="fuzz待读" />
+<meta property="og:description" content="2023-06-22 15:53
+The Progress, Challenges, and Perspectives of Directed Greybox Fuzzing 的阅读笔记 https://zhuanlan.zhihu.com/p/415316061 What You Corrupt Is Not What You Crash_ Challenges in Fuzzing Embedded Devices 的笔记 http://www.hackdig.com/09/hack-487712.htm 针对 UAF 类漏洞的定向 Fuzz 论文分享 http://www.hackdig.com/08/hack-442272.htm Binary-level Directed Fuzzing for Use-After-Free Vulnerabilities（论文名字） 物联网固件安全缺陷检测研究进展 (2022 年) 物联网固件安全缺陷检测研究进展-Research Progress on Security Defect Detection of IoT Firmware (iie.ac.cn) ![[What You Corrupt Is Not What You Crash Challenges in Fuzzing Embedded Devices#^eea5b5]] [[What You Corrupt Is Not What You Crash_ Challenges in Fuzzing Embedded Devices." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/1.%E5%8E%9F%E6%96%87/%E5%BE%85%E8%AF%BB/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-06-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-06-22T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="fuzz待读"/>
+<meta name="twitter:description" content="2023-06-22 15:53
+The Progress, Challenges, and Perspectives of Directed Greybox Fuzzing 的阅读笔记 https://zhuanlan.zhihu.com/p/415316061 What You Corrupt Is Not What You Crash_ Challenges in Fuzzing Embedded Devices 的笔记 http://www.hackdig.com/09/hack-487712.htm 针对 UAF 类漏洞的定向 Fuzz 论文分享 http://www.hackdig.com/08/hack-442272.htm Binary-level Directed Fuzzing for Use-After-Free Vulnerabilities（论文名字） 物联网固件安全缺陷检测研究进展 (2022 年) 物联网固件安全缺陷检测研究进展-Research Progress on Security Defect Detection of IoT Firmware (iie.ac.cn) ![[What You Corrupt Is Not What You Crash Challenges in Fuzzing Embedded Devices#^eea5b5]] [[What You Corrupt Is Not What You Crash_ Challenges in Fuzzing Embedded Devices."/>
+
+	
+        <link href="https://example.com/css/fonts.11a1877508139eac0b5b4852ceb110c35641b3533321e66e39149e901ed5756b.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://example.com/css/main.d902908ac6e0fab67957de5db5aea1b6455b19ae2ca98eac4c95a4a0fdc02238.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://example.com/css/dark.c95c5dcf5f32f8b67bd36f7dab66680e068fce2b303087294114aabf7a7c080b.css" media="(prefers-color-scheme: dark)"  />
+	
+
+	
+	
+
+	
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://example.com">Blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">All posts</a>
+		
+		<a href="/categories">Categories</a>
+		
+		<a href="/tags">Tags</a>
+		
+		<a href="/about">About</a>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">fuzz待读</h1>
+			<div class="meta">Posted on Jun 22, 2023</div>
+		</div>
+		
+
+		<section class="body">
+			<p>2023-06-22  15:53</p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> The Progress, Challenges, and Perspectives of Directed Greybox Fuzzing 的阅读笔记 <a href="https://zhuanlan.zhihu.com/p/415316061">https://zhuanlan.zhihu.com/p/415316061</a></li>
+<li><input checked="" disabled="" type="checkbox"> What You Corrupt Is Not What You Crash_ Challenges in Fuzzing Embedded Devices 的笔记 <a href="http://www.hackdig.com/09/hack-487712.htm">http://www.hackdig.com/09/hack-487712.htm</a></li>
+<li><input disabled="" type="checkbox"> 针对 UAF 类漏洞的定向 Fuzz 论文分享 <a href="http://www.hackdig.com/08/hack-442272.htm">http://www.hackdig.com/08/hack-442272.htm</a>  Binary-level Directed Fuzzing for Use-After-Free Vulnerabilities（论文名字）</li>
+<li><input checked="" disabled="" type="checkbox"> 物联网固件安全缺陷检测研究进展 (2022 年) <a href="http://jcs.iie.ac.cn/ch/reader/view_abstract.aspx?file_no=20210309&amp;flag=1">物联网固件安全缺陷检测研究进展-Research Progress on Security Defect Detection of IoT Firmware (iie.ac.cn)</a></li>
+<li><input disabled="" type="checkbox"> ![[What You Corrupt Is Not What You Crash Challenges in Fuzzing Embedded Devices#^eea5b5]]</li>
+<li><input disabled="" type="checkbox"> [[What You Corrupt Is Not What You Crash_ Challenges in Fuzzing Embedded Devices.pdf]] 第四页 instrumentation 处提到的几个消毒剂 AddressSanitizer [43]、ThreadSanitizer [44]、MemorySantizer [48]</li>
+<li><input disabled="" type="checkbox"> 了解 Pin [31], Valgrind [37], and DynamoRio [7].</li>
+<li><input checked="" disabled="" type="checkbox"> 看看别人的对 What You Corrupt Is Not What You Crash Challenges in Fuzzing Embedded Devices 的笔记 （活跃度检测是个啥）</li>
+<li><input disabled="" type="checkbox"> boofuzz 安装</li>
+<li><input disabled="" type="checkbox"> AFLGO 安装</li>
+<li><input disabled="" type="checkbox"> EcoFuzz 解决了勘探阶段和开发阶段的不灵活协调</li>
+<li><input checked="" disabled="" type="checkbox"> FIRM-AFL: High-Throughput Greybox Fuzzing of IoT Firmware via Augmented Process Emulation  2019 年一篇对固件的 fuzz 论文</li>
+<li><input checked="" disabled="" type="checkbox"> Hawkeye: Towards a Desired Directed Grey-box Fuzzer</li>
+<li><input checked="" disabled="" type="checkbox"> 物联网固件安全缺陷检测研究进展
+<ul>
+<li>2.1.2 上面的漏洞复现</li>
+</ul>
+</li>
+<li><input checked="" disabled="" type="checkbox"> Firm-AFL[66]基于 FIRMADYNE 实现了对基于 Linux 的物联网固件的高性能灰盒模糊测试, 这是第一个针对固件的灰盒模糊测试系统, 而且提高了固件模拟执行的效率。</li>
+<li><input disabled="" type="checkbox"> FIRM-AFL 的复现   <a href="https://blog.csdn.net/weixin_43695001/article/details/123486237">论文FirmAFL固件模糊测试工具——复现之路_h0_yang的博客-CSDN博客</a></li>
+<li><input disabled="" type="checkbox"> FIRM-AFL 引言中提到的几个 IOTFUZZER</li>
+<li><input disabled="" type="checkbox"> 了解 QEMU 仿真</li>
+<li><input disabled="" type="checkbox"> V. D’Silva, M. Payer, and D. Song. The correctnesssecurity gap in compiler optimization. In IEEE Security and Privacy Workshops, pages 73–87, 2015.</li>
+<li><input disabled="" type="checkbox"> 有效覆盖引导的定向灰盒模糊测试（软件所的一篇）</li>
+<li><input disabled="" type="checkbox"> 找点机器学习应用的</li>
+<li><input disabled="" type="checkbox"> 看完鹰眼再回看一下 aflgo</li>
+<li><input disabled="" type="checkbox"> 包含式指针分析  Lars Ole Andersen. 1994. Program Analysis and Specialization for the C Programming Language. Technical Report. DIKU, University of Copenhagen.</li>
+<li><input disabled="" type="checkbox"> Skyfire</li>
+<li><input disabled="" type="checkbox"> Weiguang Wang, Hao Sun, and Qingkai Zeng. 2016. SeededFuzz: Selecting and Generating Seeds for Directed Fuzzing. 49–56.</li>
+<li><input disabled="" type="checkbox"> Directed Symbolic Execution (DSE)</li>
+<li><input disabled="" type="checkbox"> 先找一下 2023 和 22 年顶会有没有定向 fuzz</li>
+<li><input disabled="" type="checkbox"> HAL 那篇文章里面的“现有解决在剥离二进制文件中查找函数问题的方法[24、33、35]&quot;</li>
+<li><input disabled="" type="checkbox"> 调研一下 QEMU 和 Avatar2</li>
+<li><input disabled="" type="checkbox"> <a href="https://www.freebuf.com/articles/endpoint/335783.html">IoT固件Rehosting综述 - FreeBuf网络安全行业门户</a></li>
+<li><input disabled="" type="checkbox"> 啥是符号执行的路径爆炸</li>
+</ul>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/%E8%AE%BA%E6%96%87%E6%80%BB%E7%BB%93">论文总结</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"></div>
+  <div class="footer-info">
+    2023  © Athul |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+
+
+</div>
+    </body>
+</html>

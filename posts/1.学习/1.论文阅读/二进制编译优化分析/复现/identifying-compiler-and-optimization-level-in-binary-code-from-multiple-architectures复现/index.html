@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Identifying Compiler and Optimization Level in Binary Code From Multiple Architectures复现 - Blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="代码地址：GitHub - inoueke-n/optimization-detector: Optimization detection over compiled binaries [[Identifying Compiler and Optimization Level in Binary Code From Multiple Architectures]]
+准备 实验用到的数据集 following link. 也可以自己按照 readme. md 文件中的 generation 节中的步骤来自己生成数据集。（因为文章中提到的担心被库文件污染，所以需要 docker 环境来生成） 文档结构 Resources 存储测试的二进制文件 Tests 和 src 文件存储源代码 generate_dataset.py 文件负责生成数据集（准确的说是交叉编译生成所需的二进制文件） optimization-detector.py 文件负责文件的提取（可执行数据），预处理（平衡数据集），训练、评估、推断。 数据集文件结构 Dataset 文件夹下的是已经经过预处理的数据集，raw 后缀表示采用原始字节作为输入，func 表示按照函数边界进行了拆分
+但是没有优化等级是 O3 的数据啊 突然懂了这个逻辑，process 的输入是 func 和 raw 文件，输出 train. bin、test. Bin、validate. Bin 文件，然后 train 用 train. Bin 、validate. Bin 文件训练，evaluate 用 test. Bin 看效果" />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="Identifying Compiler and Optimization Level in Binary Code From Multiple Architectures复现" />
+<meta property="og:description" content="代码地址：GitHub - inoueke-n/optimization-detector: Optimization detection over compiled binaries [[Identifying Compiler and Optimization Level in Binary Code From Multiple Architectures]]
+准备 实验用到的数据集 following link. 也可以自己按照 readme. md 文件中的 generation 节中的步骤来自己生成数据集。（因为文章中提到的担心被库文件污染，所以需要 docker 环境来生成） 文档结构 Resources 存储测试的二进制文件 Tests 和 src 文件存储源代码 generate_dataset.py 文件负责生成数据集（准确的说是交叉编译生成所需的二进制文件） optimization-detector.py 文件负责文件的提取（可执行数据），预处理（平衡数据集），训练、评估、推断。 数据集文件结构 Dataset 文件夹下的是已经经过预处理的数据集，raw 后缀表示采用原始字节作为输入，func 表示按照函数边界进行了拆分
+但是没有优化等级是 O3 的数据啊 突然懂了这个逻辑，process 的输入是 func 和 raw 文件，输出 train. bin、test. Bin、validate. Bin 文件，然后 train 用 train. Bin 、validate. Bin 文件训练，evaluate 用 test. Bin 看效果" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E5%A4%8D%E7%8E%B0/identifying-compiler-and-optimization-level-in-binary-code-from-multiple-architectures%E5%A4%8D%E7%8E%B0/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-06-11T02:01:58+05:30" />
+<meta property="article:modified_time" content="2023-06-11T02:01:58+05:30" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Identifying Compiler and Optimization Level in Binary Code From Multiple Architectures复现"/>
+<meta name="twitter:description" content="代码地址：GitHub - inoueke-n/optimization-detector: Optimization detection over compiled binaries [[Identifying Compiler and Optimization Level in Binary Code From Multiple Architectures]]
+准备 实验用到的数据集 following link. 也可以自己按照 readme. md 文件中的 generation 节中的步骤来自己生成数据集。（因为文章中提到的担心被库文件污染，所以需要 docker 环境来生成） 文档结构 Resources 存储测试的二进制文件 Tests 和 src 文件存储源代码 generate_dataset.py 文件负责生成数据集（准确的说是交叉编译生成所需的二进制文件） optimization-detector.py 文件负责文件的提取（可执行数据），预处理（平衡数据集），训练、评估、推断。 数据集文件结构 Dataset 文件夹下的是已经经过预处理的数据集，raw 后缀表示采用原始字节作为输入，func 表示按照函数边界进行了拆分
+但是没有优化等级是 O3 的数据啊 突然懂了这个逻辑，process 的输入是 func 和 raw 文件，输出 train. bin、test. Bin、validate. Bin 文件，然后 train 用 train. Bin 、validate. Bin 文件训练，evaluate 用 test. Bin 看效果"/>
+
+	
+        <link href="https://example.com/css/fonts.11a1877508139eac0b5b4852ceb110c35641b3533321e66e39149e901ed5756b.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://example.com/css/main.d902908ac6e0fab67957de5db5aea1b6455b19ae2ca98eac4c95a4a0fdc02238.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://example.com/css/dark.c95c5dcf5f32f8b67bd36f7dab66680e068fce2b303087294114aabf7a7c080b.css" media="(prefers-color-scheme: dark)"  />
+	
+
+	
+	
+
+	
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://example.com">Blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">All posts</a>
+		
+		<a href="/categories">Categories</a>
+		
+		<a href="/tags">Tags</a>
+		
+		<a href="/about">About</a>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">Identifying Compiler and Optimization Level in Binary Code From Multiple Architectures复现</h1>
+			<div class="meta">Posted on Jun 11, 2023</div>
+		</div>
+		
+
+		<section class="body">
+			<p>代码地址：<a href="https://github.com/inoueke-n/optimization-detector">GitHub - inoueke-n/optimization-detector: Optimization detection over compiled binaries</a>
+[[Identifying Compiler and Optimization Level in Binary Code From Multiple Architectures]]</p>
+<h1 id="准备">准备</h1>
+<ul>
+<li>实验用到的数据集 <a href="https://zenodo.org/record/3865122#.X0XzttP7T_Q">following link</a>.</li>
+<li>也可以自己按照 readme. md 文件中的 generation 节中的步骤来自己生成数据集。（因为文章中提到的担心被库文件污染，所以需要 docker 环境来生成）</li>
+</ul>
+<h1 id="文档结构">文档结构</h1>
+<ul>
+<li>Resources 存储测试的二进制文件</li>
+<li>Tests 和 src 文件存储源代码</li>
+<li><code>generate_dataset.py</code> 文件负责生成数据集（准确的说是交叉编译生成所需的二进制文件）</li>
+<li><code>optimization-detector.py</code> 文件负责文件的提取（可执行数据），预处理（平衡数据集），训练、评估、推断。</li>
+</ul>
+<h1 id="数据集文件结构">数据集文件结构</h1>
+<ul>
+<li>
+<p>Dataset 文件夹下的是已经经过预处理的数据集，raw 后缀表示采用原始字节作为输入，func 表示按照函数边界进行了拆分</p>
+<ul>
+<li>但是没有优化等级是 O3 的数据啊</li>
+</ul>
+</li>
+<li>
+<p><strong>突然懂了这个逻辑，process 的输入是 func 和 raw 文件，输出 train. bin、test. Bin、validate. Bin 文件，然后 train 用 train. Bin 、validate. Bin 文件训练，evaluate 用 test. Bin 看效果</strong></p>
+</li>
+<li>
+<p>Multi 表示将 gcc 和 clang 混合</p>
+</li>
+</ul>
+<h1 id="复现">复现</h1>
+<p>首先要安装依赖
+因为直接用作者数据集，所以先跳过数据生成和处理的部分</p>
+<h2 id="评估">评估</h2>
+<p><code>python3 optimization-detector. py evaluate -m &lt;model&gt; -o output. csv &lt;dataset_dir&gt;</code></p>
+<ul>
+<li>Model 是. h5 文件</li>
+<li>Dataset_dir 是 test. bin 文件，但是注意这里写路径就行，不用指明文件名（因为代码里面写死了文件名就是 test. bin）
+<ul>
+<li>这里有个坑，代码里面会验证数据集的第一个字节是不是 27，但是作者给的数据集里面的数据文件第一个字节都是 26，需要手动改一下</li>
+<li>2.27，现在卡在了作者自定义的 generator 类与 TensorFlow 的 data_adapter 不协调上</li>
+</ul>
+</li>
+</ul>
+<h2 id="训练">训练</h2>
+<p><code>python3 optimization-detector.py train -n &lt;network_type&gt; &lt;model_dir&gt;</code></p>
+<ul>
+<li><code>network_type</code> 选择 lstm 或者 cnn</li>
+<li><code>model_dir</code> 是包含数据集（预处理后）的文件夹</li>
+<li>会在 <code>model_dir</code> 路径下生成 <code>logs</code> 文件夹</li>
+</ul>
+<h1 id="问题">问题</h1>
+<ul>
+<li>数据集里面怎么还有一个代码文件</li>
+<li>没有 O3 级别的数据集</li>
+<li>貌似也没有区分架构</li>
+<li>为什么多分了一个全连接层的模型</li>
+<li>Mixed 未知</li>
+</ul>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/%E8%AE%BA%E6%96%87%E5%A4%8D%E7%8E%B0">论文复现</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"></div>
+  <div class="footer-info">
+    2023  © Athul |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+
+
+</div>
+    </body>
+</html>

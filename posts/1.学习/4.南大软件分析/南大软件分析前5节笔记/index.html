@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>南大软件分析前5节笔记 - Blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="IR Intermediate Representation 中间表示 3AC 三地址码 3-Address Code 每条3AC至多有三个地址，地址可以是名称，常量，编译器生成的临时变量 其实3AC就是指令的一种表示形式 BB 基本块 basic block 基本块是满足一下性质的连续3AC：只能从块的第一条指令进入；只能从块的最后一条指令离开 构建程序P的基本块算法 寻找leader（leader就是基本块的入口） P的第一条指令是一个leader 跳转目标是一个leader 跳转指令的后一条指令也是一个leader 一个基本块就是一个leader一直到下一个leader前的所有指令 CFG 控制流图 control flow graph 控制流图的一个结点可以是一条单独的3AC，更常见的是一个基本块BB 构建控制流图算法 首先构建程序基本块 构建边：块 A 和块 B 之间有一条边，当且仅当：A 的末尾有一条指向了 B 开头的跳转指令；A 的末尾紧接着 B 的开头，且 A 的末尾不是一条无条件跳转指令 数据流分析 PP 程序点 program point 在数据流分析中，我们会把每一个PP关联一个数据流值，代表在该点中可观察到的抽象的程序状态。 输入输出状态 每一条IR的执行，都会使状态从输入状态变成新的输出状态 输入/输出状态与语句前/后的 program point相关联。 转移方程 每条语句 s 都会使程序状态发生改变，这个所谓的方程f_x()对应的就是语句使得状态发生变化的操作 分析数据流有前向后后向两种，每条语句对应的状态转移方程也有两种。 控制流约束 这指的是状态的变化需要和控制流对应，比如说有两个基本块A1和A2都指向基本块B，那么B的输入状态就应该是A1、A2输出状态的交集 Reaching Definitions Analysis 到达定义分析 假设v在PPp处有定义x，如果存在一个路径从PPp到PPq，并且在该路径上没有v的其他定义，则称v的定义x到达p点。 如果在这条路径上有v的其他定义，则称变量v的定义x被killed 应用举例：分析程序是否存在变量未初始化：在程序入口为各变量引入一个 dummy 定值。当程序出口的某变量定值依然为 dummy，则我们可以认为该变量未被定义。 到达定义的转移方程 $$ \begin{matrix}OUT[B]=gen_B\cup(IN[B]-kill_B) \ IN[B]=\cup_{p,a,predecessor,of, B}OUT[P] \end{matrix}" />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="南大软件分析前5节笔记" />
+<meta property="og:description" content="IR Intermediate Representation 中间表示 3AC 三地址码 3-Address Code 每条3AC至多有三个地址，地址可以是名称，常量，编译器生成的临时变量 其实3AC就是指令的一种表示形式 BB 基本块 basic block 基本块是满足一下性质的连续3AC：只能从块的第一条指令进入；只能从块的最后一条指令离开 构建程序P的基本块算法 寻找leader（leader就是基本块的入口） P的第一条指令是一个leader 跳转目标是一个leader 跳转指令的后一条指令也是一个leader 一个基本块就是一个leader一直到下一个leader前的所有指令 CFG 控制流图 control flow graph 控制流图的一个结点可以是一条单独的3AC，更常见的是一个基本块BB 构建控制流图算法 首先构建程序基本块 构建边：块 A 和块 B 之间有一条边，当且仅当：A 的末尾有一条指向了 B 开头的跳转指令；A 的末尾紧接着 B 的开头，且 A 的末尾不是一条无条件跳转指令 数据流分析 PP 程序点 program point 在数据流分析中，我们会把每一个PP关联一个数据流值，代表在该点中可观察到的抽象的程序状态。 输入输出状态 每一条IR的执行，都会使状态从输入状态变成新的输出状态 输入/输出状态与语句前/后的 program point相关联。 转移方程 每条语句 s 都会使程序状态发生改变，这个所谓的方程f_x()对应的就是语句使得状态发生变化的操作 分析数据流有前向后后向两种，每条语句对应的状态转移方程也有两种。 控制流约束 这指的是状态的变化需要和控制流对应，比如说有两个基本块A1和A2都指向基本块B，那么B的输入状态就应该是A1、A2输出状态的交集 Reaching Definitions Analysis 到达定义分析 假设v在PPp处有定义x，如果存在一个路径从PPp到PPq，并且在该路径上没有v的其他定义，则称v的定义x到达p点。 如果在这条路径上有v的其他定义，则称变量v的定义x被killed 应用举例：分析程序是否存在变量未初始化：在程序入口为各变量引入一个 dummy 定值。当程序出口的某变量定值依然为 dummy，则我们可以认为该变量未被定义。 到达定义的转移方程 $$ \begin{matrix}OUT[B]=gen_B\cup(IN[B]-kill_B) \ IN[B]=\cup_{p,a,predecessor,of, B}OUT[P] \end{matrix}" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E5%89%8D5%E8%8A%82%E7%AC%94%E8%AE%B0/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-06-11T02:01:58+05:30" />
+<meta property="article:modified_time" content="2023-06-11T02:01:58+05:30" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="南大软件分析前5节笔记"/>
+<meta name="twitter:description" content="IR Intermediate Representation 中间表示 3AC 三地址码 3-Address Code 每条3AC至多有三个地址，地址可以是名称，常量，编译器生成的临时变量 其实3AC就是指令的一种表示形式 BB 基本块 basic block 基本块是满足一下性质的连续3AC：只能从块的第一条指令进入；只能从块的最后一条指令离开 构建程序P的基本块算法 寻找leader（leader就是基本块的入口） P的第一条指令是一个leader 跳转目标是一个leader 跳转指令的后一条指令也是一个leader 一个基本块就是一个leader一直到下一个leader前的所有指令 CFG 控制流图 control flow graph 控制流图的一个结点可以是一条单独的3AC，更常见的是一个基本块BB 构建控制流图算法 首先构建程序基本块 构建边：块 A 和块 B 之间有一条边，当且仅当：A 的末尾有一条指向了 B 开头的跳转指令；A 的末尾紧接着 B 的开头，且 A 的末尾不是一条无条件跳转指令 数据流分析 PP 程序点 program point 在数据流分析中，我们会把每一个PP关联一个数据流值，代表在该点中可观察到的抽象的程序状态。 输入输出状态 每一条IR的执行，都会使状态从输入状态变成新的输出状态 输入/输出状态与语句前/后的 program point相关联。 转移方程 每条语句 s 都会使程序状态发生改变，这个所谓的方程f_x()对应的就是语句使得状态发生变化的操作 分析数据流有前向后后向两种，每条语句对应的状态转移方程也有两种。 控制流约束 这指的是状态的变化需要和控制流对应，比如说有两个基本块A1和A2都指向基本块B，那么B的输入状态就应该是A1、A2输出状态的交集 Reaching Definitions Analysis 到达定义分析 假设v在PPp处有定义x，如果存在一个路径从PPp到PPq，并且在该路径上没有v的其他定义，则称v的定义x到达p点。 如果在这条路径上有v的其他定义，则称变量v的定义x被killed 应用举例：分析程序是否存在变量未初始化：在程序入口为各变量引入一个 dummy 定值。当程序出口的某变量定值依然为 dummy，则我们可以认为该变量未被定义。 到达定义的转移方程 $$ \begin{matrix}OUT[B]=gen_B\cup(IN[B]-kill_B) \ IN[B]=\cup_{p,a,predecessor,of, B}OUT[P] \end{matrix}"/>
+
+	
+        <link href="https://example.com/css/fonts.11a1877508139eac0b5b4852ceb110c35641b3533321e66e39149e901ed5756b.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://example.com/css/main.d902908ac6e0fab67957de5db5aea1b6455b19ae2ca98eac4c95a4a0fdc02238.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://example.com/css/dark.c95c5dcf5f32f8b67bd36f7dab66680e068fce2b303087294114aabf7a7c080b.css" media="(prefers-color-scheme: dark)"  />
+	
+
+	
+	
+
+	
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://example.com">Blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">All posts</a>
+		
+		<a href="/categories">Categories</a>
+		
+		<a href="/tags">Tags</a>
+		
+		<a href="/about">About</a>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">南大软件分析前5节笔记</h1>
+			<div class="meta">Posted on Jun 11, 2023</div>
+		</div>
+		
+
+		<section class="body">
+			<h2 id="ir">IR</h2>
+<ul>
+<li>Intermediate Representation 中间表示</li>
+</ul>
+<h2 id="3ac">3AC</h2>
+<ul>
+<li>三地址码 3-Address Code</li>
+<li>每条3AC至多有三个地址，地址可以是名称，常量，编译器生成的临时变量</li>
+<li>其实3AC就是指令的一种表示形式</li>
+</ul>
+<h3 id="bb">BB</h3>
+<ul>
+<li>基本块 basic block</li>
+<li>基本块是满足一下性质的连续3AC：只能从块的第一条指令进入；只能从块的最后一条指令离开
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/Untitled.png" alt="Untitled.png"></li>
+<li>构建程序P的基本块算法
+<ul>
+<li>寻找leader（leader就是基本块的入口）
+<ul>
+<li>P的第一条指令是一个leader</li>
+<li>跳转目标是一个leader</li>
+<li>跳转指令的后一条指令也是一个leader</li>
+<li>一个基本块就是一个leader一直到下一个leader前的所有指令</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="cfg">CFG</h2>
+<ul>
+<li>控制流图 control flow graph</li>
+<li>控制流图的一个结点可以是一条单独的3AC，更常见的是一个基本块BB</li>
+<li>构建控制流图算法
+<ul>
+<li>首先构建程序基本块</li>
+<li>构建边：块 A 和块 B 之间有一条边，当且仅当：A 的末尾有一条指向了 B 开头的跳转指令；A 的末尾紧接着 B 的开头，且 A 的末尾不是一条无条件跳转指令</li>
+</ul>
+</li>
+</ul>
+<h1 id="数据流分析">数据流分析</h1>
+<h3 id="pp">PP</h3>
+<ul>
+<li>程序点 program point</li>
+<li>在数据流分析中，我们会把每一个PP关联一个数据流值，代表在该点中可观察到的抽象的程序状态。</li>
+</ul>
+<h2 id="输入输出状态">输入输出状态</h2>
+<ul>
+<li>每一条IR的执行，都会使状态从<strong>输入状态</strong>变成新的<strong>输出状态</strong></li>
+<li>输入/输出状态与语句前/后的 <strong>program point</strong>相关联。</li>
+</ul>
+<h2 id="转移方程">转移方程</h2>
+<ul>
+<li>每条语句 s 都会使程序状态发生改变，这个所谓的方程f_x()对应的就是语句使得状态发生变化的操作</li>
+<li>分析数据流有前向后后向两种，每条语句对应的状态转移方程也有两种。</li>
+</ul>
+<h2 id="控制流约束">控制流约束</h2>
+<ul>
+<li>这指的是状态的变化需要和控制流对应，比如说有两个基本块A1和A2都指向基本块B，那么B的输入状态就应该是A1、A2输出状态的交集</li>
+</ul>
+<h2 id="reaching-definitions-analysis-到达定义分析">Reaching Definitions Analysis 到达定义分析</h2>
+<ul>
+<li>假设v在PPp处有定义x，如果存在一个路径从PPp到PPq，并且在该路径上没有v的其他定义，则称v的定义x到达p点。</li>
+<li>如果在这条路径上有v的其他定义，则称变量v的定义x被killed</li>
+<li>应用举例：分析程序是否存在变量未初始化：在程序入口为各变量引入一个 dummy 定值。当程序出口的某变量定值依然为 dummy，则我们可以认为该变量未被定义。</li>
+</ul>
+<h3 id="到达定义的转移方程">到达定义的转移方程</h3>
+<p>$$
+\begin{matrix}OUT[B]=gen_B\cup(IN[B]-kill_B) \ IN[B]=\cup_{p,a,predecessor,of, B}OUT[P] \end{matrix}<br>
+$$</p>
+<ul>
+<li>从输入状态减掉kill掉的变量，并加入新生成的变量</li>
+</ul>
+<h3 id="到达定义的更新算法">到达定义的更新算法</h3>
+<ul>
+<li>一个迭代算法，具体看视频吧。
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/Untitled%201.png" alt="Untitled 1.png"></li>
+</ul>
+<h2 id="live-variables-analysis-活跃变量分析">Live Variables Analysis 活跃变量分析</h2>
+<ul>
+<li>假设v在PPp处有定义x，如果存在一个路径从PPp到PPq，并且在该路径上使用变量v并且在使用前没有重新定义v，则称v的定义x在这段路径上活跃。</li>
+<li>反之称为被killed</li>
+<li>应用举例：可以用于寄存器分配，当一个变量不会再被使用，那么此变量就可以从寄存器中腾空，用于新值的存储。</li>
+</ul>
+<h3 id="活跃变量分析的转移方程与上面reach分析不同的是这里用backward的分析">活跃变量分析的转移方程（与上面reach分析不同的是，这里用backward的分析）</h3>
+<p>$$
+\begin{matrix}OUT[B]=\cup_{s,a,successor,of,B}OUT[S] \ IN[B]=use_B\cup(OUT[B]-def_B) \end{matrix}<br>
+$$</p>
+<h3 id="算法">算法</h3>
+<p><img src="https://gitee.com/juhuahua/chart-bed/raw/master/Untitled%202.png" alt="Untitled 2.png"></p>
+<h2 id="available-expression-analysis-可用表达式分析">Available Expression Analysis 可用表达式分析</h2>
+<ul>
+<li>从流图入口结点到达 p 的每条路径都对 x + y 求了值，且在最后一次求值之后再没有对 x 或 y 赋值，则称x+y可用</li>
+<li>应用举例：可用表达式可以用于全局公共子表达式的计算。也就是说，如果一个表达式上次计算的值到这次仍然可用，我们就能直接利用其中值，而不用进行再次的计算。</li>
+</ul>
+<h3 id="转移方程-1">转移方程</h3>
+<p>$$
+\begin{matrix}OUT[B]=gen_B\cup(IN[B]-kill_B) \ IN[B]=\cap_{p,a,predecessor,of, B}OUT[P] \end{matrix}<br>
+$$
+注意这里公式里的in是交集，因为定义中要求每条路径都对表达式求值而且最后一次求值后没有定义，所以对于每条路径的out进行merge用交集。
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/Untitled%203.png" alt="Untitled 3.png">
+比如上图这个例子，左边的路径中对x进行赋值了，但是是在最后一次计算表达式之前赋值，所以out仍然是表达式。如果左边路径的BB中把最后一次计算去掉，那out就是空了，最后两条路径merge的in就是空。</p>
+<h3 id="算法-1">算法</h3>
+<p><img src="https://gitee.com/juhuahua/chart-bed/raw/master/Untitled%204.png" alt="Untitled 4.png">
+上述算法的共同点都是不同迭代直到每个结点的值都不再更新了，那么此时每个结点的值就是真实程序会达到的状态吗，到达此状态后每个结点就真的不会再变化了吗？下面老师进行数学上的证明</p>
+<h2 id="upper-and-lower-bounds">Upper and Lower Bounds</h2>
+<p>对于偏序集中的某子集 S 来说：
+<strong>若存在元素 u 使得 S 的任意元素 x 有 x$\sqsubseteq$u，那么我们说 u 是 S 的上界（Upper bound）。
+同理，若存在元素 l 使得 S 的任意元素 x 有 l$\sqsubseteq$x，那么我们说 l 是 S 的下界（Lower bound）。</strong>
+然后我们衍生出最小上界和最大下界的概念：
+<strong>在 S 的所有上界中，我们记最小上界（Least upper bound, lub）为 $\sqcup$ S，满足所有上界 u 对 lub 有：$\sqcup$ S $\sqsubseteq$ u</strong>
+类似地我们也能定义出最大下界（Greatest lower bound, glb）为$\sqcap$ S。
+并不是每个偏序集都有 lub 和 glb，但是如果有，那么该 lub, glb 将是唯一的。</p>
+<h2 id="lattice-semilattice-complete-and-product-lattic">Lattice, Semilattice, Complete and Product Lattic</h2>
+<ul>
+<li>给定一个偏序集，如果任意元素 a, b 都有 lub和glb，那么这么偏序集就叫做 <strong>格（lattice）</strong></li>
+<li>如果在此之上更加严格一些，任意集合都存在 lub 和 glb，那么我们说这个 lattice 为“<strong>全格（complete lattice）</strong>”</li>
+<li>另外还有 <strong>Product Lattice</strong>，多个 lattice 的笛卡尔积也能形成一个新的 lattice。</li>
+</ul>
+<h2 id="data-flow-analysis-framework-via-lattice">Data Flow Analysis Framework via Lattice</h2>
+<p>一个数据流分析框架（D, L, F）由以下元素组成：</p>
+<ul>
+<li>D: 数据流的方向，前向还是后向</li>
+<li>L: 包含了数据值 V 和 meet, join 符号的格</li>
+<li>F: V -&gt; V 的转移方程族</li>
+</ul>
+<p>从而，数据流分析可以被视为在 lattice 的值上迭代地应用转移方程和 meet/join 操作符。</p>
+<h2 id="参考">参考</h2>
+<p><a href="https://blog.csdn.net/hahahaqwe123/article/details/105691860">数据流分析 1</a></p>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"></div>
+  <div class="footer-info">
+    2023  © Athul |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+
+
+</div>
+    </body>
+</html>

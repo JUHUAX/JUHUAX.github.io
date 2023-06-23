@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>fuzz整理 - Blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="#TODO [[SemFuzz Semantics-based Automatic Generation of Proof-of-Concept Exploits]]
+变异策略分为粗细粒度 粗粒度：将每次的输入称之为模糊实例，测量模糊实例和脆弱函数之间的距离（距离是两者之间最短路径的节点数），距离越小的输入作为新种子的优先级越高 粗粒度主要修改的是系统调用序列 细粒度：和粗粒度差不多，但是距离是两个基本块之间的距离 细粒度主要修改的是参数值 [[BEACON Directed Grey-Box Fuzzing with Provable Path Pruning]]
+本文提供了一个符号执行求解条件在fuzz应用上的一个折中的方法。从脆弱函数向上一直到入口函数，把条件积累。不去算符号的值，而是去算符号值的范围。这样就可以将很大一批随机变异得到的输入给排除掉。 [[ProFuzzer On-the-fly Input Type Probing for Better Zero-day Vulnerability Discovery]]
+和semfuzz一样来自游伟老师 本文的点在于可以自动的探测被fuzz对象的输入格式（可能还到不了输入格式这个程度），依据反馈将相同反馈的字节连接形成字段，并且识别字段的类型（作者自己定义了几个类型）。然后再进行fuzz。 好处在于字节连接成字段后，可以有效的进行变异，就减少那些根本输入都输入不了的输入实例。提高fuzz效率。 [[Android SmartTVs Vulnerability Discovery via Log-Guided Fuzzing]]
+作者认为智能电视的安卓操作系统中有很多厂商自定义添加的API，这种API存在漏洞的风险比较高，作者专注于fuzz这种API 作者首先定位API 然后对API fuzz，收集日志信息 首先过滤和目标API无关的日志信息 然后通过一个训练好的分类器来识别过滤后的日志信息中哪些和输入验证相关 [[SeededFuzz Selecting and Generating Seeds for Directed Fuzzing]] [[Semantic-Informed Driver Fuzzing Without Both the Hardware Devices and the Emulators]]
+这篇文章的fuzz对象是驱动，作者认为不需要设备的驱动fuzz关键在于通过驱动的验证链 [[Hawkeye： Towards a Desired Directed Grey-box Fuzzer]]" />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="fuzz整理" />
+<meta property="og:description" content="#TODO [[SemFuzz Semantics-based Automatic Generation of Proof-of-Concept Exploits]]
+变异策略分为粗细粒度 粗粒度：将每次的输入称之为模糊实例，测量模糊实例和脆弱函数之间的距离（距离是两者之间最短路径的节点数），距离越小的输入作为新种子的优先级越高 粗粒度主要修改的是系统调用序列 细粒度：和粗粒度差不多，但是距离是两个基本块之间的距离 细粒度主要修改的是参数值 [[BEACON Directed Grey-Box Fuzzing with Provable Path Pruning]]
+本文提供了一个符号执行求解条件在fuzz应用上的一个折中的方法。从脆弱函数向上一直到入口函数，把条件积累。不去算符号的值，而是去算符号值的范围。这样就可以将很大一批随机变异得到的输入给排除掉。 [[ProFuzzer On-the-fly Input Type Probing for Better Zero-day Vulnerability Discovery]]
+和semfuzz一样来自游伟老师 本文的点在于可以自动的探测被fuzz对象的输入格式（可能还到不了输入格式这个程度），依据反馈将相同反馈的字节连接形成字段，并且识别字段的类型（作者自己定义了几个类型）。然后再进行fuzz。 好处在于字节连接成字段后，可以有效的进行变异，就减少那些根本输入都输入不了的输入实例。提高fuzz效率。 [[Android SmartTVs Vulnerability Discovery via Log-Guided Fuzzing]]
+作者认为智能电视的安卓操作系统中有很多厂商自定义添加的API，这种API存在漏洞的风险比较高，作者专注于fuzz这种API 作者首先定位API 然后对API fuzz，收集日志信息 首先过滤和目标API无关的日志信息 然后通过一个训练好的分类器来识别过滤后的日志信息中哪些和输入验证相关 [[SeededFuzz Selecting and Generating Seeds for Directed Fuzzing]] [[Semantic-Informed Driver Fuzzing Without Both the Hardware Devices and the Emulators]]
+这篇文章的fuzz对象是驱动，作者认为不需要设备的驱动fuzz关键在于通过驱动的验证链 [[Hawkeye： Towards a Desired Directed Grey-box Fuzzer]]" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/3.%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/fuzz%E6%95%B4%E7%90%86/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-06-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-06-22T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="fuzz整理"/>
+<meta name="twitter:description" content="#TODO [[SemFuzz Semantics-based Automatic Generation of Proof-of-Concept Exploits]]
+变异策略分为粗细粒度 粗粒度：将每次的输入称之为模糊实例，测量模糊实例和脆弱函数之间的距离（距离是两者之间最短路径的节点数），距离越小的输入作为新种子的优先级越高 粗粒度主要修改的是系统调用序列 细粒度：和粗粒度差不多，但是距离是两个基本块之间的距离 细粒度主要修改的是参数值 [[BEACON Directed Grey-Box Fuzzing with Provable Path Pruning]]
+本文提供了一个符号执行求解条件在fuzz应用上的一个折中的方法。从脆弱函数向上一直到入口函数，把条件积累。不去算符号的值，而是去算符号值的范围。这样就可以将很大一批随机变异得到的输入给排除掉。 [[ProFuzzer On-the-fly Input Type Probing for Better Zero-day Vulnerability Discovery]]
+和semfuzz一样来自游伟老师 本文的点在于可以自动的探测被fuzz对象的输入格式（可能还到不了输入格式这个程度），依据反馈将相同反馈的字节连接形成字段，并且识别字段的类型（作者自己定义了几个类型）。然后再进行fuzz。 好处在于字节连接成字段后，可以有效的进行变异，就减少那些根本输入都输入不了的输入实例。提高fuzz效率。 [[Android SmartTVs Vulnerability Discovery via Log-Guided Fuzzing]]
+作者认为智能电视的安卓操作系统中有很多厂商自定义添加的API，这种API存在漏洞的风险比较高，作者专注于fuzz这种API 作者首先定位API 然后对API fuzz，收集日志信息 首先过滤和目标API无关的日志信息 然后通过一个训练好的分类器来识别过滤后的日志信息中哪些和输入验证相关 [[SeededFuzz Selecting and Generating Seeds for Directed Fuzzing]] [[Semantic-Informed Driver Fuzzing Without Both the Hardware Devices and the Emulators]]
+这篇文章的fuzz对象是驱动，作者认为不需要设备的驱动fuzz关键在于通过驱动的验证链 [[Hawkeye： Towards a Desired Directed Grey-box Fuzzer]]"/>
+
+	
+        <link href="https://example.com/css/fonts.11a1877508139eac0b5b4852ceb110c35641b3533321e66e39149e901ed5756b.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://example.com/css/main.d902908ac6e0fab67957de5db5aea1b6455b19ae2ca98eac4c95a4a0fdc02238.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://example.com/css/dark.c95c5dcf5f32f8b67bd36f7dab66680e068fce2b303087294114aabf7a7c080b.css" media="(prefers-color-scheme: dark)"  />
+	
+
+	
+	
+
+	
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://example.com">Blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">All posts</a>
+		
+		<a href="/categories">Categories</a>
+		
+		<a href="/tags">Tags</a>
+		
+		<a href="/about">About</a>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">fuzz整理</h1>
+			<div class="meta">Posted on Jun 22, 2023</div>
+		</div>
+		
+
+		<section class="body">
+			<p>#TODO
+[[SemFuzz Semantics-based Automatic Generation of Proof-of-Concept Exploits]]</p>
+<ul>
+<li>变异策略分为粗细粒度
+<ul>
+<li>粗粒度：将每次的输入称之为模糊实例，测量模糊实例和脆弱函数之间的距离（距离是两者之间最短路径的节点数），距离越小的输入作为新种子的优先级越高
+<ul>
+<li>粗粒度主要修改的是系统调用序列</li>
+</ul>
+</li>
+<li>细粒度：和粗粒度差不多，但是距离是两个基本块之间的距离
+<ul>
+<li>细粒度主要修改的是参数值</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>[[BEACON Directed Grey-Box Fuzzing with Provable Path Pruning]]</p>
+<ul>
+<li>本文提供了一个符号执行求解条件在fuzz应用上的一个折中的方法。从脆弱函数向上一直到入口函数，把条件积累。不去算符号的值，而是去算符号值的范围。这样就可以将很大一批随机变异得到的输入给排除掉。</li>
+</ul>
+<p>[[ProFuzzer On-the-fly Input Type Probing for Better Zero-day Vulnerability Discovery]]</p>
+<ul>
+<li>和semfuzz一样来自游伟老师</li>
+<li>本文的点在于可以自动的探测被fuzz对象的输入格式（可能还到不了输入格式这个程度），依据反馈将相同反馈的字节连接形成字段，并且识别字段的类型（作者自己定义了几个类型）。然后再进行fuzz。</li>
+<li>好处在于字节连接成字段后，可以有效的进行变异，就减少那些根本输入都输入不了的输入实例。提高fuzz效率。</li>
+</ul>
+<p>[[Android SmartTVs Vulnerability Discovery via Log-Guided Fuzzing]]</p>
+<ul>
+<li>作者认为智能电视的安卓操作系统中有很多厂商自定义添加的API，这种API存在漏洞的风险比较高，作者专注于fuzz这种API</li>
+<li>作者首先定位API</li>
+<li>然后对API fuzz，收集日志信息
+<ul>
+<li>首先过滤和目标API无关的日志信息</li>
+<li>然后通过一个训练好的分类器来识别过滤后的日志信息中哪些和输入验证相关
+[[SeededFuzz Selecting and Generating Seeds for Directed Fuzzing]]</li>
+</ul>
+</li>
+</ul>
+<p>[[Semantic-Informed Driver Fuzzing Without Both the Hardware Devices and the Emulators]]</p>
+<ul>
+<li>这篇文章的fuzz对象是驱动，作者认为不需要设备的驱动fuzz关键在于通过驱动的验证链</li>
+</ul>
+<p>[[Hawkeye： Towards a Desired Directed Grey-box Fuzzer]]</p>
+<ul>
+<li>经典论文</li>
+<li>作者做到
+<ul>
+<li>有效的计算距离，因为计算方法的问题，可能计算出来的最短距离并不是实际上的最短距离（AFLGO的问题）；不考虑所有的路径可能会漏掉隐藏在较长路径深处的错误
+<ul>
+<li>计算距离的时候考虑了被调用函数的被调用概率，概率越大越近</li>
+<li>分为两种函数级距离和基本块级距离（两种计算方式用于能量调度）</li>
+</ul>
+</li>
+<li>减小静态分析的开销
+<ul>
+<li>对整个程序的函数指针应用基于包含的指针分析</li>
+</ul>
+</li>
+<li>如何高效能量分配
+<ul>
+<li>计算基本块跟踪距离和覆盖函数相似度，基于这两个值来确定种子优先级</li>
+</ul>
+</li>
+<li>如何动态调整变异策略
+<ul>
+<li>适应性突变</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>[[FIRM-AFL_ High-Throughput Greybox Fuzzing of IoT Firmware via Augmented Process Emulation]]</p>
+<ul>
+<li>本文的点在将固件的内存映射到系统内存，增加了fuzz的速度（文中称之为吞吐量）</li>
+</ul>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/%E8%AE%BA%E6%96%87%E6%80%BB%E7%BB%93">论文总结</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"></div>
+  <div class="footer-info">
+    2023  © Athul |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+
+
+</div>
+    </body>
+</html>

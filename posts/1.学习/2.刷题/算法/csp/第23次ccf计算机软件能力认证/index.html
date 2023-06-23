@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>第23次CCF-CSP计算机软件能力认证题解 - Blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="数组推导 当 b[i] == a[i]的情况下，数组 a 的和是最大的情况 当 b[i] == b[i-1]的时候，a[i] == 0 的情况下，数组 a 最小 #include&lt;bits/stdc&#43;&#43;.h&gt; using namespace std; const int N = 105; int a[N], b[N]; int n; int main(){ int sum_max = 0, sum_min = 0; cin &gt;&gt; n; cin &gt;&gt; b[0]; sum_max = b[0]; sum_min = b[0]; for(int i = 1; i &lt; n; i&#43;&#43;){ cin&gt;&gt; b[i]; sum_max &#43;= b[i]; if(b[i] != b[i - 1]) sum_min &#43;= b[i]; } cout &lt;&lt; sum_max &lt;&lt; endl &lt;&lt; sum_min; return 0; } 非零段划分 参考 我们可以先做下面这个题，本题算是下面这个题的简化版本。 2014." />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="第23次CCF-CSP计算机软件能力认证题解" />
+<meta property="og:description" content="数组推导 当 b[i] == a[i]的情况下，数组 a 的和是最大的情况 当 b[i] == b[i-1]的时候，a[i] == 0 的情况下，数组 a 最小 #include&lt;bits/stdc&#43;&#43;.h&gt; using namespace std; const int N = 105; int a[N], b[N]; int n; int main(){ int sum_max = 0, sum_min = 0; cin &gt;&gt; n; cin &gt;&gt; b[0]; sum_max = b[0]; sum_min = b[0]; for(int i = 1; i &lt; n; i&#43;&#43;){ cin&gt;&gt; b[i]; sum_max &#43;= b[i]; if(b[i] != b[i - 1]) sum_min &#43;= b[i]; } cout &lt;&lt; sum_max &lt;&lt; endl &lt;&lt; sum_min; return 0; } 非零段划分 参考 我们可以先做下面这个题，本题算是下面这个题的简化版本。 2014." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/%E7%AE%97%E6%B3%95/csp/%E7%AC%AC23%E6%AC%A1ccf%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%BD%AF%E4%BB%B6%E8%83%BD%E5%8A%9B%E8%AE%A4%E8%AF%81/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-06-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-06-22T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="第23次CCF-CSP计算机软件能力认证题解"/>
+<meta name="twitter:description" content="数组推导 当 b[i] == a[i]的情况下，数组 a 的和是最大的情况 当 b[i] == b[i-1]的时候，a[i] == 0 的情况下，数组 a 最小 #include&lt;bits/stdc&#43;&#43;.h&gt; using namespace std; const int N = 105; int a[N], b[N]; int n; int main(){ int sum_max = 0, sum_min = 0; cin &gt;&gt; n; cin &gt;&gt; b[0]; sum_max = b[0]; sum_min = b[0]; for(int i = 1; i &lt; n; i&#43;&#43;){ cin&gt;&gt; b[i]; sum_max &#43;= b[i]; if(b[i] != b[i - 1]) sum_min &#43;= b[i]; } cout &lt;&lt; sum_max &lt;&lt; endl &lt;&lt; sum_min; return 0; } 非零段划分 参考 我们可以先做下面这个题，本题算是下面这个题的简化版本。 2014."/>
+
+	
+        <link href="https://example.com/css/fonts.11a1877508139eac0b5b4852ceb110c35641b3533321e66e39149e901ed5756b.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://example.com/css/main.d902908ac6e0fab67957de5db5aea1b6455b19ae2ca98eac4c95a4a0fdc02238.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://example.com/css/dark.c95c5dcf5f32f8b67bd36f7dab66680e068fce2b303087294114aabf7a7c080b.css" media="(prefers-color-scheme: dark)"  />
+	
+
+	
+	
+
+	
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://example.com">Blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">All posts</a>
+		
+		<a href="/categories">Categories</a>
+		
+		<a href="/tags">Tags</a>
+		
+		<a href="/about">About</a>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">第23次CCF-CSP计算机软件能力认证题解</h1>
+			<div class="meta">Posted on Jun 22, 2023</div>
+		</div>
+		
+
+		<section class="body">
+			<h1 id="数组推导">数组推导</h1>
+<ul>
+<li>当 b[i] == a[i]的情况下，数组 a 的和是最大的情况</li>
+<li>当 b[i] == b[i-1]的时候，a[i] == 0 的情况下，数组 a 最小</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">#include</span><span style="color:#75715e">&lt;bits/stdc++.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">using</span> <span style="color:#66d9ef">namespace</span> std;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> N <span style="color:#f92672">=</span> <span style="color:#ae81ff">105</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> a[N], b[N];
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> n;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> sum_max <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>, sum_min <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    cin <span style="color:#f92672">&gt;&gt;</span> n;
+</span></span><span style="display:flex;"><span>    cin <span style="color:#f92672">&gt;&gt;</span> b[<span style="color:#ae81ff">0</span>];
+</span></span><span style="display:flex;"><span>    sum_max <span style="color:#f92672">=</span> b[<span style="color:#ae81ff">0</span>];
+</span></span><span style="display:flex;"><span>    sum_min <span style="color:#f92672">=</span> b[<span style="color:#ae81ff">0</span>];
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; i <span style="color:#f92672">&lt;</span> n; i<span style="color:#f92672">++</span>){
+</span></span><span style="display:flex;"><span>        cin<span style="color:#f92672">&gt;&gt;</span> b[i];
+</span></span><span style="display:flex;"><span>        sum_max <span style="color:#f92672">+=</span> b[i];
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(b[i] <span style="color:#f92672">!=</span> b[i <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>]) sum_min <span style="color:#f92672">+=</span> b[i];
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    cout <span style="color:#f92672">&lt;&lt;</span> sum_max <span style="color:#f92672">&lt;&lt;</span> endl <span style="color:#f92672">&lt;&lt;</span> sum_min;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="非零段划分">非零段划分</h1>
+<p><a href="https://www.acwing.com/solution/content/76081/">参考</a>
+我们可以先做下面这个题，本题算是下面这个题的简化版本。
+<a href="https://www.acwing.com/problem/content/2016/">2014. 岛 - AcWing题库</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">#include</span><span style="color:#75715e">&lt;bits/stdc++.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define x first
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define y second
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">using</span> <span style="color:#66d9ef">namespace</span> std;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">typedef</span> pair<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span>, <span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> PII;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> N <span style="color:#f92672">=</span> <span style="color:#ae81ff">100005</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> h[N];
+</span></span><span style="display:flex;"><span>PII q[N];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> n;
+</span></span><span style="display:flex;"><span>    cin<span style="color:#f92672">&gt;&gt;</span>n;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; i <span style="color:#f92672">&lt;=</span> n; i<span style="color:#f92672">++</span>){
+</span></span><span style="display:flex;"><span>        cin<span style="color:#f92672">&gt;&gt;</span>h[i];
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    n <span style="color:#f92672">=</span> unique(h <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, h <span style="color:#f92672">+</span> n <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">-</span> h <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    h[n <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; i <span style="color:#f92672">&lt;=</span> n; i<span style="color:#f92672">++</span>) q[i] <span style="color:#f92672">=</span> {h[i], i};
+</span></span><span style="display:flex;"><span>    sort(q <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, q <span style="color:#f92672">+</span> n <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> res  <span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, cnt <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; i <span style="color:#f92672">&lt;=</span> n; i<span style="color:#f92672">++</span>){
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> k <span style="color:#f92672">=</span> q[i].y;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (h[k <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">&lt;</span> h[k] <span style="color:#f92672">&amp;&amp;</span> h[k <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">&lt;</span> h[k]) cnt <span style="color:#f92672">--</span> ;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (h[k <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">&gt;</span> h[k] <span style="color:#f92672">&amp;&amp;</span> h[k <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">&gt;</span> h[k]) cnt <span style="color:#f92672">++</span> ;
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(q[i].x <span style="color:#f92672">!=</span> q[i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>].x) res <span style="color:#f92672">=</span> max(res, cnt); 
+</span></span><span style="display:flex;"><span>    } 
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    cout<span style="color:#f92672">&lt;&lt;</span>res;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>与岛屿问题类似，p 表示海平面高度，数组 a 表示山峰高度，非零段的数量表示岛屿数量。当海平面 p 都大于岛屿的高度时，此时海平面只有 0 个岛屿，当海平面逐渐下降，当山峰出现时，岛屿数++；当山谷出现时，两个山峰被连在一起，岛屿数&ndash;；当出现的山峰和相邻山峰高度相同的时候，两个山峰被连在一起，岛屿数&ndash;（这种情况可以和山谷合并）。
+代码思路：</p>
+<ul>
+<li>读入数据</li>
+<li>去重，删除相邻相同元素（unique 函数）</li>
+<li>遍历数组，同时做山峰和山谷的判断，得到对应高度的岛屿数量贡献数组</li>
+<li>遍历岛屿数量贡献数组，寻找哪个高度能得到最多的岛屿数</li>
+<li>输出</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">#include</span><span style="color:#75715e">&lt;bits/stdc++.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">using</span> <span style="color:#66d9ef">namespace</span> std;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> N <span style="color:#f92672">=</span> <span style="color:#ae81ff">500005</span>, M <span style="color:#f92672">=</span> <span style="color:#ae81ff">10005</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> a[N], cnt[M];
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> n;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(){
+</span></span><span style="display:flex;"><span>    cin<span style="color:#f92672">&gt;&gt;</span>n;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; i <span style="color:#f92672">&lt;=</span> n; i<span style="color:#f92672">++</span>){
+</span></span><span style="display:flex;"><span>        cin<span style="color:#f92672">&gt;&gt;</span>a[i];
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    n <span style="color:#f92672">=</span> unique(a <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, a <span style="color:#f92672">+</span> n <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">-</span> a <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    a[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> a[n <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; i <span style="color:#f92672">&lt;=</span> n; i<span style="color:#f92672">++</span>){
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(a[i <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">&lt;</span> a[i] <span style="color:#f92672">&amp;&amp;</span> a[i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">&lt;</span> a[i]) cnt[a[i]]<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span>(a[i <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">&gt;</span> a[i] <span style="color:#f92672">&amp;&amp;</span> a[i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">&gt;</span> a[i]) cnt[a[i]]<span style="color:#f92672">--</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> res <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>, sum <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> M <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>; i; i<span style="color:#f92672">--</span>){
+</span></span><span style="display:flex;"><span>        sum <span style="color:#f92672">+=</span> cnt[i];
+</span></span><span style="display:flex;"><span>        res <span style="color:#f92672">=</span> max(res, sum);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    cout<span style="color:#f92672">&lt;&lt;</span>res;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="脉冲神经网络">脉冲神经网络</h1>
+<p>[[邻接表]]
+第 161 行的 mod 操作是对存储空间的优化，因为实际上在循环时间的时候我们需要用到的或者需要修改的数据是当前时间点和距离当前时间点延迟 d 后的时间，所以对于时间我们只需要维护一个长度为 d 的滚动数组即可。
+第 125 行，关于二维数组 I，第一维度时间，d 的大小不超过 1000，但是因为为了使得地址连续（一个小优化）所以取为 1024，然后第二维度是神经元，因为只有神经元才需要记录，脉冲源不需要。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">#include</span><span style="color:#75715e">&lt;bits/stdc++.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">using</span> <span style="color:#66d9ef">namespace</span> std;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> N <span style="color:#f92672">=</span> <span style="color:#ae81ff">2010</span>; <span style="color:#75715e">//1000个脉冲源+1000个神经元
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">double</span> INF <span style="color:#f92672">=</span> <span style="color:#ae81ff">1e8</span>; 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> n, s, p, T;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">double</span> dt; <span style="color:#75715e">//时间间隔
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> h[N], e[N], D[N], ne[N],idx; <span style="color:#75715e">// 神经元邻接表
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">double</span> W[N], v[N], u[N], a[N], b[N], c[N], d[N];<span style="color:#75715e">//v, u, a, b, c, d是神经元相关量
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> r[N], cnt[N]; <span style="color:#75715e">//cnt存储神经元释放脉冲的次数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">double</span> I[<span style="color:#ae81ff">1024</span>][N <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>]; <span style="color:#75715e">//表示神经网络状态，第一维度是时间，第二维度是脉冲源或神经元的标号，表示t时间下i个脉冲源（神经元）的状态
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> _next <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; <span style="color:#75715e">//注意这里为了防止next和头文件中的某个next冲突，前面加个下划线
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/* RAND_MAX assumed to be 32767 */</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">myrand</span>(<span style="color:#66d9ef">void</span>) {
+</span></span><span style="display:flex;"><span>    _next <span style="color:#f92672">=</span> _next <span style="color:#f92672">*</span> <span style="color:#ae81ff">1103515245</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">12345</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>((<span style="color:#66d9ef">unsigned</span>)(_next<span style="color:#f92672">/</span><span style="color:#ae81ff">65536</span>) <span style="color:#f92672">%</span> <span style="color:#ae81ff">32768</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">add</span>(<span style="color:#66d9ef">int</span> a, <span style="color:#66d9ef">int</span> b, <span style="color:#66d9ef">double</span> c, <span style="color:#66d9ef">int</span> d){
+</span></span><span style="display:flex;"><span>    e[idx] <span style="color:#f92672">=</span> b; W[idx] <span style="color:#f92672">=</span> c, D[idx] <span style="color:#f92672">=</span> d, ne[idx] <span style="color:#f92672">=</span> h[a], h[a] <span style="color:#f92672">=</span> idx<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(){
+</span></span><span style="display:flex;"><span>    memset(h, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, <span style="color:#66d9ef">sizeof</span> h);
+</span></span><span style="display:flex;"><span>    cin<span style="color:#f92672">&gt;&gt;</span>n<span style="color:#f92672">&gt;&gt;</span>s<span style="color:#f92672">&gt;&gt;</span>p<span style="color:#f92672">&gt;&gt;</span>T;
+</span></span><span style="display:flex;"><span>    cin<span style="color:#f92672">&gt;&gt;</span>dt;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> n;){
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> rn;
+</span></span><span style="display:flex;"><span>        cin<span style="color:#f92672">&gt;&gt;</span>rn;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">double</span> vv, uu, aa, bb, cc, dd;
+</span></span><span style="display:flex;"><span>        cin<span style="color:#f92672">&gt;&gt;</span>vv<span style="color:#f92672">&gt;&gt;</span>uu<span style="color:#f92672">&gt;&gt;</span>aa<span style="color:#f92672">&gt;&gt;</span>bb<span style="color:#f92672">&gt;&gt;</span>cc<span style="color:#f92672">&gt;&gt;</span>dd;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span>rn; j<span style="color:#f92672">++</span>, i<span style="color:#f92672">++</span>){
+</span></span><span style="display:flex;"><span>            v[i] <span style="color:#f92672">=</span> vv, u[i] <span style="color:#f92672">=</span> uu, a[i] <span style="color:#f92672">=</span> aa, b[i] <span style="color:#f92672">=</span> bb, c[i] <span style="color:#f92672">=</span> cc, d[i] <span style="color:#f92672">=</span> dd;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> n; i <span style="color:#f92672">&lt;</span> n <span style="color:#f92672">+</span> p; i <span style="color:#f92672">++</span>) cin<span style="color:#f92672">&gt;&gt;</span>r[i];
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> mod <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span>(s <span style="color:#f92672">--</span> ){
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> a, b, d;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">double</span> c;
+</span></span><span style="display:flex;"><span>        cin<span style="color:#f92672">&gt;&gt;</span>a<span style="color:#f92672">&gt;&gt;</span>b<span style="color:#f92672">&gt;&gt;</span>c<span style="color:#f92672">&gt;&gt;</span>d;
+</span></span><span style="display:flex;"><span>        add(a, b, c, d); <span style="color:#75715e">//构建神经元图
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        mod <span style="color:#f92672">=</span> max(mod, d <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>);<span style="color:#75715e">//此处是对空间的优化
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> T; i <span style="color:#f92672">++</span>){
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> t <span style="color:#f92672">=</span> i <span style="color:#f92672">%</span> mod;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> n; j <span style="color:#f92672">&lt;</span> n <span style="color:#f92672">+</span> p; j <span style="color:#f92672">++</span>){<span style="color:#75715e">//遍历脉冲源
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span>(r[j] <span style="color:#f92672">&gt;</span> myrand()){
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> k <span style="color:#f92672">=</span> h[j]; <span style="color:#f92672">~</span>k; k <span style="color:#f92672">=</span> ne[k]){ <span style="color:#75715e">//释放脉冲
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                    <span style="color:#66d9ef">int</span> x <span style="color:#f92672">=</span> e[k];
+</span></span><span style="display:flex;"><span>                    I[(t <span style="color:#f92672">+</span> D[k]) <span style="color:#f92672">%</span> mod][x] <span style="color:#f92672">+=</span> W[k]; 
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> n; j<span style="color:#f92672">++</span>){<span style="color:#75715e">//遍历神经元
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">double</span> vv <span style="color:#f92672">=</span> v[j], uu <span style="color:#f92672">=</span> u[j];
+</span></span><span style="display:flex;"><span>            v[j] <span style="color:#f92672">=</span> vv <span style="color:#f92672">+</span> dt <span style="color:#f92672">*</span> (<span style="color:#ae81ff">0.04</span> <span style="color:#f92672">*</span> vv <span style="color:#f92672">*</span> vv <span style="color:#f92672">+</span> <span style="color:#ae81ff">5</span> <span style="color:#f92672">*</span> vv <span style="color:#f92672">+</span> <span style="color:#ae81ff">140</span> <span style="color:#f92672">-</span> uu) <span style="color:#f92672">+</span> I[t][j];
+</span></span><span style="display:flex;"><span>            u[j] <span style="color:#f92672">=</span> uu <span style="color:#f92672">+</span> dt <span style="color:#f92672">*</span> a[j] <span style="color:#f92672">*</span> (b[j] <span style="color:#f92672">*</span> vv <span style="color:#f92672">-</span> uu);
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span>(v[j] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">30</span>){
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> k <span style="color:#f92672">=</span> h[j]; <span style="color:#f92672">~</span>k; k <span style="color:#f92672">=</span> ne[k]) <span style="color:#75715e">//释放脉冲
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                {
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">int</span> x <span style="color:#f92672">=</span> e[k];
+</span></span><span style="display:flex;"><span>                    I[(t <span style="color:#f92672">+</span> D[k]) <span style="color:#f92672">%</span> mod][x] <span style="color:#f92672">+=</span> W[k];
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>                cnt[j]<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>                v[j] <span style="color:#f92672">=</span> c[j], u[j] <span style="color:#f92672">+=</span> d[j];
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        memset(I[t], <span style="color:#ae81ff">0</span>, <span style="color:#66d9ef">sizeof</span> I[t]);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> minv <span style="color:#f92672">=</span> INF, maxv <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>INF;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> minc <span style="color:#f92672">=</span> INF, maxc <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>INF;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> n; i <span style="color:#f92672">++</span> )
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        minv <span style="color:#f92672">=</span> min(minv, v[i]);
+</span></span><span style="display:flex;"><span>        maxv <span style="color:#f92672">=</span> max(maxv, v[i]);
+</span></span><span style="display:flex;"><span>        minc <span style="color:#f92672">=</span> min(minc, cnt[i]);
+</span></span><span style="display:flex;"><span>        maxc <span style="color:#f92672">=</span> max(maxc, cnt[i]);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    printf(<span style="color:#e6db74">&#34;%.3lf %.3lf</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, minv, maxv);
+</span></span><span style="display:flex;"><span>    printf(<span style="color:#e6db74">&#34;%d %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, minc, maxc);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="收集卡牌">收集卡牌</h1>
+<p>这道题是求解期望，所以直接使用期望公式概率 x 状态的和即可，重点是如何求解状态。
+因为不同的状态之间有依赖关系，形成的结构很像是树，所以用 DP 来做。
+我们将状态表示为 f (i, j)，第一维度 i 表示选到了哪些牌（用位向量表示），第二个维度表示硬币数量，f (i, j) 就是在 i 的选牌，攒了 j 个硬币的情况下的期望。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">#include</span><span style="color:#75715e">&lt;bits/stdc++.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">using</span> <span style="color:#66d9ef">namespace</span> std;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> N <span style="color:#f92672">=</span> <span style="color:#ae81ff">16</span>, M <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> N;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> n, m;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">double</span> p[N];
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">double</span> f[M][N <span style="color:#f92672">*</span> <span style="color:#ae81ff">5</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>]; <span style="color:#75715e">//M表示取牌一共有2的16次方个情况，N * 5 + 1意思是N个牌，每个最多5个硬币，但是实际上攒够k硬币就会兑换牌，所以其实会有冗余。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">double</span> <span style="color:#a6e22e">dp</span>(<span style="color:#66d9ef">int</span> state, <span style="color:#66d9ef">int</span> coins, <span style="color:#66d9ef">int</span> r){ <span style="color:#75715e">//抽到的牌，硬币数，没抽到的牌数量
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">auto</span><span style="color:#f92672">&amp;</span> v <span style="color:#f92672">=</span> f[state][coins];
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(v <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span>) <span style="color:#66d9ef">return</span> v;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(coins <span style="color:#f92672">&gt;=</span> r <span style="color:#f92672">*</span> m) <span style="color:#66d9ef">return</span> v <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    v <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> n; i<span style="color:#f92672">++</span>){
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(state <span style="color:#f92672">&gt;&gt;</span> i <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">1</span>){
+</span></span><span style="display:flex;"><span>            v <span style="color:#f92672">+=</span> p[i] <span style="color:#f92672">*</span> (dp(state, coins <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, r) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>        }<span style="color:#66d9ef">else</span>{
+</span></span><span style="display:flex;"><span>            v <span style="color:#f92672">+=</span> p[i] <span style="color:#f92672">*</span> ( dp((state <span style="color:#f92672">|</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> i), coins, r <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> v;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(){
+</span></span><span style="display:flex;"><span>    cin<span style="color:#f92672">&gt;&gt;</span>n<span style="color:#f92672">&gt;&gt;</span>m;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> n; i<span style="color:#f92672">++</span>){
+</span></span><span style="display:flex;"><span>        cin<span style="color:#f92672">&gt;&gt;</span>p[i];
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    memset(f, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, <span style="color:#66d9ef">sizeof</span> f);
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    printf(<span style="color:#e6db74">&#34;%0.10lf</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, dp(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, n));
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div>
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/csp%E9%A2%98%E8%A7%A3">CSP题解</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"></div>
+  <div class="footer-info">
+    2023  © Athul |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+
+
+</div>
+    </body>
+</html>

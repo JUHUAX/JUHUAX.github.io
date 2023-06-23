@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>What You Corrupt Is Not What You Crash Challenges in Fuzzing Embedded Devices 总结笔记 - Blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="[[What You Corrupt Is Not What You Crash Challenges in Fuzzing Embedded Devices]] 参考：浅谈固件Fuzz_黑客技术 (hackdig.com)
+嵌入式设备分类 基于 Linux OS 的嵌入式设备：对于初次接触固件漏洞挖掘的读者往往接触的都是这类嵌入式设备，如大部分的摄像头、路由器。 自定义操作系统的嵌入式设备：可能不存在内存管理单元(MMU)，不过内核和用户层仍然存在逻辑分离。 没有抽象操作系统的嵌入式设备：编译后的代码系统空间和用户空间是混在一起的，不存在内核与用户层的逻辑分离。 参考的博客给出了这样一个观点：对这种类型的设备进行 fuzz 似乎本来就比较少见，因为该种类型的设备代码量一般较小，只用逆向说不定都可以还原。 对嵌入式设备 fuzz 的难点 错误检测：嵌入式设备的防御机制少，即使触发了漏洞，但是系统没有崩溃，fuzz 器就得不到反馈，就以为没有触发漏洞。 性能和可扩展性：难以并行，每轮都要重启设备 插桩 后续作者针对错误检测这一个问题，将嵌入式设备分为三类进行测试，将它们的反应分为了 6 种情况。![[What You Corrupt Is Not What You Crash Challenges in Fuzzing Embedded Devices#Observed Behavior]]
+启发式方法加强错误检测 段追踪 格式说明符跟踪 堆对象追踪 调用栈追踪 调用帧追踪 栈对象追踪 针对嵌入式设备 fuzz 问题的一些方法 （作者原文中对每种方法都给出了需要的工具和资源）
+静态插桩 二进制重写 物理重托管 全仿真 部分仿真 硬件支持的插桩 启示 这篇文章的主要工作在于两部分
+针对嵌入式设备缺乏错误检测机制的实验论证和解决方案 嵌入式设备 fuzzing 的现状综述 我觉得第一部分就是这篇文章的亮点，切入点很好。其次这篇文章相对于其他开发一套 fuzz 框架，或者提出某种方法的论文学术意味更强，因为工作量主要在实验上，文章最后的启发式发方法更像是展望，而不是一个具体的成果。所以说即使没有一个很好的解决方法，但是提出了问题并且证明了问题的存在也可以写一篇很好的文章。" />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="What You Corrupt Is Not What You Crash Challenges in Fuzzing Embedded Devices 总结笔记" />
+<meta property="og:description" content="[[What You Corrupt Is Not What You Crash Challenges in Fuzzing Embedded Devices]] 参考：浅谈固件Fuzz_黑客技术 (hackdig.com)
+嵌入式设备分类 基于 Linux OS 的嵌入式设备：对于初次接触固件漏洞挖掘的读者往往接触的都是这类嵌入式设备，如大部分的摄像头、路由器。 自定义操作系统的嵌入式设备：可能不存在内存管理单元(MMU)，不过内核和用户层仍然存在逻辑分离。 没有抽象操作系统的嵌入式设备：编译后的代码系统空间和用户空间是混在一起的，不存在内核与用户层的逻辑分离。 参考的博客给出了这样一个观点：对这种类型的设备进行 fuzz 似乎本来就比较少见，因为该种类型的设备代码量一般较小，只用逆向说不定都可以还原。 对嵌入式设备 fuzz 的难点 错误检测：嵌入式设备的防御机制少，即使触发了漏洞，但是系统没有崩溃，fuzz 器就得不到反馈，就以为没有触发漏洞。 性能和可扩展性：难以并行，每轮都要重启设备 插桩 后续作者针对错误检测这一个问题，将嵌入式设备分为三类进行测试，将它们的反应分为了 6 种情况。![[What You Corrupt Is Not What You Crash Challenges in Fuzzing Embedded Devices#Observed Behavior]]
+启发式方法加强错误检测 段追踪 格式说明符跟踪 堆对象追踪 调用栈追踪 调用帧追踪 栈对象追踪 针对嵌入式设备 fuzz 问题的一些方法 （作者原文中对每种方法都给出了需要的工具和资源）
+静态插桩 二进制重写 物理重托管 全仿真 部分仿真 硬件支持的插桩 启示 这篇文章的主要工作在于两部分
+针对嵌入式设备缺乏错误检测机制的实验论证和解决方案 嵌入式设备 fuzzing 的现状综述 我觉得第一部分就是这篇文章的亮点，切入点很好。其次这篇文章相对于其他开发一套 fuzz 框架，或者提出某种方法的论文学术意味更强，因为工作量主要在实验上，文章最后的启发式发方法更像是展望，而不是一个具体的成果。所以说即使没有一个很好的解决方法，但是提出了问题并且证明了问题的存在也可以写一篇很好的文章。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/3.%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/what-you-corrupt-is-not-what-you-crash-challenges-in-fuzzing-embedded-devices-%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-06-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-06-22T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="What You Corrupt Is Not What You Crash Challenges in Fuzzing Embedded Devices 总结笔记"/>
+<meta name="twitter:description" content="[[What You Corrupt Is Not What You Crash Challenges in Fuzzing Embedded Devices]] 参考：浅谈固件Fuzz_黑客技术 (hackdig.com)
+嵌入式设备分类 基于 Linux OS 的嵌入式设备：对于初次接触固件漏洞挖掘的读者往往接触的都是这类嵌入式设备，如大部分的摄像头、路由器。 自定义操作系统的嵌入式设备：可能不存在内存管理单元(MMU)，不过内核和用户层仍然存在逻辑分离。 没有抽象操作系统的嵌入式设备：编译后的代码系统空间和用户空间是混在一起的，不存在内核与用户层的逻辑分离。 参考的博客给出了这样一个观点：对这种类型的设备进行 fuzz 似乎本来就比较少见，因为该种类型的设备代码量一般较小，只用逆向说不定都可以还原。 对嵌入式设备 fuzz 的难点 错误检测：嵌入式设备的防御机制少，即使触发了漏洞，但是系统没有崩溃，fuzz 器就得不到反馈，就以为没有触发漏洞。 性能和可扩展性：难以并行，每轮都要重启设备 插桩 后续作者针对错误检测这一个问题，将嵌入式设备分为三类进行测试，将它们的反应分为了 6 种情况。![[What You Corrupt Is Not What You Crash Challenges in Fuzzing Embedded Devices#Observed Behavior]]
+启发式方法加强错误检测 段追踪 格式说明符跟踪 堆对象追踪 调用栈追踪 调用帧追踪 栈对象追踪 针对嵌入式设备 fuzz 问题的一些方法 （作者原文中对每种方法都给出了需要的工具和资源）
+静态插桩 二进制重写 物理重托管 全仿真 部分仿真 硬件支持的插桩 启示 这篇文章的主要工作在于两部分
+针对嵌入式设备缺乏错误检测机制的实验论证和解决方案 嵌入式设备 fuzzing 的现状综述 我觉得第一部分就是这篇文章的亮点，切入点很好。其次这篇文章相对于其他开发一套 fuzz 框架，或者提出某种方法的论文学术意味更强，因为工作量主要在实验上，文章最后的启发式发方法更像是展望，而不是一个具体的成果。所以说即使没有一个很好的解决方法，但是提出了问题并且证明了问题的存在也可以写一篇很好的文章。"/>
+
+	
+        <link href="https://example.com/css/fonts.11a1877508139eac0b5b4852ceb110c35641b3533321e66e39149e901ed5756b.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://example.com/css/main.d902908ac6e0fab67957de5db5aea1b6455b19ae2ca98eac4c95a4a0fdc02238.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://example.com/css/dark.c95c5dcf5f32f8b67bd36f7dab66680e068fce2b303087294114aabf7a7c080b.css" media="(prefers-color-scheme: dark)"  />
+	
+
+	
+	
+
+	
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://example.com">Blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">All posts</a>
+		
+		<a href="/categories">Categories</a>
+		
+		<a href="/tags">Tags</a>
+		
+		<a href="/about">About</a>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">What You Corrupt Is Not What You Crash Challenges in Fuzzing Embedded Devices 总结笔记</h1>
+			<div class="meta">Posted on Jun 22, 2023</div>
+		</div>
+		
+
+		<section class="body">
+			<p>[[What You Corrupt Is Not What You Crash Challenges in Fuzzing Embedded Devices]]
+参考：<a href="http://www.hackdig.com/09/hack-487712.htm">浅谈固件Fuzz_黑客技术 (hackdig.com)</a></p>
+<h1 id="嵌入式设备分类">嵌入式设备分类</h1>
+<ol>
+<li> 基于 Linux OS 的嵌入式设备：对于初次接触固件漏洞挖掘的读者往往接触的都是这类嵌入式设备，如大部分的摄像头、路由器。</li>
+<li>自定义操作系统的嵌入式设备：可能不存在内存管理单元(MMU)，不过内核和用户层仍然存在逻辑分离。</li>
+<li>没有抽象操作系统的嵌入式设备：编译后的代码系统空间和用户空间是混在一起的，不存在内核与用户层的逻辑分离。
+<ol>
+<li>参考的博客给出了这样一个观点：对这种类型的设备进行 fuzz 似乎本来就比较少见，因为该种类型的设备代码量一般较小，只用逆向说不定都可以还原。</li>
+</ol>
+</li>
+</ol>
+<h1 id="对嵌入式设备-fuzz-的难点">对嵌入式设备 fuzz 的难点</h1>
+<ol>
+<li>错误检测：嵌入式设备的防御机制少，即使触发了漏洞，但是系统没有崩溃，fuzz 器就得不到反馈，就以为没有触发漏洞。</li>
+<li>性能和可扩展性：难以并行，每轮都要重启设备</li>
+<li>插桩</li>
+</ol>
+<p>后续作者针对错误检测这一个问题，将嵌入式设备分为三类进行测试，将它们的反应分为了 6 种情况。![[What You Corrupt Is Not What You Crash Challenges in Fuzzing Embedded Devices#Observed Behavior]]</p>
+<h1 id="启发式方法加强错误检测">启发式方法加强错误检测</h1>
+<ol>
+<li>段追踪</li>
+<li>格式说明符跟踪</li>
+<li>堆对象追踪</li>
+<li>调用栈追踪</li>
+<li>调用帧追踪</li>
+<li>栈对象追踪</li>
+</ol>
+<h1 id="针对嵌入式设备-fuzz-问题的一些方法">针对嵌入式设备 fuzz 问题的一些方法</h1>
+<p>（作者原文中对每种方法都给出了需要的工具和资源）</p>
+<ol>
+<li>静态插桩</li>
+<li>二进制重写</li>
+<li>物理重托管</li>
+<li>全仿真</li>
+<li>部分仿真</li>
+<li>硬件支持的插桩</li>
+</ol>
+<h1 id="启示">启示</h1>
+<p>这篇文章的主要工作在于两部分</p>
+<ol>
+<li>针对嵌入式设备缺乏错误检测机制的实验论证和解决方案</li>
+<li>嵌入式设备 fuzzing 的现状综述</li>
+</ol>
+<p>我觉得第一部分就是这篇文章的亮点，切入点很好。其次这篇文章相对于其他开发一套 fuzz 框架，或者提出某种方法的论文学术意味更强，因为工作量主要在实验上，文章最后的启发式发方法更像是展望，而不是一个具体的成果。所以说即使没有一个很好的解决方法，但是提出了问题并且证明了问题的存在也可以写一篇很好的文章。</p>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/%E8%AE%BA%E6%96%87%E6%80%BB%E7%BB%93">论文总结</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"></div>
+  <div class="footer-info">
+    2023  © Athul |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+
+
+</div>
+    </body>
+</html>

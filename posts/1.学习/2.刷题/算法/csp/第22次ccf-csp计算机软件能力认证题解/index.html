@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>第22次CCF-CSP计算机软件能力认证题解 - Blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="灰度直方图 #include&lt;bits/stdc&#43;&#43;.h&gt; using namespace std; const int N = 500; const int L = 256; int gray_L[L]; int main(){ int n, m, l, tmp; cin&gt;&gt;n&gt;&gt;m&gt;&gt;l; for(int i = 0; i &lt; n; i &#43;&#43;){ for(int j = 0; j &lt; m; j &#43;&#43;){ cin&gt;&gt;tmp; gray_L[tmp]&#43;&#43;; } } for(int i = 0; i &lt; l; i &#43;&#43;){ cout&lt;&lt;gray_L[i]&lt;&lt;&#34; &#34;; } return 0; } n, m, l = map(int, input().split()) ans = [ 0 for i in range(0, 257)] for i in range(0, n): L = list(map(int, input()." />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="第22次CCF-CSP计算机软件能力认证题解" />
+<meta property="og:description" content="灰度直方图 #include&lt;bits/stdc&#43;&#43;.h&gt; using namespace std; const int N = 500; const int L = 256; int gray_L[L]; int main(){ int n, m, l, tmp; cin&gt;&gt;n&gt;&gt;m&gt;&gt;l; for(int i = 0; i &lt; n; i &#43;&#43;){ for(int j = 0; j &lt; m; j &#43;&#43;){ cin&gt;&gt;tmp; gray_L[tmp]&#43;&#43;; } } for(int i = 0; i &lt; l; i &#43;&#43;){ cout&lt;&lt;gray_L[i]&lt;&lt;&#34; &#34;; } return 0; } n, m, l = map(int, input().split()) ans = [ 0 for i in range(0, 257)] for i in range(0, n): L = list(map(int, input()." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/%E7%AE%97%E6%B3%95/csp/%E7%AC%AC22%E6%AC%A1ccf-csp%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%BD%AF%E4%BB%B6%E8%83%BD%E5%8A%9B%E8%AE%A4%E8%AF%81%E9%A2%98%E8%A7%A3/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-06-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-06-22T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="第22次CCF-CSP计算机软件能力认证题解"/>
+<meta name="twitter:description" content="灰度直方图 #include&lt;bits/stdc&#43;&#43;.h&gt; using namespace std; const int N = 500; const int L = 256; int gray_L[L]; int main(){ int n, m, l, tmp; cin&gt;&gt;n&gt;&gt;m&gt;&gt;l; for(int i = 0; i &lt; n; i &#43;&#43;){ for(int j = 0; j &lt; m; j &#43;&#43;){ cin&gt;&gt;tmp; gray_L[tmp]&#43;&#43;; } } for(int i = 0; i &lt; l; i &#43;&#43;){ cout&lt;&lt;gray_L[i]&lt;&lt;&#34; &#34;; } return 0; } n, m, l = map(int, input().split()) ans = [ 0 for i in range(0, 257)] for i in range(0, n): L = list(map(int, input()."/>
+
+	
+        <link href="https://example.com/css/fonts.11a1877508139eac0b5b4852ceb110c35641b3533321e66e39149e901ed5756b.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://example.com/css/main.d902908ac6e0fab67957de5db5aea1b6455b19ae2ca98eac4c95a4a0fdc02238.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://example.com/css/dark.c95c5dcf5f32f8b67bd36f7dab66680e068fce2b303087294114aabf7a7c080b.css" media="(prefers-color-scheme: dark)"  />
+	
+
+	
+	
+
+	
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://example.com">Blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">All posts</a>
+		
+		<a href="/categories">Categories</a>
+		
+		<a href="/tags">Tags</a>
+		
+		<a href="/about">About</a>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">第22次CCF-CSP计算机软件能力认证题解</h1>
+			<div class="meta">Posted on Jun 22, 2023</div>
+		</div>
+		
+
+		<section class="body">
+			<h1 id="灰度直方图">灰度直方图</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">#include</span><span style="color:#75715e">&lt;bits/stdc++.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">using</span> <span style="color:#66d9ef">namespace</span> std;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> N <span style="color:#f92672">=</span> <span style="color:#ae81ff">500</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> L <span style="color:#f92672">=</span> <span style="color:#ae81ff">256</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> gray_L[L];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> n, m, l, tmp;
+</span></span><span style="display:flex;"><span>    cin<span style="color:#f92672">&gt;&gt;</span>n<span style="color:#f92672">&gt;&gt;</span>m<span style="color:#f92672">&gt;&gt;</span>l;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> n; i <span style="color:#f92672">++</span>){
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> m; j <span style="color:#f92672">++</span>){
+</span></span><span style="display:flex;"><span>            cin<span style="color:#f92672">&gt;&gt;</span>tmp;
+</span></span><span style="display:flex;"><span>            gray_L[tmp]<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> l; i <span style="color:#f92672">++</span>){
+</span></span><span style="display:flex;"><span>        cout<span style="color:#f92672">&lt;&lt;</span>gray_L[i]<span style="color:#f92672">&lt;&lt;</span><span style="color:#e6db74">&#34; &#34;</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>n, m, l <span style="color:#f92672">=</span> map(int, input()<span style="color:#f92672">.</span>split())
+</span></span><span style="display:flex;"><span>ans <span style="color:#f92672">=</span> [ <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">257</span>)]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, n):
+</span></span><span style="display:flex;"><span>    L <span style="color:#f92672">=</span> list(map(int, input()<span style="color:#f92672">.</span>split()))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, m):
+</span></span><span style="display:flex;"><span>        tmp <span style="color:#f92672">=</span> L[j];
+</span></span><span style="display:flex;"><span>        ans[tmp] <span style="color:#f92672">=</span> ans[tmp] <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, l):
+</span></span><span style="display:flex;"><span>    print(str(ans[i]) <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; &#34;</span>, end<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>)
+</span></span></code></pre></div><h1 id="领域均值">领域均值</h1>
+<p>这种求和应该一下子就想到是前缀和（前缀矩阵）
+[[前缀和（前缀和矩阵）]]</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">#include</span><span style="color:#75715e">&lt;bits/stdc++.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">using</span> <span style="color:#66d9ef">namespace</span> std;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> N <span style="color:#f92672">=</span> <span style="color:#ae81ff">610</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> g[N][N];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> n, l, r, t;
+</span></span><span style="display:flex;"><span>    cin<span style="color:#f92672">&gt;&gt;</span>n<span style="color:#f92672">&gt;&gt;</span>l<span style="color:#f92672">&gt;&gt;</span>r<span style="color:#f92672">&gt;&gt;</span>t;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; i <span style="color:#f92672">&lt;=</span> n; i<span style="color:#f92672">++</span>){
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; j <span style="color:#f92672">&lt;=</span> n; j <span style="color:#f92672">++</span>){
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">int</span> tmp;
+</span></span><span style="display:flex;"><span>            cin<span style="color:#f92672">&gt;&gt;</span>tmp;
+</span></span><span style="display:flex;"><span>            g[i][j] <span style="color:#f92672">=</span> tmp <span style="color:#f92672">+</span> g[i<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>][j] <span style="color:#f92672">+</span> g[i][j<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">-</span> g[i<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>][j<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>];
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> res <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; i <span style="color:#f92672">&lt;=</span> n; i<span style="color:#f92672">++</span>){
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; j <span style="color:#f92672">&lt;=</span> n; j <span style="color:#f92672">++</span>){
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">int</span> x1 <span style="color:#f92672">=</span> max(<span style="color:#ae81ff">1</span>, i <span style="color:#f92672">-</span> r), y1 <span style="color:#f92672">=</span> max(<span style="color:#ae81ff">1</span>, j <span style="color:#f92672">-</span> r);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">int</span> x2 <span style="color:#f92672">=</span> min(n, i <span style="color:#f92672">+</span> r), y2 <span style="color:#f92672">=</span> min(n, j <span style="color:#f92672">+</span> r);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">int</span> sum <span style="color:#f92672">=</span> g[x2][y2] <span style="color:#f92672">-</span> g[x1 <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>][y2] <span style="color:#f92672">-</span> g[x2][y1 <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">+</span> g[x1 <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>][y1 <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>];
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">int</span> cnt <span style="color:#f92672">=</span> (x2 <span style="color:#f92672">-</span> x1 <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">*</span> (y2 <span style="color:#f92672">-</span> y1 <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span>(sum <span style="color:#f92672">&lt;=</span> cnt <span style="color:#f92672">*</span> t) res<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    cout<span style="color:#f92672">&lt;&lt;</span>res;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="dhcp-服务器">DHCP 服务器</h1>
+<p>直接对着描述翻译为代码即可</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;cstring&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;algorithm&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> <span style="color:#66d9ef">namespace</span> std;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> N <span style="color:#f92672">=</span> <span style="color:#ae81ff">10010</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> n, m, t_def, t_max, t_min;
+</span></span><span style="display:flex;"><span>string h;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">IP</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> state;  <span style="color:#75715e">// 0：未分配，1：待分配，2：占用，3：过期
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> t;  <span style="color:#75715e">// 过期时间
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    string owner;
+</span></span><span style="display:flex;"><span>}ip[N];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">update_ips_state</span>(<span style="color:#66d9ef">int</span> tc)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; i <span style="color:#f92672">&lt;=</span> n; i <span style="color:#f92672">++</span> )
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (ip[i].t <span style="color:#f92672">&amp;&amp;</span> ip[i].t <span style="color:#f92672">&lt;=</span> tc)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (ip[i].state <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                ip[i].state <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>                ip[i].owner <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>                ip[i].t <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                ip[i].state <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>;
+</span></span><span style="display:flex;"><span>                ip[i].t <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">get_ip_by_owner</span>(string client)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; i <span style="color:#f92672">&lt;=</span> n; i <span style="color:#f92672">++</span> )
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (ip[i].owner <span style="color:#f92672">==</span> client)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> i;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">get_ip_by_state</span>(<span style="color:#66d9ef">int</span> state)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; i <span style="color:#f92672">&lt;=</span> n; i <span style="color:#f92672">++</span> )
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (ip[i].state <span style="color:#f92672">==</span> state)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> i;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    cin <span style="color:#f92672">&gt;&gt;</span> n <span style="color:#f92672">&gt;&gt;</span> t_def <span style="color:#f92672">&gt;&gt;</span> t_max <span style="color:#f92672">&gt;&gt;</span> t_min <span style="color:#f92672">&gt;&gt;</span> h;
+</span></span><span style="display:flex;"><span>    cin <span style="color:#f92672">&gt;&gt;</span> m;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> (m <span style="color:#f92672">--</span> )
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> tc;
+</span></span><span style="display:flex;"><span>        string client, server, type;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> id, te;
+</span></span><span style="display:flex;"><span>        cin <span style="color:#f92672">&gt;&gt;</span> tc <span style="color:#f92672">&gt;&gt;</span> client <span style="color:#f92672">&gt;&gt;</span> server <span style="color:#f92672">&gt;&gt;</span> type <span style="color:#f92672">&gt;&gt;</span> id <span style="color:#f92672">&gt;&gt;</span> te;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (server <span style="color:#f92672">!=</span> h <span style="color:#f92672">&amp;&amp;</span> server <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#34;*&#34;</span>)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (type <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#34;REQ&#34;</span>) <span style="color:#66d9ef">continue</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (type <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#34;DIS&#34;</span> <span style="color:#f92672">&amp;&amp;</span> type <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#34;REQ&#34;</span>) <span style="color:#66d9ef">continue</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (server <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;*&#34;</span> <span style="color:#f92672">&amp;&amp;</span> type <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#34;DIS&#34;</span> <span style="color:#f92672">||</span> server <span style="color:#f92672">==</span> h <span style="color:#f92672">&amp;&amp;</span> type <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;DIS&#34;</span>) <span style="color:#66d9ef">continue</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        update_ips_state(tc);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (type <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;DIS&#34;</span>)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">int</span> k <span style="color:#f92672">=</span> get_ip_by_owner(client);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>k) k <span style="color:#f92672">=</span> get_ip_by_state(<span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>k) k <span style="color:#f92672">=</span> get_ip_by_state(<span style="color:#ae81ff">3</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>k) <span style="color:#66d9ef">continue</span>;
+</span></span><span style="display:flex;"><span>            ip[k].state <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>, ip[k].owner <span style="color:#f92672">=</span> client;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>te) ip[k].t <span style="color:#f92672">=</span> tc <span style="color:#f92672">+</span> t_def;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">int</span> t <span style="color:#f92672">=</span> te <span style="color:#f92672">-</span> tc;
+</span></span><span style="display:flex;"><span>                t <span style="color:#f92672">=</span> max(t, t_min), t <span style="color:#f92672">=</span> min(t, t_max);
+</span></span><span style="display:flex;"><span>                ip[k].t <span style="color:#f92672">=</span> tc <span style="color:#f92672">+</span> t;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            cout <span style="color:#f92672">&lt;&lt;</span> h <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#39; &#39;</span> <span style="color:#f92672">&lt;&lt;</span> client <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#39; &#39;</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;OFR&#34;</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#39; &#39;</span> <span style="color:#f92672">&lt;&lt;</span> k <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#39; &#39;</span> <span style="color:#f92672">&lt;&lt;</span> ip[k].t <span style="color:#f92672">&lt;&lt;</span> endl;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (server <span style="color:#f92672">!=</span> h)
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; i <span style="color:#f92672">&lt;=</span> n; i <span style="color:#f92672">++</span> )
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">if</span> (ip[i].owner <span style="color:#f92672">==</span> client <span style="color:#f92672">&amp;&amp;</span> ip[i].state <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>                    {
+</span></span><span style="display:flex;"><span>                        ip[i].state <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>                        ip[i].owner <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>                        ip[i].t <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>                    }
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">continue</span>;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>(id <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&amp;&amp;</span> id <span style="color:#f92672">&lt;=</span> n <span style="color:#f92672">&amp;&amp;</span> ip[id].owner <span style="color:#f92672">==</span> client))
+</span></span><span style="display:flex;"><span>                cout <span style="color:#f92672">&lt;&lt;</span> h <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#39; &#39;</span> <span style="color:#f92672">&lt;&lt;</span> client <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#39; &#39;</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;NAK&#34;</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#39; &#39;</span> <span style="color:#f92672">&lt;&lt;</span> id <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#39; &#39;</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&lt;&lt;</span> endl;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                ip[id].state <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>;
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>te) ip[id].t <span style="color:#f92672">=</span> tc <span style="color:#f92672">+</span> t_def;
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>                {
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">int</span> t <span style="color:#f92672">=</span> te <span style="color:#f92672">-</span> tc;
+</span></span><span style="display:flex;"><span>                    t <span style="color:#f92672">=</span> max(t, t_min), t <span style="color:#f92672">=</span> min(t, t_max);
+</span></span><span style="display:flex;"><span>                    ip[id].t <span style="color:#f92672">=</span> tc <span style="color:#f92672">+</span> t;
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>                cout <span style="color:#f92672">&lt;&lt;</span> h <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#39; &#39;</span> <span style="color:#f92672">&lt;&lt;</span> client <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#39; &#39;</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;ACK&#34;</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#39; &#39;</span> <span style="color:#f92672">&lt;&lt;</span> id <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#39; &#39;</span> <span style="color:#f92672">&lt;&lt;</span> ip[id].t <span style="color:#f92672">&lt;&lt;</span> endl;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="校门外的树">校门外的树</h1>
+<p>参考笔记：<a href="https://www.acwing.com/solution/content/50559/">AcWing 3414. 校门外的树 - AcWing</a>    <a href="https://www.acwing.com/solution/content/66846/">AcWing 3414. 校门外的树 - AcWing</a>
+题意大概就是往不同的区间内插树，要求是要么在整个大区间树之间的距离是等差的，要不然是在不同的子区间内是等差的，然后障碍物的地方不能插树。
+那么首先看到这个题，直觉上这个题应该分为两个步骤，第一计算我们要选择哪个区间插树，第二就是计算当前方案下的等差方案。感觉第一步比较关键并且费事，第二步不算难，求区间长度的约数即可。
+这种选择问题一般就是 DP，为啥呢，当确定选择区间 A 后，后续可以有不同情况，当继续选择区间 A、B 后后续又有不同情况，这种情况的结构很像树，从一个结点延伸很多种情况，这种用 DP 来动态的推结果，一般叶子结点存储的结果就是答案。
+那么闫氏 DP 分析法走起[[闫氏DP分析法]]</p>
+<ul>
+<li>确定状态表示，这题我们用一维 f (i) 表示（实际分析的时候也是从一维开始分析，后面觉得不够，再加维度）以 i 为右端点的区间的插树方案（a0~ai 区间所有插树方法的集合）</li>
+<li>状态转移：状态转移就要求如何从 f (0)~f (i-1) 的值求得 f (i) 的值
+<ul>
+<li>对于 f (j)，0&lt;=j&lt;=i-1 来说，f (j) 表示以 j 为右端点的方案数，那么对于 f (i) 而言新增加的情况就是区间 j~i 的方案数，那么遍历 j，把 f (j)*cnt（j, i) 求和便是我们的答案
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230219180542.png" alt="image.png"></li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">#include</span><span style="color:#75715e">&lt;bits/stdc++.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">using</span> <span style="color:#66d9ef">namespace</span> std;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">long</span> <span style="color:#66d9ef">long</span> LL;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> N <span style="color:#f92672">=</span> <span style="color:#ae81ff">1010</span>, M <span style="color:#f92672">=</span> <span style="color:#ae81ff">100010</span>, MOD <span style="color:#f92672">=</span> <span style="color:#ae81ff">1e9</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">7</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> n;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> a[N];
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> f[N];
+</span></span><span style="display:flex;"><span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> q[M];
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">bool</span> st[M];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//打表以算倍数的方式来求约数，q[i]表示i的约数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; i <span style="color:#f92672">&lt;</span> M; i <span style="color:#f92672">++</span>){
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> i <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span>; j <span style="color:#f92672">&lt;</span> M; j <span style="color:#f92672">+=</span> i){<span style="color:#75715e">//因为间隔不能等于区间大小，那样就不能插树了
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            q[j].push_back(i);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    cin<span style="color:#f92672">&gt;&gt;</span>n;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> n; i <span style="color:#f92672">++</span>) cin<span style="color:#f92672">&gt;&gt;</span>a[i];
+</span></span><span style="display:flex;"><span>    f[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; i <span style="color:#f92672">&lt;</span> n; i<span style="color:#f92672">++</span>){
+</span></span><span style="display:flex;"><span>        memset(st, <span style="color:#ae81ff">0</span>, <span style="color:#66d9ef">sizeof</span> st);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> i <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>; j <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">--</span>){
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">int</span> d <span style="color:#f92672">=</span> a[i] <span style="color:#f92672">-</span> a[j], cnt <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> k: q[d]){
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span>(<span style="color:#f92672">!</span>st[k]){
+</span></span><span style="display:flex;"><span>                    cnt<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>                    st[k] <span style="color:#f92672">=</span> true;
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            st[d] <span style="color:#f92672">=</span> true;
+</span></span><span style="display:flex;"><span>            f[i] <span style="color:#f92672">=</span> (f[i] <span style="color:#f92672">+</span> (LL)f[j] <span style="color:#f92672">*</span> cnt) <span style="color:#f92672">%</span> MOD;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    cout<span style="color:#f92672">&lt;&lt;</span>f[n<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>];
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>在 y 总的代码中还有一个巧妙的点在于，如何去判定插树的位置有没有避开障碍物呢，代码的第 25 行和 st 数组解决了这个问题。</p>
+<ul>
+<li>St 数组维护了使用过的约数，也就是说，当你的选择的区间使用过某个间隔 k，那么该间隔就不能再用了，因为区间两个断点是障碍物，也就是说如果比当前区间大的区间也选择了间隔 k 的方案，那么树一定会插在障碍物上</li>
+<li>这也解释了为啥内层循环要从大到小遍历，从最小的区间开始一个一个把间隔 k ban 掉</li>
+</ul>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/csp%E9%A2%98%E8%A7%A3">CSP题解</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"></div>
+  <div class="footer-info">
+    2023  © Athul |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+
+
+</div>
+    </body>
+</html>

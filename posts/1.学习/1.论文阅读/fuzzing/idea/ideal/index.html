@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>ideal - Blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content=" 2023年5月15日 ^407193 对于semfuzz可以从两个方面进行改进 首先是信息提取，semfuzz是采用将信息构建成语法树，然后基于作者的规则从语法树中选择信息，这部分可以改成神经网络，为什么呢，因为semfuzz虽然说是语义级别的提取，但是总觉得有点粗暴生硬，改成神经网络或许可以得到一些隐式的信息，增强语义上的获取。 然后是在fuzz部分，semfuzz或者大多数定向fuzz的方法是计算测试用例的距离，距离越近越好。但是尝试去修剪到不了target的路径呢（参考 [[BEACON Directed Grey-Box Fuzzing with Provable Path Pruning]]） 定向 fuzz 解决定制缺陷，因为定制缺陷是指用户根据自己和环境需要对固件进行一定的修改, 这一缺陷的检测无需对整个固件进行测试, 可以将测试重点放在被修改及相关部分，恰恰符合定向 fuzz 的特点 [[物联网固件安全缺陷检测研究进展#^6e21ca]] " />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="ideal" />
+<meta property="og:description" content=" 2023年5月15日 ^407193 对于semfuzz可以从两个方面进行改进 首先是信息提取，semfuzz是采用将信息构建成语法树，然后基于作者的规则从语法树中选择信息，这部分可以改成神经网络，为什么呢，因为semfuzz虽然说是语义级别的提取，但是总觉得有点粗暴生硬，改成神经网络或许可以得到一些隐式的信息，增强语义上的获取。 然后是在fuzz部分，semfuzz或者大多数定向fuzz的方法是计算测试用例的距离，距离越近越好。但是尝试去修剪到不了target的路径呢（参考 [[BEACON Directed Grey-Box Fuzzing with Provable Path Pruning]]） 定向 fuzz 解决定制缺陷，因为定制缺陷是指用户根据自己和环境需要对固件进行一定的修改, 这一缺陷的检测无需对整个固件进行测试, 可以将测试重点放在被修改及相关部分，恰恰符合定向 fuzz 的特点 [[物联网固件安全缺陷检测研究进展#^6e21ca]] " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/idea/ideal/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-06-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-06-22T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ideal"/>
+<meta name="twitter:description" content=" 2023年5月15日 ^407193 对于semfuzz可以从两个方面进行改进 首先是信息提取，semfuzz是采用将信息构建成语法树，然后基于作者的规则从语法树中选择信息，这部分可以改成神经网络，为什么呢，因为semfuzz虽然说是语义级别的提取，但是总觉得有点粗暴生硬，改成神经网络或许可以得到一些隐式的信息，增强语义上的获取。 然后是在fuzz部分，semfuzz或者大多数定向fuzz的方法是计算测试用例的距离，距离越近越好。但是尝试去修剪到不了target的路径呢（参考 [[BEACON Directed Grey-Box Fuzzing with Provable Path Pruning]]） 定向 fuzz 解决定制缺陷，因为定制缺陷是指用户根据自己和环境需要对固件进行一定的修改, 这一缺陷的检测无需对整个固件进行测试, 可以将测试重点放在被修改及相关部分，恰恰符合定向 fuzz 的特点 [[物联网固件安全缺陷检测研究进展#^6e21ca]] "/>
+
+	
+        <link href="https://example.com/css/fonts.11a1877508139eac0b5b4852ceb110c35641b3533321e66e39149e901ed5756b.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://example.com/css/main.d902908ac6e0fab67957de5db5aea1b6455b19ae2ca98eac4c95a4a0fdc02238.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://example.com/css/dark.c95c5dcf5f32f8b67bd36f7dab66680e068fce2b303087294114aabf7a7c080b.css" media="(prefers-color-scheme: dark)"  />
+	
+
+	
+	
+
+	
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://example.com">Blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">All posts</a>
+		
+		<a href="/categories">Categories</a>
+		
+		<a href="/tags">Tags</a>
+		
+		<a href="/about">About</a>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">ideal</h1>
+			<div class="meta">Posted on Jun 22, 2023</div>
+		</div>
+		
+
+		<section class="body">
+			<ul>
+<li>2023年5月15日 ^407193
+<ul>
+<li>对于semfuzz可以从两个方面进行改进
+<ul>
+<li>首先是信息提取，semfuzz是采用将信息构建成语法树，然后基于作者的规则从语法树中选择信息，这部分可以改成神经网络，为什么呢，因为semfuzz虽然说是语义级别的提取，但是总觉得有点粗暴生硬，改成神经网络或许可以得到一些隐式的信息，增强语义上的获取。</li>
+<li>然后是在fuzz部分，semfuzz或者大多数定向fuzz的方法是计算测试用例的距离，距离越近越好。但是尝试去修剪到不了target的路径呢（参考 [[BEACON Directed Grey-Box Fuzzing with Provable Path Pruning]]）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>定向 fuzz 解决定制缺陷，因为定制缺陷是指用户根据自己和环境需要对固件进行一定的修改, 这一缺陷的检测无需对整个固件进行测试, 可以将测试重点放在被修改及相关部分，恰恰符合定向 fuzz 的特点 [[物联网固件安全缺陷检测研究进展#^6e21ca]]</li>
+<li></li>
+<li></li>
+</ul>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/%E8%AE%BA%E6%96%87%E6%80%BB%E7%BB%93">论文总结</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"></div>
+  <div class="footer-info">
+    2023  © Athul |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+
+
+</div>
+    </body>
+</html>

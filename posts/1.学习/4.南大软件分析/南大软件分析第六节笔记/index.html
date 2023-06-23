@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>南大软件分析第六节笔记 - Blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="视频： 南京大学《软件分析》课程 06（Data Flow Analysis - Foundations II 课程主页：Static Program Analysis | Tai-e (pascal-lab.net) 笔记参考：(34条消息) 软件分析——数据流分析2_zcc今天好好学习了吗的博客-CSDN博客 (33条消息) 【课程笔记】南大软件分析课程—16课时完整版_bsauce的博客-CSDN博客_南京大学软件分析笔记 PPT： https://cs.nju.edu.cn/tiantan/software-analysis/DFA-FD.pdf
+将不动点定理应用于算法 第 5 节课向我们介绍了不动点定理：完全 lattice 且是单调的、有限的，那么存在不动点且从⊤开始迭代找得到最大不动点和从⊥开始迭代找得到最小不动点；现在的问题是：如何关联迭代算法和不动点理论（那么就能证明算法解存在、且最优） 依据不动点定理的条件，我们只需要证明 CFG 是个 complete lattice &#43; 证明转移函数是单调的。
+因为每一个 $v_i$ 都是 complete&amp;finite lattices 那么，他们的笛卡尔积得到的 product lattice 也是 complete&amp;finite 的（lattice 的性质） 转移函数有两步：第一步对每个 node 应用转移函数，第二步是进行 join 或 meet 处理。 第一步的转移函数中就是 gen 和 kill 操作，而 gen 和 kill 操作是固定的，结果只能是 0 变成 1 或者 1 变成 1，显然单调。 这里我琢磨了好久，要注意的是这里的转移函数是每次迭代的转移函数，而不是 BBs 之间的转移函数。BBs 之间转移函数的时候是可能将上一个 BB 位向量中的 1 kill 为 0，此时比较的是上一个 BB 和当前 BB 的位向量；但是在迭代层面我们去比较的是当前 BB 在上一次迭代和这次迭代的位向量，因为 gen 和 kill 操作是固定的，结果只能是 0 变成 1 或者 1 变成 1，所以是单调的。 第二步需要分别证明 join 和 meet 是单调的 Meet 证明方法同上 至此，我们将不动点定理与我们的算法联系起来了，迭代算法是可以终止的（到达不动点），并且不动点是最小或者最大不动点 下面来解答第三个问题，算法什么时候达到不动点（复杂度问题）" />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="南大软件分析第六节笔记" />
+<meta property="og:description" content="视频： 南京大学《软件分析》课程 06（Data Flow Analysis - Foundations II 课程主页：Static Program Analysis | Tai-e (pascal-lab.net) 笔记参考：(34条消息) 软件分析——数据流分析2_zcc今天好好学习了吗的博客-CSDN博客 (33条消息) 【课程笔记】南大软件分析课程—16课时完整版_bsauce的博客-CSDN博客_南京大学软件分析笔记 PPT： https://cs.nju.edu.cn/tiantan/software-analysis/DFA-FD.pdf
+将不动点定理应用于算法 第 5 节课向我们介绍了不动点定理：完全 lattice 且是单调的、有限的，那么存在不动点且从⊤开始迭代找得到最大不动点和从⊥开始迭代找得到最小不动点；现在的问题是：如何关联迭代算法和不动点理论（那么就能证明算法解存在、且最优） 依据不动点定理的条件，我们只需要证明 CFG 是个 complete lattice &#43; 证明转移函数是单调的。
+因为每一个 $v_i$ 都是 complete&amp;finite lattices 那么，他们的笛卡尔积得到的 product lattice 也是 complete&amp;finite 的（lattice 的性质） 转移函数有两步：第一步对每个 node 应用转移函数，第二步是进行 join 或 meet 处理。 第一步的转移函数中就是 gen 和 kill 操作，而 gen 和 kill 操作是固定的，结果只能是 0 变成 1 或者 1 变成 1，显然单调。 这里我琢磨了好久，要注意的是这里的转移函数是每次迭代的转移函数，而不是 BBs 之间的转移函数。BBs 之间转移函数的时候是可能将上一个 BB 位向量中的 1 kill 为 0，此时比较的是上一个 BB 和当前 BB 的位向量；但是在迭代层面我们去比较的是当前 BB 在上一次迭代和这次迭代的位向量，因为 gen 和 kill 操作是固定的，结果只能是 0 变成 1 或者 1 变成 1，所以是单调的。 第二步需要分别证明 join 和 meet 是单调的 Meet 证明方法同上 至此，我们将不动点定理与我们的算法联系起来了，迭代算法是可以终止的（到达不动点），并且不动点是最小或者最大不动点 下面来解答第三个问题，算法什么时候达到不动点（复杂度问题）" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E5%85%AD%E8%8A%82%E7%AC%94%E8%AE%B0/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-06-11T02:01:58+05:30" />
+<meta property="article:modified_time" content="2023-06-11T02:01:58+05:30" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="南大软件分析第六节笔记"/>
+<meta name="twitter:description" content="视频： 南京大学《软件分析》课程 06（Data Flow Analysis - Foundations II 课程主页：Static Program Analysis | Tai-e (pascal-lab.net) 笔记参考：(34条消息) 软件分析——数据流分析2_zcc今天好好学习了吗的博客-CSDN博客 (33条消息) 【课程笔记】南大软件分析课程—16课时完整版_bsauce的博客-CSDN博客_南京大学软件分析笔记 PPT： https://cs.nju.edu.cn/tiantan/software-analysis/DFA-FD.pdf
+将不动点定理应用于算法 第 5 节课向我们介绍了不动点定理：完全 lattice 且是单调的、有限的，那么存在不动点且从⊤开始迭代找得到最大不动点和从⊥开始迭代找得到最小不动点；现在的问题是：如何关联迭代算法和不动点理论（那么就能证明算法解存在、且最优） 依据不动点定理的条件，我们只需要证明 CFG 是个 complete lattice &#43; 证明转移函数是单调的。
+因为每一个 $v_i$ 都是 complete&amp;finite lattices 那么，他们的笛卡尔积得到的 product lattice 也是 complete&amp;finite 的（lattice 的性质） 转移函数有两步：第一步对每个 node 应用转移函数，第二步是进行 join 或 meet 处理。 第一步的转移函数中就是 gen 和 kill 操作，而 gen 和 kill 操作是固定的，结果只能是 0 变成 1 或者 1 变成 1，显然单调。 这里我琢磨了好久，要注意的是这里的转移函数是每次迭代的转移函数，而不是 BBs 之间的转移函数。BBs 之间转移函数的时候是可能将上一个 BB 位向量中的 1 kill 为 0，此时比较的是上一个 BB 和当前 BB 的位向量；但是在迭代层面我们去比较的是当前 BB 在上一次迭代和这次迭代的位向量，因为 gen 和 kill 操作是固定的，结果只能是 0 变成 1 或者 1 变成 1，所以是单调的。 第二步需要分别证明 join 和 meet 是单调的 Meet 证明方法同上 至此，我们将不动点定理与我们的算法联系起来了，迭代算法是可以终止的（到达不动点），并且不动点是最小或者最大不动点 下面来解答第三个问题，算法什么时候达到不动点（复杂度问题）"/>
+
+	
+        <link href="https://example.com/css/fonts.11a1877508139eac0b5b4852ceb110c35641b3533321e66e39149e901ed5756b.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://example.com/css/main.d902908ac6e0fab67957de5db5aea1b6455b19ae2ca98eac4c95a4a0fdc02238.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://example.com/css/dark.c95c5dcf5f32f8b67bd36f7dab66680e068fce2b303087294114aabf7a7c080b.css" media="(prefers-color-scheme: dark)"  />
+	
+
+	
+	
+
+	
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://example.com">Blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">All posts</a>
+		
+		<a href="/categories">Categories</a>
+		
+		<a href="/tags">Tags</a>
+		
+		<a href="/about">About</a>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">南大软件分析第六节笔记</h1>
+			<div class="meta">Posted on Jun 11, 2023</div>
+		</div>
+		
+
+		<section class="body">
+			<p>视频： <a href="https://www.bilibili.com/video/BV1964y1M7nL/?share_source=copy_web&amp;vd_source=2f13b1acc8080cd58efdad54309f846e">南京大学《软件分析》课程 06（Data Flow Analysis - Foundations II</a>
+课程主页：<a href="https://tai-e.pascal-lab.net/lectures.html">Static Program Analysis | Tai-e (pascal-lab.net)</a>
+笔记参考：<a href="https://blog.csdn.net/hahahaqwe123/article/details/105875141?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522167516655016782425635751%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fblog.%2522%257D&amp;request_id=167516655016782425635751&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~blog~first_rank_ecpm_v1~rank_v31_ecpm-4-105875141-null-null.article_score_rank_blog&amp;utm_term=%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90&amp;spm=1018.2226.3001.4450">(34条消息) 软件分析——数据流分析2_zcc今天好好学习了吗的博客-CSDN博客</a>  <a href="https://blog.csdn.net/panhewu9919/article/details/106007155?spm=1001.2101.3001.6650.2&amp;utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2-106007155-blog-105689689.pc_relevant_3mothn_strategy_and_data_recovery&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2-106007155-blog-105689689.pc_relevant_3mothn_strategy_and_data_recovery&amp;utm_relevant_index=3">(33条消息) 【课程笔记】南大软件分析课程—16课时完整版_bsauce的博客-CSDN博客_南京大学软件分析笔记</a>
+PPT： <a href="https://cs.nju.edu.cn/tiantan/software-analysis/DFA-FD.pdf">https://cs.nju.edu.cn/tiantan/software-analysis/DFA-FD.pdf</a></p>
+<h1 id="将不动点定理应用于算法">将不动点定理应用于算法</h1>
+<p>第 5 节课向我们介绍了不动点定理：完全 lattice 且是单调的、有限的，那么存在不动点且从⊤开始迭代找得到最大不动点和从⊥开始迭代找得到最小不动点；现在的问题是：如何关联迭代算法和不动点理论（那么就能证明算法解存在、且最优）
+<!-- raw HTML omitted -->
+依据不动点定理的条件，我们只需要证明 CFG 是个 complete lattice + 证明转移函数是单调的。</p>
+<ul>
+<li>因为每一个 $v_i$ 都是 complete&amp;finite lattices 那么，他们的笛卡尔积得到的 product lattice 也是 complete&amp;finite 的（lattice 的性质）</li>
+<li>转移函数有两步：第一步对每个 node 应用转移函数，第二步是进行 join 或 meet 处理。
+<ul>
+<li>第一步的转移函数中就是 gen 和 kill 操作，而 gen 和 kill 操作是固定的，结果只能是 0 变成 1 或者 1 变成 1，显然单调。
+<ul>
+<li>这里我琢磨了好久，要注意的是这里的转移函数是每次迭代的转移函数，而不是 BBs 之间的转移函数。BBs 之间转移函数的时候是可能将上一个 BB 位向量中的 1 kill 为 0，此时比较的是上一个 BB 和当前 BB 的位向量；但是在迭代层面我们去比较的是当前 BB 在上一次迭代和这次迭代的位向量，因为 gen 和 kill 操作是固定的，结果只能是 0 变成 1 或者 1 变成 1，所以是单调的。</li>
+</ul>
+</li>
+<li>第二步需要分别证明 join 和 meet 是单调的
+<ul>
+<li>
+<!-- raw HTML omitted -->
+</li>
+<li>Meet 证明方法同上</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>至此，我们将不动点定理与我们的算法联系起来了，迭代算法是可以终止的（到达不动点），并且不动点是最小或者最大不动点
+下面来解答第三个问题，算法什么时候达到不动点（复杂度问题）</p>
+<h1 id="迭代算法的复杂度">迭代算法的复杂度</h1>
+<h2 id="lattice-的高度深度">Lattice 的高度（深度）</h2>
+<p>Top 到 Bottom 最长的路径
+<!-- raw HTML omitted -->
+那么可以说 lattice 的深度最长的情况就是 BB 中 node 的个数（变量的个数）</p>
+<h2 id="最坏的迭代次数">最坏的迭代次数</h2>
+<p>最坏的情况就是每次迭代只会改变位向量中的一位，并且不动点在位向量全为 1 处，所以最坏的迭代次数就是 h * k 次（这里存疑）。</p>
+<ul>
+<li>关于最坏迭代次数那里，h * k 理解不了啊，我觉得最坏就是 h 吧。就拿老师的那个例子来说最坏应该是 3x3=9，但是迭代不应该是空到第一层然后第二层然后第三层一共 3 次吗，如果非要 9 次的话，空到第一层还又要回到空，然后空到第一层另外的两个，这是 3 次，然后第一层到第二层和第二层到第三层同理一共 9 次。感觉这个 9 次不对吧。</li>
+</ul>
+<h1 id="从-lattice-的角度来看-may-和-must-分析">从 lattice 的角度来看 may 和 must 分析</h1>
+<p>(关于 may 和 must 分析可以看一下<a href="https://blog.csdn.net/hahahaqwe123/article/details/105691860">数据流分析 1</a>）</p>
+<ul>
+<li>may analysis：输出的信息可能是正确的（也有可能是错误的），所以是过近似的分析</li>
+<li>must analysis：输出的信息一定是正确的，所以是欠近似分析</li>
+</ul>
+<p>选择 may 或者 must 分析都是为了分析结果的安全性（注意是安全性而不是正确性）
+我个人的理解就是：</p>
+<ul>
+<li>may 分析就像是或操作，但凡只有 1 条路径是满足我分析要求的，may 分析就为真。
+<ul>
+<li>比如可达性分析的应用——查看哪个变量没有初始化，只要有一条路径没有初始化，那么我的输出就是真，此时输出的信息不完全正确，因为其他路径对变量初始化了，但是这样的分析结果是安全的，因为不能存在没有初始化的变量</li>
+</ul>
+</li>
+<li>Must 分析就像是与操作，必须所有路径都满足我分析的要求，才是真
+<ul>
+<li>比如 available 表达式的分析的应用——将表达式最后的执行结果保存方便后续的使用（不用每次都计算表达式），这就要求每一条路径都是 available，所以需要每一条路都为真，那么最后的结果才是真。</li>
+</ul>
+</li>
+<li>注意 may 和 must 分析需要针对具体案例具体分析，有的时候正确性和安全性其实是矛盾的。</li>
+</ul>
+<p>首先，无论是 may 还是 must 分析，都是从不安全的状态逐渐迭代到安全的状态（不动点），而且相反的是从准确的状态到不准确的状态。</p>
+<h2 id="may-分析以可达性分析举例">May 分析（以可达性分析举例）</h2>
+<!-- raw HTML omitted -->
+<p>Ok，现在我们知道了这个椭圆从下到上从不安全而准确逐渐变化为安全而准确，并且我们的分析得到的不动点也在安全区，那么对于众多的不动点，我们选择那个最准确的，也就是最靠近 bottom 的——最小不动点。而我们的迭代算法得到的恰好就是这个最小不动点。</p>
+<h2 id="must-分析以available-expressions分析为例">Must 分析（以available expressions分析为例）</h2>
+<!-- raw HTML omitted -->
+<p>=&gt; 所以，函数在 lattice 上是走的最小步数，那么得到的不动点一定是离出发点最近的（从 bottom 出发就是最小不动点，从 top 出发就是最大不动点）</p>
+<h1 id="mop">MOP</h1>
+<p>Meet-over-all-paths solution （是衡量精度的）
+<!-- raw HTML omitted -->
+MOP 就是将 entry 到某个 BB 的所有路径的转移函数合为一个整体函数 $F_P$，$MOP[S_i]=\cup /\cap  F_p(OUT[Entry])$
+MOP 是有如下几个特点
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230202183722.png" alt="image.png"></p>
+<ul>
+<li>Not executable 就是有的路径实际上是不会被执行的，因为在分析的时候会有一些冗余的路径，所以就导致了 MOP 实际上不是很准确</li>
+<li>同时因为要遍历所有的路径，所以它是没有边界的（unbounded），而且如果程序很大还会有路径爆炸的问题，所以它又是不可枚举的（not enumerable），所以它难以操作</li>
+</ul>
+<p>综上，MOP 这个方法可能不准确，实际操作性不高，是理论上的一个衡量方式。</p>
+<h2 id="将-mop-和我们迭代算法进行比较来更好的理解-mop">将 MOP 和我们迭代算法进行比较来更好的理解 MOP</h2>
+<!-- raw HTML omitted -->
+<h2 id="不满足分配率">不满足分配率</h2>
+<p>如下例所示
+<!-- raw HTML omitted --></p>
+<h1 id="worklist-algorithm">Worklist Algorithm</h1>
+<p>实际分析中其实是不会用迭代算法的，worklist algorithm 是对迭代算法的优化。
+优化点：迭代算法中只要有一个 node 的 out 发生变化，那么我们就会重新计算全部的 note 的 out，但是其实有很大一部分的 node 的 out 已经达到不动点，所以 worklist 算法的优化就是将 out 发生变化的 node 的后继 node 放入 worklist，算法每次只计算 worklist 数组中的 node 的 out。
+<!-- raw HTML omitted --></p>
+<h1 id="总结">总结</h1>
+<p>最后我们来梳理一遍第六节课的内容。</p>
+<ul>
+<li>首先我们想要知道我们的迭代算法是否可以达到不动点，并且达到的不动点是不是最优的，所以我们得看迭代算法是否满足不动点定理的条件
+<ul>
+<li>有限</li>
+<li>单调</li>
+</ul>
+</li>
+<li>接下来我们讨论了迭代算法的复杂度，知道了最坏的迭代次数</li>
+<li>然后我们从 lattice 的角度重新审视了 may 和 must 分析，这里的两个图非常直观明了。</li>
+<li>接着我们用 MOP 来衡量了一下迭代算法的精度
+<ul>
+<li>指出了满足分配律的转移函数的算法的精度和 MOP 一样</li>
+<li>同时也介绍了一种不满足分配律的分析</li>
+</ul>
+</li>
+<li>最后给出了迭代算法的优化。</li>
+</ul>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"></div>
+  <div class="footer-info">
+    2023  © Athul |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+
+
+</div>
+    </body>
+</html>

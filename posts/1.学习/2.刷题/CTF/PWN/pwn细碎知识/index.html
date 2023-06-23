@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>pwn细碎知识 - Blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="「二进制安全pwn基础」 - 网安
+知识点 [[静态链接栈溢出]] 如何将一个数转化为底层二进制的机器码，最简单的方式就是在IDA中直接看汇编 (80条消息) 堆漏洞挖掘中的bins分类(fastbin、unsorted bin、small bin、large bin)_arena bins_董哥的黑板报的博客-CSDN博客 fastbin 大小在32字节~128字节（0x20~0x80） unsorted bin 对chunk的大小并没有限制，任何大小的chunk都可以归属到unsorted bin中 small bin 小于1024字节（0x400）的chunk large bin 大于等于1024字节（0x400）的chunk (80条消息) 堆漏洞挖掘中chunk的实际大小、最低大小、 mchunk_size成员_为什么申请的堆块大小会多加0x10_董哥的黑板报的博客-CSDN博客 当用户申请size大小的堆块时，在glibc中本质上是申请了size&#43;16大小（64位系统中）的内存，因为要加上前两个成员 例如：malloc(0x10);申请了0x10大小的堆内存，本质上在glibc中申请了0x10&#43;0x10=0x20大小的空间。 shellcode=asm(shellcraft.sh()) (68条消息) 堆中各个重要参数的意义（用于学习入门个人记录）_月阴荒的博客-CSDN博客 64 位记得用寄存器，32 位传参是在栈上 64位汇编传参，当参数少于7个时， 参数从左到右放入寄存器: rdi, rsi, rdx, rcx, r8, r9。 当参数为7个以上时， 前 6 个与前面一样， 但后面的依次从 “右向左” 放入栈中，即和32位汇编一样 要懂得多试几个，这道题的 printf_got 用不了，那就换成 read 关于两种 libc libc_base = read_addr - libc.symbols[&#34;read&#34;] system_addr = libc_base &#43; libc.symbols[&#34;system&#34;] str_bin_sh = libc_base &#43; libc." />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="pwn细碎知识" />
+<meta property="og:description" content="「二进制安全pwn基础」 - 网安
+知识点 [[静态链接栈溢出]] 如何将一个数转化为底层二进制的机器码，最简单的方式就是在IDA中直接看汇编 (80条消息) 堆漏洞挖掘中的bins分类(fastbin、unsorted bin、small bin、large bin)_arena bins_董哥的黑板报的博客-CSDN博客 fastbin 大小在32字节~128字节（0x20~0x80） unsorted bin 对chunk的大小并没有限制，任何大小的chunk都可以归属到unsorted bin中 small bin 小于1024字节（0x400）的chunk large bin 大于等于1024字节（0x400）的chunk (80条消息) 堆漏洞挖掘中chunk的实际大小、最低大小、 mchunk_size成员_为什么申请的堆块大小会多加0x10_董哥的黑板报的博客-CSDN博客 当用户申请size大小的堆块时，在glibc中本质上是申请了size&#43;16大小（64位系统中）的内存，因为要加上前两个成员 例如：malloc(0x10);申请了0x10大小的堆内存，本质上在glibc中申请了0x10&#43;0x10=0x20大小的空间。 shellcode=asm(shellcraft.sh()) (68条消息) 堆中各个重要参数的意义（用于学习入门个人记录）_月阴荒的博客-CSDN博客 64 位记得用寄存器，32 位传参是在栈上 64位汇编传参，当参数少于7个时， 参数从左到右放入寄存器: rdi, rsi, rdx, rcx, r8, r9。 当参数为7个以上时， 前 6 个与前面一样， 但后面的依次从 “右向左” 放入栈中，即和32位汇编一样 要懂得多试几个，这道题的 printf_got 用不了，那就换成 read 关于两种 libc libc_base = read_addr - libc.symbols[&#34;read&#34;] system_addr = libc_base &#43; libc.symbols[&#34;system&#34;] str_bin_sh = libc_base &#43; libc." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/pwn%E7%BB%86%E7%A2%8E%E7%9F%A5%E8%AF%86/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-06-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-06-22T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="pwn细碎知识"/>
+<meta name="twitter:description" content="「二进制安全pwn基础」 - 网安
+知识点 [[静态链接栈溢出]] 如何将一个数转化为底层二进制的机器码，最简单的方式就是在IDA中直接看汇编 (80条消息) 堆漏洞挖掘中的bins分类(fastbin、unsorted bin、small bin、large bin)_arena bins_董哥的黑板报的博客-CSDN博客 fastbin 大小在32字节~128字节（0x20~0x80） unsorted bin 对chunk的大小并没有限制，任何大小的chunk都可以归属到unsorted bin中 small bin 小于1024字节（0x400）的chunk large bin 大于等于1024字节（0x400）的chunk (80条消息) 堆漏洞挖掘中chunk的实际大小、最低大小、 mchunk_size成员_为什么申请的堆块大小会多加0x10_董哥的黑板报的博客-CSDN博客 当用户申请size大小的堆块时，在glibc中本质上是申请了size&#43;16大小（64位系统中）的内存，因为要加上前两个成员 例如：malloc(0x10);申请了0x10大小的堆内存，本质上在glibc中申请了0x10&#43;0x10=0x20大小的空间。 shellcode=asm(shellcraft.sh()) (68条消息) 堆中各个重要参数的意义（用于学习入门个人记录）_月阴荒的博客-CSDN博客 64 位记得用寄存器，32 位传参是在栈上 64位汇编传参，当参数少于7个时， 参数从左到右放入寄存器: rdi, rsi, rdx, rcx, r8, r9。 当参数为7个以上时， 前 6 个与前面一样， 但后面的依次从 “右向左” 放入栈中，即和32位汇编一样 要懂得多试几个，这道题的 printf_got 用不了，那就换成 read 关于两种 libc libc_base = read_addr - libc.symbols[&#34;read&#34;] system_addr = libc_base &#43; libc.symbols[&#34;system&#34;] str_bin_sh = libc_base &#43; libc."/>
+
+	
+        <link href="https://example.com/css/fonts.11a1877508139eac0b5b4852ceb110c35641b3533321e66e39149e901ed5756b.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://example.com/css/main.d902908ac6e0fab67957de5db5aea1b6455b19ae2ca98eac4c95a4a0fdc02238.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://example.com/css/dark.c95c5dcf5f32f8b67bd36f7dab66680e068fce2b303087294114aabf7a7c080b.css" media="(prefers-color-scheme: dark)"  />
+	
+
+	
+	
+
+	
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://example.com">Blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">All posts</a>
+		
+		<a href="/categories">Categories</a>
+		
+		<a href="/tags">Tags</a>
+		
+		<a href="/about">About</a>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">pwn细碎知识</h1>
+			<div class="meta">Posted on Jun 22, 2023</div>
+		</div>
+		
+
+		<section class="body">
+			<p><a href="https://www.wangan.com/docs/pwn-base">「二进制安全pwn基础」 - 网安</a></p>
+<h1 id="知识点">知识点</h1>
+<ul>
+<li>[[静态链接栈溢出]]</li>
+<li>如何将一个数转化为底层二进制的机器码，最简单的方式就是在IDA中直接看汇编</li>
+<li><a href="https://blog.csdn.net/qq_41453285/article/details/96865321">(80条消息) 堆漏洞挖掘中的bins分类(fastbin、unsorted bin、small bin、large bin)_arena bins_董哥的黑板报的博客-CSDN博客</a>
+<ul>
+<li>fastbin  大小在32字节~128字节（0x20~0x80）</li>
+<li>unsorted bin 对chunk的大小并没有限制，任何大小的chunk都可以归属到unsorted bin中</li>
+<li>small bin 小于1024字节（0x400）的chunk</li>
+<li>large bin 大于等于1024字节（0x400）的chunk</li>
+</ul>
+</li>
+<li><a href="https://blog.csdn.net/qq_41453285/article/details/97611079#:~:text=%E6%80%BB%E7%BB%93%EF%BC%9A,chunk%E7%9A%84%E5%AE%9E%E9%99%85%E5%A4%A7%E5%B0%8F%3Dmalloc%E7%9A%84%E5%A4%A7%E5%B0%8F%2Bchunk%E7%9A%84%E5%89%8D%E4%B8%A4%E4%B8%AA%E6%88%90%E5%91%98%2Bmchunk_prev_size%E6%88%90%E5%91%98%E7%9A%84%E5%90%88%E5%B9%B6%E6%93%8D%E4%BD%9C%2Bchunk%E5%AF%B9%E9%BD%90%E8%A7%84%E5%88%99%E3%80%82">(80条消息) 堆漏洞挖掘中chunk的实际大小、最低大小、 mchunk_size成员_为什么申请的堆块大小会多加0x10_董哥的黑板报的博客-CSDN博客</a>
+<ul>
+<li>当用户申请size大小的堆块时，在glibc中本质上是申请了size+16大小（64位系统中）的内存，因为要加上前两个成员</li>
+<li>例如：malloc(0x10);申请了0x10大小的堆内存，本质上在glibc中申请了0x10+0x10=0x20大小的空间。</li>
+</ul>
+</li>
+<li><code>shellcode=asm(shellcraft.sh())</code></li>
+<li><a href="https://blog.csdn.net/weixin_43847969/article/details/104897249">(68条消息) 堆中各个重要参数的意义（用于学习入门个人记录）_月阴荒的博客-CSDN博客</a></li>
+<li>64 位记得用寄存器，32 位传参是在栈上
+<ul>
+<li>64位汇编传参，当参数少于7个时， 参数从左到右放入寄存器: rdi, rsi, rdx, rcx, r8, r9。  当参数为7个以上时， 前 6 个与前面一样， 但后面的依次从 “右向左” 放入栈中，即和32位汇编一样</li>
+</ul>
+</li>
+<li>要懂得多试几个，这道题的 printf_got 用不了，那就换成 read</li>
+</ul>
+<h3 id="关于两种-libc">关于两种 libc</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>libc_base <span style="color:#f92672">=</span> read_addr <span style="color:#f92672">-</span> libc<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#34;read&#34;</span>]
+</span></span><span style="display:flex;"><span>system_addr <span style="color:#f92672">=</span> libc_base <span style="color:#f92672">+</span> libc<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#34;system&#34;</span>]
+</span></span><span style="display:flex;"><span>str_bin_sh <span style="color:#f92672">=</span> libc_base <span style="color:#f92672">+</span> libc<span style="color:#f92672">.</span>search(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;/bin/sh&#39;</span>)<span style="color:#f92672">.</span>__next__()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># libc = LibcSearcher(&#39;printf&#39;, printf_addr)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># libc_base = printf_addr - libc.dump(&#34;printf&#34;)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># system_addr = libc_base + libc.dump(&#34;system&#34;)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># str_bin_sh = libc_base + libc.dump(&#34;str_bin_sh&#34;)</span>
+</span></span></code></pre></div><h3 id="关于接收地址">关于接收地址</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#32位用这个</span>
+</span></span><span style="display:flex;"><span>print(p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>))
+</span></span><span style="display:flex;"><span>read_addr <span style="color:#f92672">=</span> u32(p<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">4</span>))
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#64位用这个</span>
+</span></span><span style="display:flex;"><span>read_addr <span style="color:#f92672">=</span> u64(p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x7f</span><span style="color:#e6db74">&#39;</span>)[<span style="color:#f92672">-</span><span style="color:#ae81ff">6</span>:]<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">8</span>,<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>))
+</span></span><span style="display:flex;"><span>print(hex(read_addr))
+</span></span></code></pre></div><h3 id="对ret栈对齐的解释">对ret栈对齐的解释</h3>
+<p><a href="http://picpo.top/2021/07/19/ubuntu18%E4%BB%A5%E4%B8%8A%E7%B3%BB%E7%BB%9F64%E4%BD%8D%E7%9A%84glibc%E7%9A%84payload%E8%B0%83%E7%94%A8system%E5%87%BD%E6%95%B0%E6%97%B6%EF%BC%8C%E6%89%80%E9%9C%80%E6%B3%A8%E6%84%8F%E7%9A%84%E5%A0%86/">Ubuntu18以上系统64位的glibc的payload调用system函数时，所需注意的堆栈平衡问题 - PiCpo的阁楼</a></p>
+<h2 id="常见的寄存器">常见的寄存器</h2>
+<p>sp/esp/rsp（16bit/32bit/64bit）栈寄存器&mdash;指向栈顶
+bp/ebp/rbp 栈基址寄存器&mdash;指向栈底
+ip/eip/rip 程序指令寄存器&mdash;指向下一条待执行指令
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/1.png" alt="1.png"></p>
+<h1 id="工具">工具</h1>
+<h2 id="checksec">checksec</h2>
+<p><code>checksec -file=filename</code>
+<a href="https://www.jianshu.com/p/755e52d48a77">checksec工具使用-pwn - 简书 (jianshu.com)</a></p>
+<ul>
+<li>Arch：程序的架构信息。判断是拖进64位IDA还是32位？exp编写时p64还是p32函数？</li>
+<li>RELRO：Relocation Read-Only (RELRO) 此项技术主要针对 GOT 改写的攻击方式。它分为两种，Partial RELRO 和 Full RELRO。</li>
+<li>Stack-canary：栈溢出保护是一种缓冲区溢出攻击缓解手段，当函数存在缓冲区溢出攻击漏洞时，攻击者可以覆盖栈上的返回地址来让shellcode能够得到执行。当启用栈保护后，函数开始执行的时候会先往栈里插入类似cookie的信息，当函数真正返回的时候会验证cookie信息是否合法，如果不合法就停止程序运行。攻击者在覆盖返回地址的时候往往也会将cookie信息给覆盖掉，导致栈保护检查失败而阻止shellcode的执行。在Linux中我们将cookie信息称为canary。</li>
+<li>**NX：**NX enabled如果这个保护开启就是意味着栈中数据没有执行权限，如此一来, 当攻击者在堆栈上部署自己的 shellcode 并触发时, 只会直接造成程序的崩溃，但是可以利用rop这种方法绕过</li>
+<li><strong>PIE</strong>：PIE(Position-Independent Executable, 位置无关可执行文件)技术与 ASLR 技术类似,ASLR 将程序运行时的堆栈以及共享库的加载地址随机化, 而 PIE 技术则在编译时将程序编译为位置无关, 即程序运行时各个段（如代码段等）加载的虚拟地址也是在装载时才确定。这就意味着, 在 PIE 和 ASLR 同时开启的情况下, 攻击者将对程序的内存布局一无所知, 传统的改写GOT 表项的方法也难以进行, 因为攻击者不能获得程序的.got 段的虚地址。 若开启一般需在攻击时泄露地址信息</li>
+<li>RPATH/RUNPATH：程序运行时的环境变量，运行时所需要的共享库文件优先从该目录寻找，可以fake lib造成攻击</li>
+<li>FORTIFY：这是一个由GCC实现的源码级别的保护机制，其功能是在编译的时候检查源码以避免潜在的缓冲区溢出等错误。简单地说，加了这个保护之后,一些敏感函数如read, fgets,memcpy, printf等等可能导致漏洞出现的函数都会被替换成**read_chk,**fgets_chk, <strong>memcpy_chk,</strong> printf_chk等。这些带了chk的函数会检查读取/复制的字节长度是否超过缓冲区长度，通过检查诸如%n之类的字符串位置是否位于可能被用户修改的可写地址，避免了格式化字符串跳过某些参数（如直接%7$x）等方式来避免漏洞出现。开启了FORTIFY保护的程序会被checksec检出，此外，在反汇编时直接查看got表也会发现chk函数的存在。</li>
+</ul>
+<h3 id="gdb">GDB</h3>
+<p>aslr – 查看 GDB 的 ASLR 设置 checksec – 查看各种安全配置 dumpargs – 显示函数的传参，当在 call 指令处断下时 dumprop – Dump 所有 ROP gadgets 在特定的内存范围 elfheader – 获取 header 的信息 elfsymbol – 获取 non-debugging 的符号信息 lookup – 在指定地址范围内查找地址引用 patch – 在内存开始处 (with string/hexstring/int) Patch pattern – 内存循环模式的操作 procinfo – 在 /proc/pid/ 显示各种信息 pshow – 显示各种 PEDA 操作和其他的设置 pset – 设置各种 PEDA 的操作和其他配置 readelf – 获取 elf 文件 header 信息 ropgadget – 获取 ROP gadgets (二进制或者库) ropsearch – 在内存中查找 ROP gadgets searchmem|find – 寻找内存的 pattern，支持 regex 查找 shellcode – 生成或者下载常见的 shellcodes skeleton – 生成 python 利用漏洞模板 vmmap – 获得 section 的虚拟映射地址范围 xormem – XOR a memory region with a key 通过 key XOR 一个内存域</p>
+<ul>
+<li>X 检查内存，常用。
+<ul>
+<li>x/nfu <!-- raw HTML omitted --></li>
+<li>x <!-- raw HTML omitted -->
+<ul>
+<li>n, f, 和 u 都是可选参数，用于指定要显示的内存以及如何格式化。 addr 是要开始显示内存的地址的表达式。 n 重复次数（默认值是 1），指定要显示多少个单位（由 u 指定）的内存值。 f 显示格式（初始默认值是 x），显示格式是 print(&lsquo;x&rsquo;，&rsquo;d&rsquo;，&lsquo;u&rsquo;，&lsquo;o&rsquo;，&rsquo;t&rsquo;，&lsquo;a&rsquo;，&lsquo;c&rsquo;，&lsquo;f&rsquo;，&rsquo;s&rsquo;) 使用的格式之一，再加 i（机器指令）。 u 单位大小，b 表示单字节，h 表示双字节，w 表示四字节，g 表示八字节。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>disassemble（简写：disas）
+<ul>
+<li>disas <!-- raw HTML omitted --> 反汇编指定函数</li>
+<li>disas <!-- raw HTML omitted --> 反汇编某地址所在函数</li>
+<li>disas &lt;begin_addr&gt; &lt;end_addr&gt; 反汇编从开始地址到结束地址的部分</li>
+</ul>
+</li>
+<li>backtrace（简写：bt）
+<ul>
+<li>栈回溯</li>
+<li>bt 打印整个栈的回溯，每个栈帧一行。 bt n 类似于上，但只打印最内层的 n 个栈帧。 bt -n 类似于上，但只打印最外层的 n 个栈帧。 bt full n 类似于 bt n，还打印局部变量的值。</li>
+</ul>
+</li>
+</ul>
+<h1 id="资料">资料</h1>
+<p><a href="https://bbs.pediy.com/thread-247217.htm">[原创][新手向] 一步一步学pwntools-Pwn-看雪论坛-安全社区|安全招聘|bbs.pediy.com</a></p>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/pwn%E7%9F%A5%E8%AF%86%E7%82%B9">PWN知识点</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"></div>
+  <div class="footer-info">
+    2023  © Athul |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+
+
+</div>
+    </body>
+</html>

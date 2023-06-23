@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Extractor_ Extracting Attack Behavior from Threat Reports - Blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="中文译名：提取器: 从威胁报表中提取攻击行为 作者：Kiavash Satvat 单位：伊利诺伊大学芝加哥分校 国家： #美国 年份： #2021年 来源： #SP 关键字： #提取信息 代码地址： https://github.com/ksatvat/Extractor 笔记建立时间： 2023-04-13 17:43
+摘要 提出 EXTRACTOR，可以从 CTI 报告（Cyber Threat Intelligence reports）中精确提取简洁的攻击行为 可以提取非结构化文本，对文本没有要求 1. Introduction 挑战 冗长：威胁报告中充斥着大量无关文本。 CTI 报告的句法和语义复杂性、技术术语的普遍使用以及缺乏适当的标点符号很容易影响报告的解释和攻击行为的提取。 难以准确地解释技术报告中的复杂逻辑。 目标 除了解决上面的挑战，作者还想实现两个目标：
+可操作的情报：EXTRACTOR 从文本中提取的攻击行为必须能在系统审计日志中被观察到，并能有效地用于威胁检测。不需要人员或工具的进一步处理 准确处理大量 CTI 报告。 自动挖掘更大的知识源（能够处理不同的文本） 从 CTI 报告中构建图表表示 从与不同组织中的同一攻击相关的各种 CTI 源提取信息 2. 问题和背景 问题描述 （实现效果） 报告 (左图)是 njRAT的自由改编，删除了不相关的句子。这个例子展示了语言的复杂性，这将在本文中讨论。在相应的来源图中 (右侧)，节点表示系统实体，边指向系统调用。矩形、椭圆形、五边形和菱形分别表示文件、进程、注册表和套接字。
+挑战 冗余 CTI 文本的复杂性 缺少标点符号——NLP 工具难以分辨句子边界 专业单词——NLP 工具是用通用英语来训练的。 省略：CTI 报告中经常出现缺少主语或宾语的情况 不能忽略代词。 复杂的语言结构：结构的复杂性和各种语言技术 (如回指、名词化和列表)的使用可能会混淆常见的 NLP 工具。总的影响是，许多主语、动词和宾语被错误地分类并无法解决。 关系的提取：不能仅仅依赖句子的语法结构，还要分析语义 3." />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="Extractor_ Extracting Attack Behavior from Threat Reports" />
+<meta property="og:description" content="中文译名：提取器: 从威胁报表中提取攻击行为 作者：Kiavash Satvat 单位：伊利诺伊大学芝加哥分校 国家： #美国 年份： #2021年 来源： #SP 关键字： #提取信息 代码地址： https://github.com/ksatvat/Extractor 笔记建立时间： 2023-04-13 17:43
+摘要 提出 EXTRACTOR，可以从 CTI 报告（Cyber Threat Intelligence reports）中精确提取简洁的攻击行为 可以提取非结构化文本，对文本没有要求 1. Introduction 挑战 冗长：威胁报告中充斥着大量无关文本。 CTI 报告的句法和语义复杂性、技术术语的普遍使用以及缺乏适当的标点符号很容易影响报告的解释和攻击行为的提取。 难以准确地解释技术报告中的复杂逻辑。 目标 除了解决上面的挑战，作者还想实现两个目标：
+可操作的情报：EXTRACTOR 从文本中提取的攻击行为必须能在系统审计日志中被观察到，并能有效地用于威胁检测。不需要人员或工具的进一步处理 准确处理大量 CTI 报告。 自动挖掘更大的知识源（能够处理不同的文本） 从 CTI 报告中构建图表表示 从与不同组织中的同一攻击相关的各种 CTI 源提取信息 2. 问题和背景 问题描述 （实现效果） 报告 (左图)是 njRAT的自由改编，删除了不相关的句子。这个例子展示了语言的复杂性，这将在本文中讨论。在相应的来源图中 (右侧)，节点表示系统实体，边指向系统调用。矩形、椭圆形、五边形和菱形分别表示文件、进程、注册表和套接字。
+挑战 冗余 CTI 文本的复杂性 缺少标点符号——NLP 工具难以分辨句子边界 专业单词——NLP 工具是用通用英语来训练的。 省略：CTI 报告中经常出现缺少主语或宾语的情况 不能忽略代词。 复杂的语言结构：结构的复杂性和各种语言技术 (如回指、名词化和列表)的使用可能会混淆常见的 NLP 工具。总的影响是，许多主语、动词和宾语被错误地分类并无法解决。 关系的提取：不能仅仅依赖句子的语法结构，还要分析语义 3." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/extractor_-extracting-attack-behavior-from-threat-reports/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-06-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-06-22T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Extractor_ Extracting Attack Behavior from Threat Reports"/>
+<meta name="twitter:description" content="中文译名：提取器: 从威胁报表中提取攻击行为 作者：Kiavash Satvat 单位：伊利诺伊大学芝加哥分校 国家： #美国 年份： #2021年 来源： #SP 关键字： #提取信息 代码地址： https://github.com/ksatvat/Extractor 笔记建立时间： 2023-04-13 17:43
+摘要 提出 EXTRACTOR，可以从 CTI 报告（Cyber Threat Intelligence reports）中精确提取简洁的攻击行为 可以提取非结构化文本，对文本没有要求 1. Introduction 挑战 冗长：威胁报告中充斥着大量无关文本。 CTI 报告的句法和语义复杂性、技术术语的普遍使用以及缺乏适当的标点符号很容易影响报告的解释和攻击行为的提取。 难以准确地解释技术报告中的复杂逻辑。 目标 除了解决上面的挑战，作者还想实现两个目标：
+可操作的情报：EXTRACTOR 从文本中提取的攻击行为必须能在系统审计日志中被观察到，并能有效地用于威胁检测。不需要人员或工具的进一步处理 准确处理大量 CTI 报告。 自动挖掘更大的知识源（能够处理不同的文本） 从 CTI 报告中构建图表表示 从与不同组织中的同一攻击相关的各种 CTI 源提取信息 2. 问题和背景 问题描述 （实现效果） 报告 (左图)是 njRAT的自由改编，删除了不相关的句子。这个例子展示了语言的复杂性，这将在本文中讨论。在相应的来源图中 (右侧)，节点表示系统实体，边指向系统调用。矩形、椭圆形、五边形和菱形分别表示文件、进程、注册表和套接字。
+挑战 冗余 CTI 文本的复杂性 缺少标点符号——NLP 工具难以分辨句子边界 专业单词——NLP 工具是用通用英语来训练的。 省略：CTI 报告中经常出现缺少主语或宾语的情况 不能忽略代词。 复杂的语言结构：结构的复杂性和各种语言技术 (如回指、名词化和列表)的使用可能会混淆常见的 NLP 工具。总的影响是，许多主语、动词和宾语被错误地分类并无法解决。 关系的提取：不能仅仅依赖句子的语法结构，还要分析语义 3."/>
+
+	
+        <link href="https://example.com/css/fonts.11a1877508139eac0b5b4852ceb110c35641b3533321e66e39149e901ed5756b.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://example.com/css/main.d902908ac6e0fab67957de5db5aea1b6455b19ae2ca98eac4c95a4a0fdc02238.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://example.com/css/dark.c95c5dcf5f32f8b67bd36f7dab66680e068fce2b303087294114aabf7a7c080b.css" media="(prefers-color-scheme: dark)"  />
+	
+
+	
+	
+
+	
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://example.com">Blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">All posts</a>
+		
+		<a href="/categories">Categories</a>
+		
+		<a href="/tags">Tags</a>
+		
+		<a href="/about">About</a>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">Extractor_ Extracting Attack Behavior from Threat Reports</h1>
+			<div class="meta">Posted on Jun 22, 2023</div>
+		</div>
+		
+
+		<section class="body">
+			<p>中文译名：提取器: 从威胁报表中提取攻击行为
+作者：Kiavash Satvat
+单位：伊利诺伊大学芝加哥分校
+国家： #美国
+年份： #2021年
+来源： #SP
+关键字： #提取信息
+代码地址： <a href="https://github.com/ksatvat/Extractor">https://github.com/ksatvat/Extractor</a>
+笔记建立时间： 2023-04-13  17:43</p>
+<h2 id="摘要">摘要</h2>
+<ul>
+<li>提出 EXTRACTOR，可以从 CTI 报告（Cyber Threat Intelligence reports）中精确提取简洁的攻击行为</li>
+<li>可以提取非结构化文本，对文本没有要求</li>
+</ul>
+<h2 id="1-introduction">1. Introduction</h2>
+<h3 id="挑战">挑战</h3>
+<ul>
+<li>冗长：威胁报告中充斥着大量无关文本。</li>
+<li>CTI 报告的句法和语义复杂性、技术术语的普遍使用以及缺乏适当的标点符号很容易影响报告的解释和攻击行为的提取。</li>
+<li>难以准确地解释技术报告中的复杂逻辑。</li>
+</ul>
+<h3 id="目标">目标</h3>
+<p>除了解决上面的挑战，作者还想实现两个目标：</p>
+<ul>
+<li>可操作的情报：EXTRACTOR 从文本中提取的攻击行为必须能在系统审计日志中被观察到，并能有效地用于威胁检测。不需要人员或工具的进一步处理</li>
+<li>准确处理大量 CTI 报告。
+<ul>
+<li>自动挖掘更大的知识源（能够处理不同的文本）</li>
+<li>从 CTI 报告中构建图表表示</li>
+<li>从与不同组织中的同一攻击相关的各种 CTI 源提取信息</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-问题和背景">2. 问题和背景</h2>
+<h3 id="问题描述">问题描述</h3>
+<p><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230415100420.png" alt="image.png">
+（实现效果）
+报告 (左图)是 njRAT的自由改编，删除了不相关的句子。这个例子展示了语言的复杂性，这将在本文中讨论。在相应的来源图中 (右侧)，节点表示系统实体，边指向系统调用。矩形、椭圆形、五边形和菱形分别表示文件、进程、注册表和套接字。</p>
+<h3 id="挑战-1">挑战</h3>
+<ul>
+<li>冗余</li>
+<li>CTI 文本的复杂性
+<ul>
+<li>缺少标点符号——NLP 工具难以分辨句子边界</li>
+<li>专业单词——NLP 工具是用通用英语来训练的。</li>
+<li>省略：CTI 报告中经常出现缺少主语或宾语的情况</li>
+<li>不能忽略代词。</li>
+<li>复杂的语言结构：结构的复杂性和各种语言技术 (如回指、名词化和列表)的使用可能会混淆常见的 NLP 工具。总的影响是，许多主语、动词和宾语被错误地分类并无法解决。</li>
+</ul>
+</li>
+<li>关系的提取：不能仅仅依赖句子的语法结构，还要分析语义</li>
+</ul>
+<h2 id="3-approach">3. APPROACH</h2>
+<p><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230415153215.png" alt="image.png">
+EXTRACTOR 有四个主要组成部分:1)归一化，2)resolution，3)摘要，4)图生成。</p>
+<ul>
+<li>规范化负责第一轮的句子简化和转换到标准形式。</li>
+<li>Resolution 解决了这些句子中的歧义</li>
+<li>摘要删除了与攻击行为不严格相关的部分文本。</li>
+<li>最后，图生成负责解决文本中事件之间的时间和因果顺序，并构建最终的起源图 。</li>
+</ul>
+<p>实例：
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230415155952.png" alt="image.png"></p>
+<h3 id="a归一化">A.归一化</h3>
+<p>目的：生成规范的句子形式——将长而复杂的句子分解成更短的句子，以规范的形式出现。直观的说，每个句子都表达一个单独的动作，这样动作的主体和对象以及动作本身就更容易识别。
+操作：规范化由 Tokenization、Homogenization 和 Conversion.组成。这些步骤分别执行句子边界检测、单词同质化和被动到主动动词转换。</p>
+<h4 id="tokenization">Tokenization</h4>
+<p>目的：划分句子</p>
+<ul>
+<li>使用标点符号、新行、项目符号、枚举数字以及标题和题目作为句子分隔符，将长句子分割为单词序列</li>
+<li>如果每个短序列满足以下要求，就升级为一个长句子
+<ul>
+<li>以大写的主语开始，包含了构成一个完整句子所必须的所有成分，并且前后序列也是完整句子</li>
+<li>以一个动词开始，并且该动词包含在系统调用字典中，序列包含了构成一个完整句子所必须的所有成分，并且前后序列也是完整句子</li>
+</ul>
+</li>
+<li>示例（图 4）：
+<ul>
+<li>4-9 是一个长句子, 首先被划分为更短的序列，然后用 POS 和 DP 为其标记。并检查是否满足以上两个条件。</li>
+<li>第4行序列满足第一种情况的条件，而第5-9行序列满足第二种情况 (省略主语)的条件。</li>
+</ul>
+</li>
+</ul>
+<h4 id="homogenization">Homogenization</h4>
+<p>目的：将同一概念的多个文本表示替换为同一文本表示的过程。</p>
+<ul>
+<li>CTI 报告通常包含可能引入歧义并影响最终结果质量的结构和同义词。例如，C 2、C&amp;C 和 Command and Control 是同一个实体的不同表示，而像 stores、save 这样的动词可能表示对应于写入系统调用的操作。</li>
+</ul>
+<p>操作：</p>
+<ul>
+<li>使用两个专门构建的字典对名词短语和动词进行 Homogenization，将 CTI 报告中出现的不同术语的同义词映射到审计日志中可以观察到的实体或操作。</li>
+</ul>
+<h4 id="coversion">Coversion</h4>
+<p>目的：EXTRACTOR 将被动语态转换为主动语态。这种转换有助于发现系统主体 (过程)和系统对象，以及使因果关系推断更准确.
+操作：</p>
+<ul>
+<li>使用 POS 和 DP 来检测被动句</li>
+<li>然后转换主语和实施者，并将被动动词转换为主动动词。</li>
+</ul>
+<p>经过归一化的三部分后，长句被转换为短句，并且每个短句都以主动的形式来表达一个动作。</p>
+<h3 id="resolution">Resolution</h3>
+<p>这部分主要用于解决句子的歧义，作者原话是“Resolution 将引用同一实体的隐式引用与实际引用进行协调”，我的理解是隐式引用可能存在一些省略的主语导致句子产生歧义，那 Resolution 就需要对主语进行补充，将隐式引用转换为显式引用。</p>
+<h4 id="ellipsis-subject省略主语-resolution-esr">Ellipsis Subject（省略主语） Resolution (ESR)</h4>
+<p>图四示例中的第 5-9 都是省略主语
+目的：找到并补充主语
+操作：</p>
+<ul>
+<li>利用 POS 和 DP 找到缺少主语的句子</li>
+<li>使用当前句子之前的句子中出现的实体构建一个候选主语列表</li>
+<li>计算候选主语和缺少主语的句子之间的距离（以句子数计算），距离越近被选中的概率越高。</li>
+</ul>
+<p>示例：
+图四的5-9行句子中缺少主语。ESR 模块检测前面句子中的主语和其他宾语，并选择出现在冒号前面的代词作为主语。</p>
+<h4 id="pronoun代词-resolution-pr">Pronoun（代词） Resolution (PR)</h4>
+<p>目的：代词解析是将代词映射并替换到其所指的先行词实体的过程。
+操作：</p>
+<ul>
+<li>采用了一个流行的共指解析模型 NeuralCoref。这个模型在解析 CTI 报表域中的代词时效果最好，特别是在前面的 ESR 和 Tokenization 步骤之后。图4，第4、5和6行演示了已解析的前名词 (即 it 和本身)及其对应的引用 (autoalization .exe)。</li>
+</ul>
+<h4 id="entity-resolution-er">Entity Resolution (ER).</h4>
+<p>实体解析是指在同一句中指代另一个实体的名词或动词短语被该实体替换或作为冗余删除的过程。
+（这部分和代词有点像，例如，在图4的第11行中，The following files 指的是 mscno. exe authorization. EXE-0AD199D6. pf。这部分就是要把 The following files 换成具体的实体名）
+这类词主要有三类：Anaphora（指代），Nominalization（名词化），auxiliary verb（助动词）</p>
+<p>在 Resolution 模块过后，此时的文本由具有明确主语、宾语和动词的句子组成。</p>
+<h3 id="text-summarization">text summarization</h3>
+<p><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230418173806.png" alt="image.png">
+目的：对审计报告中没有出现的内容进行删除，也就是说作者希望能够对文本更近一步的进行处理，不是简单的剔除非技术内容。
+操作：</p>
+<ul>
+<li>使用 bert 模型将句子分为生产性和非生产性</li>
+<li>使用 BiLSTM 推导生产性句子组件的语义角色，并删除不必要的单词
+<ul>
+<li>为了避免删除可能包含重要对象的句子组件，使得删除更加精确，使用系统实体提取器——如果一个被标记为需要删除的句子组成部分不包含 SEE 组件规则可以生成的任何实体，则该组成部分将被删除。</li>
+</ul>
+</li>
+</ul>
+<p>text summarization 是 EXTRACTOR 的核心组件之一。它负责大大降低文本的复杂性和数量，同时保留描述可观察行为的最重要的句子。
+最后输出的文本形式是：系统主体 (例如，进程)、对象 (例如，文件、套接字)和操作 (例如，执行)。文本是明确的、有序的，并且大部分多余的文本被消除了</p>
+<h2 id="graph-extraction">graph extraction</h2>
+<p>但是只是简单的将主语和对象设置为图中结点，动词设置为图中的边生成的图模糊且巨大。</p>
+<h4 id="semantic-role-labeling-srl">Semantic Role Labeling SRL</h4>
+<p>SRL 可以从句子中提取角色，并且理解哪个是动作实施者，哪个是接受者。</p>
+<h4 id="系统实体提取器-see">系统实体提取器 (SEE)</h4>
+<p>SEE 模块，从 SRL 生成的角色中提取代表系统实体的简洁节点，并修剪掉不能构成可能的系统实体的无用部分。
+SEE 使用超过 32 种不同的正则表达式和应用程序名称或知名进程的数据库检测可能的系统实体名称 (例如，文件或进程名称，IP，注册表项)。</p>
+<h4 id="graph-builder-gb">graph builder GB</h4>
+<p>分两个步骤，第一步就是根据 see 修剪后剩下的文本，将主语作为结点，动作作为边构建图。
+第二步就是基于因果推论来确定边的方向。</p>
+<h4 id="因果推论-causal-inference">因果推论 Causal Inference</h4>
+<p>这步用于确定图中边的方向。根据系统调用到系统流方向的映射。啥意思，就是看这个系统调用是干嘛的，比如对于发送系统调用，流从主语到对象，而对于接收系统调用，流从对象到主语。</p>
+<h2 id="4-implementation">4. IMPLEMENTATION</h2>
+<h3 id="tokenization-1">Tokenization</h3>
+<p>建立在 NLTK 句子标记器之上。NLTK (自然语言工具包)是一个常见的自然语言处理工具包，包含为英语开发的几个库和统计自然语言处理。我们选择 NLTK 是因为我们发现它比其他方法 (spaCy, Stanford)效果更好，并且在处理 CTI 域中的文本时更加一致。</p>
+<h3 id="text-summarization-1">Text Summarization</h3>
+<p>使用了一个12 个隐藏层 BERT 来区分生产性句子和非生产性句子。使用了8000个标记句子，训练模型。
+为了理解单词在文本摘要器中的角色，使用了一个深度 BiLSTM 模型的重新实现。由于模型没有经过微调以处理网络安全句子，我们使用3,000个手动标记的句子来训练模型。</p>
+<h3 id="srl">SRL</h3>
+<p>为了实现 SRL，我们使用了[79]中描述的方法，该方法由[34]部署，该方法在 NLP 领域越来越流行。为了采用该系统并在网络安全领域获得更精确的输出，我们进一步用2000个网络安全句子重新训练模型，这些句子与我们注意到系统无法正确预测角色的领域相关。为了进一步完善，我们评估并展示了我们再培训的结果 (见章节 V-D)。</p>
+<h3 id="数据构建">数据构建</h3>
+<p>为了构建字典和我们的数据集，我们使用了从各种来源抓取的 CTI 报告池。我们使用了不同的来源，即 APT 报告存储库[6]、微软威胁中心[8]、赛门铁克安全中心[16]、威胁百科全书[18]和病毒雷达[20]，以确保多样性和覆盖范围。</p>
+<h2 id="注意">注意</h2>
+<p>先前的研究[52]，[45]，[89]利用各种 NLP 技术以 IOCs (即[52]，[89])和威胁行动 (即[45])的形式自动提取 CTI 报告中可用的知识。</p>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB">论文阅读</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"></div>
+  <div class="footer-info">
+    2023  © Athul |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+
+
+</div>
+    </body>
+</html>

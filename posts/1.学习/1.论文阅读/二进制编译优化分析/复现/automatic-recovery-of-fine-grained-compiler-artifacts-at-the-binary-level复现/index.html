@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Automatic Recovery of Fine-grained Compiler Artifacts at the Binary Level复现 - Blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="[[Automatic Recovery of Fine-grained Compiler Artifacts at the Binary Level]] GitHub 地址：zeropointdynamics/passtell (github.com)
+数据集结构 passtell_dataset. tar. xz ：PassTell 实验中使用的数据集的存档，包括: &rsquo; balanced_dataset. csv &lsquo;: 用于粗粒度编译器配置分类的数据集。如第 6.1 节所述，此数据集是 NeuralCI 中使用的数据集的平衡子集。 用于 6.1 节的实验——编译器配置识别 数据集由数据集中所有动态链接的未分解的可执行文件组成，包括 binutils、busybox、coreutils、curl、ffmpeg、git、gsl、libpng、openssl、postgresql、sqlite、valgrind、vim、zlib 和 gdb。 &rsquo; data. csv &lsquo;: 用于 6.2 节中使用的细粒度编译器传递分类的数据集。 用于 6.2 节实验——优化传递识别 编译器传递数据集由来自用 Clang 14 编译的 binutils (2.37)、coreutils (9.0)、httpd (2.4.51) 和 sqlite (3.36.0) 程序的函数组成，使用-O0、-O1、-O2 和-O3 优化级别，在 552 个二进制文件中生成总共 149, 814 个函数。然后，我们为每一次传递平衡数据集: 对于每一次传递，我们随机选择等量的应用了传递的函数 (即正样本) 和没有应用传递的函数 (即负样本)。我们还将每次传递的最大样本数量限制为 5, 000 个正样本和 5, 000 个负样本。 &rsquo; data_dynamic." />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="Automatic Recovery of Fine-grained Compiler Artifacts at the Binary Level复现" />
+<meta property="og:description" content="[[Automatic Recovery of Fine-grained Compiler Artifacts at the Binary Level]] GitHub 地址：zeropointdynamics/passtell (github.com)
+数据集结构 passtell_dataset. tar. xz ：PassTell 实验中使用的数据集的存档，包括: &rsquo; balanced_dataset. csv &lsquo;: 用于粗粒度编译器配置分类的数据集。如第 6.1 节所述，此数据集是 NeuralCI 中使用的数据集的平衡子集。 用于 6.1 节的实验——编译器配置识别 数据集由数据集中所有动态链接的未分解的可执行文件组成，包括 binutils、busybox、coreutils、curl、ffmpeg、git、gsl、libpng、openssl、postgresql、sqlite、valgrind、vim、zlib 和 gdb。 &rsquo; data. csv &lsquo;: 用于 6.2 节中使用的细粒度编译器传递分类的数据集。 用于 6.2 节实验——优化传递识别 编译器传递数据集由来自用 Clang 14 编译的 binutils (2.37)、coreutils (9.0)、httpd (2.4.51) 和 sqlite (3.36.0) 程序的函数组成，使用-O0、-O1、-O2 和-O3 优化级别，在 552 个二进制文件中生成总共 149, 814 个函数。然后，我们为每一次传递平衡数据集: 对于每一次传递，我们随机选择等量的应用了传递的函数 (即正样本) 和没有应用传递的函数 (即负样本)。我们还将每次传递的最大样本数量限制为 5, 000 个正样本和 5, 000 个负样本。 &rsquo; data_dynamic." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E5%A4%8D%E7%8E%B0/automatic-recovery-of-fine-grained-compiler-artifacts-at-the-binary-level%E5%A4%8D%E7%8E%B0/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-06-11T02:01:58+05:30" />
+<meta property="article:modified_time" content="2023-06-11T02:01:58+05:30" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Automatic Recovery of Fine-grained Compiler Artifacts at the Binary Level复现"/>
+<meta name="twitter:description" content="[[Automatic Recovery of Fine-grained Compiler Artifacts at the Binary Level]] GitHub 地址：zeropointdynamics/passtell (github.com)
+数据集结构 passtell_dataset. tar. xz ：PassTell 实验中使用的数据集的存档，包括: &rsquo; balanced_dataset. csv &lsquo;: 用于粗粒度编译器配置分类的数据集。如第 6.1 节所述，此数据集是 NeuralCI 中使用的数据集的平衡子集。 用于 6.1 节的实验——编译器配置识别 数据集由数据集中所有动态链接的未分解的可执行文件组成，包括 binutils、busybox、coreutils、curl、ffmpeg、git、gsl、libpng、openssl、postgresql、sqlite、valgrind、vim、zlib 和 gdb。 &rsquo; data. csv &lsquo;: 用于 6.2 节中使用的细粒度编译器传递分类的数据集。 用于 6.2 节实验——优化传递识别 编译器传递数据集由来自用 Clang 14 编译的 binutils (2.37)、coreutils (9.0)、httpd (2.4.51) 和 sqlite (3.36.0) 程序的函数组成，使用-O0、-O1、-O2 和-O3 优化级别，在 552 个二进制文件中生成总共 149, 814 个函数。然后，我们为每一次传递平衡数据集: 对于每一次传递，我们随机选择等量的应用了传递的函数 (即正样本) 和没有应用传递的函数 (即负样本)。我们还将每次传递的最大样本数量限制为 5, 000 个正样本和 5, 000 个负样本。 &rsquo; data_dynamic."/>
+
+	
+        <link href="https://example.com/css/fonts.11a1877508139eac0b5b4852ceb110c35641b3533321e66e39149e901ed5756b.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://example.com/css/main.d902908ac6e0fab67957de5db5aea1b6455b19ae2ca98eac4c95a4a0fdc02238.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://example.com/css/dark.c95c5dcf5f32f8b67bd36f7dab66680e068fce2b303087294114aabf7a7c080b.css" media="(prefers-color-scheme: dark)"  />
+	
+
+	
+	
+
+	
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://example.com">Blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">All posts</a>
+		
+		<a href="/categories">Categories</a>
+		
+		<a href="/tags">Tags</a>
+		
+		<a href="/about">About</a>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">Automatic Recovery of Fine-grained Compiler Artifacts at the Binary Level复现</h1>
+			<div class="meta">Posted on Jun 11, 2023</div>
+		</div>
+		
+
+		<section class="body">
+			<p>[[Automatic Recovery of Fine-grained Compiler Artifacts at the Binary Level]]
+GitHub 地址：<a href="https://github.com/zeropointdynamics/passtell">zeropointdynamics/passtell (github.com)</a></p>
+<h2 id="数据集结构">数据集结构</h2>
+<ul>
+<li>passtell_dataset. tar. xz ：PassTell 实验中使用的数据集的存档，包括:
+<ul>
+<li>&rsquo; balanced_dataset. csv &lsquo;: 用于粗粒度编译器配置分类的数据集。如第 6.1 节所述，此数据集是 NeuralCI 中使用的数据集的平衡子集。
+<ul>
+<li>用于 6.1 节的实验——编译器配置识别</li>
+<li>数据集由数据集中所有动态链接的未分解的可执行文件组成，包括 binutils、busybox、coreutils、curl、ffmpeg、git、gsl、libpng、openssl、postgresql、sqlite、valgrind、vim、zlib 和 gdb。</li>
+</ul>
+</li>
+<li>&rsquo; data. csv &lsquo;: 用于 6.2 节中使用的细粒度编译器传递分类的数据集。
+<ul>
+<li>用于 6.2 节实验——优化传递识别</li>
+<li>编译器传递数据集由来自用 Clang 14 编译的 binutils (2.37)、coreutils (9.0)、httpd (2.4.51) 和 sqlite (3.36.0) 程序的函数组成，使用-O0、-O1、-O2 和-O3 优化级别，在 552 个二进制文件中生成总共 149, 814 个函数。然后，我们为每一次传递平衡数据集: 对于每一次传递，我们随机选择等量的应用了传递的函数 (即正样本) 和没有应用传递的函数 (即负样本)。我们还将每次传递的最大样本数量限制为 5, 000 个正样本和 5, 000 个负样本。</li>
+</ul>
+</li>
+<li>&rsquo; data_dynamic. Csv &lsquo;: 第 6.4 节中用于动态特征评估的数据集。如第 6.4 节所述，此数据集是&rsquo; data. Csv &lsquo;的子集，仅包含动态特征覆盖率至少为 70%的函数。
+<ul>
+<li>6.4 节的实验——动态特征的效果</li>
+<li>使用与第 6.2 节相同的数据集，但应用了额外的过滤。具体来说，因为我们的动态特征生成器的当前实现无法为数据集中的所有函数生成注册特征，所以我们对数据集进行筛选，只包括生成器达到最小覆盖阈值的函数。为了与基线进行比较，我们同时使用静态特征和动态特征来运行我们的方法。对于后者，我们将覆盖率阈值设置为 30%到 60%。对于这些配置，我们使用相同的过滤数据集，并人为地删除动态特征以达到目标覆盖率。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>&rsquo; config_classifier. py &lsquo;: 粗粒度的编译器配置分类器。For 6.1 节</li>
+<li>&rsquo; passtel . py &lsquo;: 细粒度的编译器传递分类器。For 6.2 节</li>
+<li>&rsquo; static_opcode_features. py &lsquo;: &rsquo; passtel . py &lsquo;所需的库模块。 For 6.4 节</li>
+</ul>
+<h1 id="依赖">依赖</h1>
+<ul>
+<li>64 位 Linux 机器，至少有 32GB RAM 和 16GB 存储空间。我们已经在 Arch Linux (滚动发布，于 2022 年 5 月更新)，Ubuntu 20.04 (Windows Subsystem for Linux) 和 Fedora Workstation 36 上测试了我们的工件。</li>
+<li>Python 3。对于 Ubuntu 和其他没有默认&rsquo; python &lsquo;命令的 Linux 发行版，需要将符号链接从&rsquo; python &lsquo;设置为&rsquo; python3 &lsquo;。在 Ubuntu 上，这可以通过安装&rsquo; python-is-python3 &lsquo;包来实现。一些发行版 (如 Fedora) 没有 Python C API，还需要安装 Python C API。在 Fedora 上，可以通过安装&rsquo; python3-devel &lsquo;包来实现。</li>
+<li>Graphviz。</li>
+<li>&rsquo; requirements. txt &lsquo;中包含的 Python 库。这些库可以使用命令&rsquo; pip install -r requirements. txt &lsquo;安装。</li>
+</ul>
+<h1 id="运行">运行</h1>
+<h2 id="概述">概述</h2>
+<h2 id="运行粗粒度分类器">运行粗粒度分类器</h2>
+<p>要重现第 6.1 节的结果，请运行 <code>python config_classifier.py</code>。我们使用 LightGBM 的 MLJAR AutoML 包装器来方便地再现混淆矩阵。由于&rsquo; numpy &lsquo;版本号不同，分类器可能会报告错误，但这些错误不会影响分类。一旦分类器终止，F-1 分数可以在&rsquo; automl1 /README 中找到。md &lsquo;作为&rsquo; metric_value &lsquo;，规范化的混淆矩阵 (图 2) 可以在&rsquo; AutoML_1/ 1_Default_LightGBM/confusion_matrix_normalized. png &lsquo;中找到。
+注意，虽然第 6.1 节也包括了来自 NeuralCI 的结果，但 NeuralCI 的代码并不是我们工件的一部分。</p>
+<h2 id="运行细粒度分类器">运行细粒度分类器</h2>
+<h3 id="static-features">Static Features</h3>
+<p>要重现 6.2 节的结果，请运行 <code>python passtell.py --train_csv data.csv</code>。程序结束后，分类结果可以在 <code>passtell_model/pass_classification_results.csv</code> 中找到。“passtell_model”目录中还包含了显示每次传递的主要特性的图形。请注意，由于随机训练和测试集的分裂、分类器中的修复以及库的不同版本，训练和测试样本的数量可能会有微小的变化。同样，由于随机化的训练集，每一次传递的确切顶部特征可能与我们在论文中展示的顶部特征不同 (图 4 和图 5)。但是，分类结果应该是相似的，应该仍然支持我们在论文中的发现。</p>
+<h3 id="static-features-1">Static Features</h3>
+<p>要使用第 6.4 节的静态和动态特性重现结果，请运行 <code>python passtell.py --train_csv data_dynamic.csv --dynamic</code>。请注意，分类器总是会<strong>覆盖结果目录&rsquo; passtell_model &lsquo;，所以如果需要，请在运行新的实验之前备份之前的&rsquo; passtell_model &lsquo;目录</strong>。为了只使用章节 6.4 的静态特征生成结果，再次运行分类器，不带 <code>--dynamic </code> 标志。</p>
+<h3 id="对额外二进制文件进行分类">对额外二进制文件进行分类</h3>
+<p>在使用 <code>--train_csv</code> 选项训练模型之后，PassTell 可以使用 <code>--tell</code> 选项对任何二进制文件进行分类 (例如，&rsquo; PassTell——tell my_binary——output results. csv &lsquo;)。输出 CSV 文件包括它为每个函数检测到的编译器通道。注意，由于分类器使用&rsquo; objdump &lsquo;来反编译二进制文件，因此二进制文件必须包含调试符号。</p>
+<h1 id="结果说明">结果说明</h1>
+<p>6.2 的结果文件是 pass_classification_results. csv。文件中每一行表示一种 pass 种类，每一行的属性有样例个数，精度召回率和最高的 15 个特征，也就是说程序通过这 15 个或者更多个特征来判定函数属于哪个优化 pass
+<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230220224257.png" alt="image.png">
+6.4 的实验结果和 6.2 相同，它的目的是为了比较增加了动态特征（寄存器变化）对结果的影响，所以就是对同样的数据运行两次程序，一次加动态特征，一次不加，然后比较 F1。</p>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/%E8%AE%BA%E6%96%87%E5%A4%8D%E7%8E%B0">论文复现</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"></div>
+  <div class="footer-info">
+    2023  © Athul |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+
+
+</div>
+    </body>
+</html>
