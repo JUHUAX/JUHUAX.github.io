@@ -1,110 +1,88 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>二进制编译优化分析 on BLOG</title>
+    <title>二进制编译优化分析 on JUHUA&#39;s Blog</title>
     <link>https://juhuax.github.io/categories/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/</link>
-    <description>Recent content in 二进制编译优化分析 on BLOG</description>
+    <description>Recent content in 二进制编译优化分析 on JUHUA&#39;s Blog</description>
     <image>
-      <title>BLOG</title>
+      <title>JUHUA&#39;s Blog</title>
       <url>https://juhuax.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
       <link>https://juhuax.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
+    <language>zh-cn</language>
+    <copyright>JUHUA</copyright>
     <lastBuildDate>Sun, 11 Jun 2023 02:01:58 +0530</lastBuildDate><atom:link href="https://juhuax.github.io/categories/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Automatic Recovery of Fine-grained Compiler Artifacts at the Binary Level</title>
-      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/automatic-recovery-of-fine-grained-compiler-artifacts-at-the-binary-level/</link>
+      <link>https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/automatic-recovery-of-fine-grained-compiler-artifacts-at-the-binary-level/</link>
       <pubDate>Sun, 11 Jun 2023 02:01:58 +0530</pubDate>
       
-      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/automatic-recovery-of-fine-grained-compiler-artifacts-at-the-binary-level/</guid>
-      <description>中文译名：二进制级细粒度编译器工件的自动恢复 作者：Yufei Du 单位：北卡罗来纳大学教堂山分校 国家： #美国 年份： #2022年 来源： #USENIX会议 关键字： #二进制 #编译 #神经网络 代码地址：GitHub - zeropointdynamics/passtell 笔记建立时间： 2023-02-11 09:45
-摘要 识别二进制编译器配置使开发人员和分析人员能够定位由优化副作用引起的潜在安全问题，识别二进制克隆，并构建兼容的二进制补丁。 现有的工作重点是使用语义特征和深度学习技术识别编译器家族、版本和优化级别。 本文想要探索恢复二进制文件中每个函数的单独的、细粒度的优化传递。为此，我们开发了一种使用专门设计的功能以及直观和可理解的机器学习模型的方法。 引言 编译器的优化可能带来安全方面的负面影响 死代码消除优化可以删除使用敏感数据后擦除敏感数据的指令，导致敏感数据容易泄露 用更高效的操作取代昂贵操作的强度降低优化可以打开侧通道 避免这些陷阱的一种方法是让开发人员手动调整编译脚本 具有挑战性和耗时的 一些编译器还包含无法手动控制的隐藏优化 现代编译器的代码库太大，用户无法查看和研究优化背后的逻辑 安全关键项目 (如 OpenSSL 和 mbed TLS) 的开发人员采取了另一种方法，即在安全函数的源代码中实现工作区，以“迷惑”编译器，使其不会对安全代码应用优化 但是不能一劳永逸，不适用于未来的编译器版本 除了安全性验证外，编译器优化分类还会影响二进制代码克隆检测和二进制补丁。 编译器配置会导致克隆检测技术性能的显著下降 二进制补丁中，在存在某些编译器优化时，定位要修补的易受攻击函数变得更加困难 当前技术侧重于识别编译器家族、主要编译器版本以及二进制文件的优化级别 缺少更详细的信息，即可能已应用的传递 当前方法依赖于语义特征（列如控制流图）或者采用深度学习的方法 为了输出的可解释性，作者选择了使用具有特殊设计功能的浅层学习。 作者的方法成为 passtell，可以识别影响单个函数安全的优化过程 总结：因为编译器的优化会产生一些意想不到的负面影响，包括安全问题、克隆检测技术性能下降和难以定位补丁函数。所以要有一种技术来检测编译器的优化？目前的技术侧重于识别识别编译器家族、主要编译器版本以及二进制文件的优化级别，缺少更详细的信息。作者提出的方法可以识别函数级的优化过程，提供更详细的优化信息。
-背景 编译优化 知道二进制文件的优化级别不足以确定应用于二进制文件的精确优化集。 因为除了用户指定的优化级别外，在决定要运行的传递时，传递管理器还考虑多个因素，包括目标体系结构、目标处理器生成和源代码结构。 安全影响 持久状态违反是指数据持续存在于其设计的可用范围之外。
-D’silva et al.[3]列出了三种可能导致这种违规的优化: 死代码消除、函数内联和代码移动。 在密码验证函数中，密码在验证期间临时存储在内存中，编译器可能会认为擦除本地内存的操作是死代码并将其删除，导致密码在使用后仍存在于内存中，直到最终被后面的函数覆盖。 如果受信任的安全敏感函数内联在不受信任的函数中，则受信任函数的局部变量的生存期将扩展到不受信任函数返回时。 代码移动可以切换指令的顺序，以避免不必要的计算或改善局部性。这种优化可能会导致程序在验证操作是否需要之前将敏感值写入内存。 侧通道攻击：为了避免侧通道，开发人员可能会向函数中添加不必要或低效的操作，但优化可能会简化或删除这些操作，从而重新引入侧通道。
-D’silva et al.[3]列出了三种可能引入侧通道的优化方法: 公共子表达式消除，将多个指令合并为一条指令以避免重复计算; 强度降低，用更有效的指令取代昂贵的指令， 窥视孔优化，检查周围的指令，以寻找重新排序或替换指令的机会，以简化计算或更好的局部性。 本文的工作重点是识别上述两种优化。</description>
+      <guid>https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/automatic-recovery-of-fine-grained-compiler-artifacts-at-the-binary-level/</guid>
+      <description>中文译名：二进制级细粒度编译器工件的自动恢复 作者：Yufei Du 单位：北卡罗来纳大学教堂山分校 国家： #美国 年份： #2022年 来源： #USENI</description>
     </item>
     
     <item>
       <title>Automatic Recovery of Fine-grained Compiler Artifacts at the Binary Level复现</title>
-      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E5%A4%8D%E7%8E%B0/automatic-recovery-of-fine-grained-compiler-artifacts-at-the-binary-level%E5%A4%8D%E7%8E%B0/</link>
+      <link>https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E5%A4%8D%E7%8E%B0/automatic-recovery-of-fine-grained-compiler-artifacts-at-the-binary-level%E5%A4%8D%E7%8E%B0/</link>
       <pubDate>Sun, 11 Jun 2023 02:01:58 +0530</pubDate>
       
-      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E5%A4%8D%E7%8E%B0/automatic-recovery-of-fine-grained-compiler-artifacts-at-the-binary-level%E5%A4%8D%E7%8E%B0/</guid>
-      <description>[[Automatic Recovery of Fine-grained Compiler Artifacts at the Binary Level]] GitHub 地址：zeropointdynamics/passtell (github.com)
-数据集结构 passtell_dataset. tar. xz ：PassTell 实验中使用的数据集的存档，包括: &amp;rsquo; balanced_dataset. csv &amp;lsquo;: 用于粗粒度编译器配置分类的数据集。如第 6.1 节所述，此数据集是 NeuralCI 中使用的数据集的平衡子集。 用于 6.1 节的实验——编译器配置识别 数据集由数据集中所有动态链接的未分解的可执行文件组成，包括 binutils、busybox、coreutils、curl、ffmpeg、git、gsl、libpng、openssl、postgresql、sqlite、valgrind、vim、zlib 和 gdb。 &amp;rsquo; data. csv &amp;lsquo;: 用于 6.2 节中使用的细粒度编译器传递分类的数据集。 用于 6.2 节实验——优化传递识别 编译器传递数据集由来自用 Clang 14 编译的 binutils (2.37)、coreutils (9.0)、httpd (2.4.51) 和 sqlite (3.36.0) 程序的函数组成，使用-O0、-O1、-O2 和-O3 优化级别，在 552 个二进制文件中生成总共 149, 814 个函数。然后，我们为每一次传递平衡数据集: 对于每一次传递，我们随机选择等量的应用了传递的函数 (即正样本) 和没有应用传递的函数 (即负样本)。我们还将每次传递的最大样本数量限制为 5, 000 个正样本和 5, 000 个负样本。 &amp;rsquo; data_dynamic.</description>
+      <guid>https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E5%A4%8D%E7%8E%B0/automatic-recovery-of-fine-grained-compiler-artifacts-at-the-binary-level%E5%A4%8D%E7%8E%B0/</guid>
+      <description>[[Automatic Recovery of Fine-grained Compiler Artifacts at the Binary Level]] GitHub 地址：zeropointdynamics/passtell (github.com) 数据集结构 passtell_dataset. tar. xz ：PassTell 实验中使用的数据集的存档</description>
     </item>
     
     <item>
       <title>Fine-Grained Compiler Identification With Sequence-Oriented Neural Modeling</title>
-      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/fine-grained-compiler-identification-with-sequence-oriented-neural-modeling/</link>
+      <link>https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/fine-grained-compiler-identification-with-sequence-oriented-neural-modeling/</link>
       <pubDate>Sun, 11 Jun 2023 02:01:58 +0530</pubDate>
       
-      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/fine-grained-compiler-identification-with-sequence-oriented-neural-modeling/</guid>
-      <description>中文译名：基于面向序列的神经模型的细粒度编译器识别 作者：ZHENZHOU TIAN 单位： 西安邮电大学 国家： #中国 年份： #2021年 来源： #IEEE_ACCESS 关键字： #编译 #神经网络 #二进制 代码地址：zztian007/NeuralCI (github.com) 笔记建立时间： 2023-02-23 15:37
-摘要 现有的大多数方法都采用基于特征匹配或基于机器学习的策略来识别编译器细节，在检测精度或粒度上都有限制。 在这项工作中，我们提出了 NeuralCI (基于神经建模的编译器识别) 来推断这些编译器细节，包括编译器家族、优化级别和单个函数的编译器版本。 其基本思想是建立面向序列的神经网络来处理使用轻量级函数抽象策略生成的规范化指令序列。 为了评估 NeuralCI 的性能，构建了一个由从 19 个广泛使用的现实项目中收集的 854, 858 个独特函数组成的大型数据集。 实验表明，NeuralCI 识别编译器族的平均准确率为 98.6%， 识别优化级别的平均准确率为 95.3%， 识别编译器版本的平均准确率为 88.7%， 识别编译器族和优化级别的平均准确率为 94.8%， 同时识别所有编译器组件的平均准确率为 83.0%，在检测精度和全面性方面均优于现有的功能级编译器识别方法。 1引言 编译器识别方面的研究相对较少，主要分为两类:
-基于签名匹配的方法[6]-[8] 在一些逆向工程工具中实现，如 IDA[6]和 PEiD[8]，通过匹配通用签名和刚性签名的语料库来执行整个程序级别的识别。 这些方法的缺点是在构造足够好的特定于编译器的签名时需要严格的专业知识，以及它们的粗标识粒度。 和基于学习的方法[27]-[29]，[39]。 后者将编译器识别定义为机器学习任务，训练模型以捕获特定于编译器的模式，并根据以前未见过的二进制文件推断编译器细节。 对于这类方法，语法或结构特征是基于人工定义的模板提取的，例如 idioms[29]，它是带有通配符的短指令序列，或者 graphlets[28]，它是 CFG (控制流图) 中的小子图。作为典型的基于特征工程的方法，其有效性在很大程度上取决于专家定义的特征提取模板的质量，而专家定义的特征提取模板需要更多的领域特定知识。 具体来说，我们为典型的卷积神经网络 (CNN) 和循环神经网络 (RNN) 结构提供标准化的汇编指令序列，以训练分类模型，用于推断编译器族、优化级别和编译器版本。我们的直觉是基于这样的观察: 共出现的指令及其在短指令序列中的顺序形成了足够好的信号，可以区分不同的编译器或优化级别，这可以被神经模型基本上捕捉到。
-2 问题定义和设计概述 A 问题概述 略</description>
+      <guid>https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/fine-grained-compiler-identification-with-sequence-oriented-neural-modeling/</guid>
+      <description>中文译名：基于面向序列的神经模型的细粒度编译器识别 作者：ZHENZHOU TIAN 单位： 西安邮电大学 国家： #中国 年份： #2021年 来源： #IEEE_ACCESS 关键字： #</description>
     </item>
     
     <item>
       <title>Identifying Compiler and Optimization Level in Binary Code From Multiple Architectures</title>
-      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/identifying-compiler-and-optimization-level-in-binary-code-from-multiple-architectures/</link>
+      <link>https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/identifying-compiler-and-optimization-level-in-binary-code-from-multiple-architectures/</link>
       <pubDate>Sun, 11 Jun 2023 02:01:58 +0530</pubDate>
       
-      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/identifying-compiler-and-optimization-level-in-binary-code-from-multiple-architectures/</guid>
-      <description>中文译名：多体系结构二进制代码中编译器和优化级别的识别 作者：DAVIDE PIZZOLOTTO 单位：大阪大学 国家： #日本 年份： #2021年 来源： #IEEE_ACCESS 关键字： #编译 #二进制 #神经网络 代码地址：GitHub - inoueke-n/optimization-detector: Optimization detection over compiled binaries 笔记建立时间： 2023-02-20 14:44
-摘要 在比较不同的二进制文件时，确保相同的编译器和编译标志尤其重要，以避免不准确或不可靠的分析。 要理解使用了哪些标志和优化，需要对目标体系结构和所使用的编译器有深入的了解。 在这项研究中，我们提出了两种深度学习模型，用于检测编译二进制文件中的编译器和优化级别。我们研究的优化级别是 x86_64、AArch64、RISC-V、SPARC、PowerPC、MIPS 和 ARM 架构中的 O0、O1、O2、O3 和 Os。此外，对于 x86_64 和 AArch64 体系结构，我们还确定编译器是 GCC 还是 Clang。 我们创建了一个超过 76000 个二进制数据集，并将其用于训练。我们的实验表明，在检测编译器时，准确率超过 99.95%，在检测优化级别时，根据架构的不同，准确率在 92%到 98%之间。此外，我们分析了当数据量极其有限时，准确性的变化。我们的研究表明，使用函数级粒度准确检测编译器标志设置和优化级别是可能的。 1引言 编译器信息和优化等级等信息对于各种应用程序都非常有价值，比如对旧版本进行分类，查找漏洞，查找二进制文件中的相似性，重写二进制文件，或者在编译环境无法控制的情况下提供准确的错误报告。 虽然有几篇关于检测编译器[5]和工具链[8]使用的论文，但这些方法不依赖于自动学习方法。使用基于机器学习的方法，提供新数据并重新运行训练以检测新的编译器或标志就足够了。使用我们工作中提供的自动数据集生成，对于我们想要分类的每个优化级别，生成这些数据所需的时间是几个小时。 在这项研究中，我们提出了在不同架构中使用长短期记忆网络 (LSTM)[9]和卷积神经网络 (CNN)[10]来识别编译器和优化级别的方法。 作者指出本文的进步在于 测试的优化等级和测试数量的增加：优化等级测试次数由{O0, O2}增加到{O0, O1, O2, O3, Os}。•测试的架构数量从{x86_64}增加到{x86_64, AArch64, RISC-V, SPARC, PowerPC, MIPS, ARM32}。 提供了数据集和自动化生成数据集的脚本 神经网络结构的实现和调整 2动机 在一些应用场景中编译器信息和优化等级信息是必须的 二进制重写中，不了解优化等级可能会导致重写的编译失败 反编译中，编译器信息和优化等级信息会帮助判断反编译后得到的源代码的正确性 二进制文件比较中，编译器的优化会带来极大的误导 3前期工作 本文工作特点：</description>
+      <guid>https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/identifying-compiler-and-optimization-level-in-binary-code-from-multiple-architectures/</guid>
+      <description>中文译名：多体系结构二进制代码中编译器和优化级别的识别 作者：DAVIDE PIZZOLOTTO 单位：大阪大学 国家： #日本 年份： #2021年 来源： #IEEE_ACCESS 关键字： #编译</description>
     </item>
     
     <item>
       <title>Identifying Compiler and Optimization Level in Binary Code From Multiple Architectures复现</title>
-      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E5%A4%8D%E7%8E%B0/identifying-compiler-and-optimization-level-in-binary-code-from-multiple-architectures%E5%A4%8D%E7%8E%B0/</link>
+      <link>https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E5%A4%8D%E7%8E%B0/identifying-compiler-and-optimization-level-in-binary-code-from-multiple-architectures%E5%A4%8D%E7%8E%B0/</link>
       <pubDate>Sun, 11 Jun 2023 02:01:58 +0530</pubDate>
       
-      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E5%A4%8D%E7%8E%B0/identifying-compiler-and-optimization-level-in-binary-code-from-multiple-architectures%E5%A4%8D%E7%8E%B0/</guid>
-      <description>代码地址：GitHub - inoueke-n/optimization-detector: Optimization detection over compiled binaries [[Identifying Compiler and Optimization Level in Binary Code From Multiple Architectures]]
-准备 实验用到的数据集 following link. 也可以自己按照 readme. md 文件中的 generation 节中的步骤来自己生成数据集。（因为文章中提到的担心被库文件污染，所以需要 docker 环境来生成） 文档结构 Resources 存储测试的二进制文件 Tests 和 src 文件存储源代码 generate_dataset.py 文件负责生成数据集（准确的说是交叉编译生成所需的二进制文件） optimization-detector.py 文件负责文件的提取（可执行数据），预处理（平衡数据集），训练、评估、推断。 数据集文件结构 Dataset 文件夹下的是已经经过预处理的数据集，raw 后缀表示采用原始字节作为输入，func 表示按照函数边界进行了拆分
-但是没有优化等级是 O3 的数据啊 突然懂了这个逻辑，process 的输入是 func 和 raw 文件，输出 train. bin、test. Bin、validate. Bin 文件，然后 train 用 train. Bin 、validate. Bin 文件训练，evaluate 用 test. Bin 看效果</description>
+      <guid>https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E5%A4%8D%E7%8E%B0/identifying-compiler-and-optimization-level-in-binary-code-from-multiple-architectures%E5%A4%8D%E7%8E%B0/</guid>
+      <description>代码地址：GitHub - inoueke-n/optimization-detector: Optimization detection over compiled binaries [[Identifying Compiler and Optimization Level in Binary Code From Multiple Architectures]] 准备 实验用到的数据集 following link. 也可以自己按照 readme. md 文件中的 generation 节中的步骤来自己生成数据集。（</description>
     </item>
     
     <item>
       <title>NeuralCI 复现</title>
-      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E5%A4%8D%E7%8E%B0/neuralci-%E5%A4%8D%E7%8E%B0/</link>
+      <link>https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E5%A4%8D%E7%8E%B0/neuralci-%E5%A4%8D%E7%8E%B0/</link>
       <pubDate>Sun, 11 Jun 2023 02:01:58 +0530</pubDate>
       
-      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E5%A4%8D%E7%8E%B0/neuralci-%E5%A4%8D%E7%8E%B0/</guid>
-      <description>[[Fine-Grained Compiler Identification With Sequence-Oriented Neural Modeling]] 实验评估中用 NeuralBS CNN，NeuralSD CNN 和 NeuralAD CNN 来表示基础 CNN，带有缩放点积注意力的增强 CNN 和带有附加注意力的增强 CNN 在以下实验评估中使用 NeuralBS GRU，NeuralSD GRU，NeuralAD GRU 和 NeuralQU GRU（SD 和 AD 和 CNN 一样，QU 是新加的）
-识别编译器系列 family 识别编译器版本 version 识别优化级别 binaryOptimization 和 tripleOptimization
-目前存在的问题：
-Full 和 done 后缀的文件不明白用途，Binary 和 done 的区别 TensorFlow 版本不兼容，需要改部分代码 代码中的文件路径指向（所需要的）文件没有，貌似需要自己构建数据集（IDA pro 提取什么的） </description>
+      <guid>https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E5%A4%8D%E7%8E%B0/neuralci-%E5%A4%8D%E7%8E%B0/</guid>
+      <description>[[Fine-Grained Compiler Identification With Sequence-Oriented Neural Modeling]] 实验评估中用 NeuralBS CNN，NeuralSD CNN 和 NeuralAD CNN 来表示基础 CNN，带有缩放点积注意力的增强 CNN 和带有附加注意力的增强 CNN 在以下实验评</description>
     </item>
     
     <item>
       <title>VulHawk Cross-architecture Vulnerability Detection with Entropy-based Binary Code Search</title>
-      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/vulhawk-cross-architecture-vulnerability-detection-with-entropy-based-binary-code-search/</link>
+      <link>https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/vulhawk-cross-architecture-vulnerability-detection-with-entropy-based-binary-code-search/</link>
       <pubDate>Sun, 11 Jun 2023 02:01:58 +0530</pubDate>
       
-      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/vulhawk-cross-architecture-vulnerability-detection-with-entropy-based-binary-code-search/</guid>
-      <description>中文译名：VulHawk：基于熵的二进制代码搜索的跨架构漏洞检测 作者：Zhenhao Luo 单位：国防科大 国家： #中国 年份： #2023年 来源： #NDSS会议 关键字： #二进制代码搜索 代码地址： https://github.com/RazorMegrez/VulHawk 笔记建立时间： 2023-03-20 13:59
-摘要 目的：对不同架构、不同编译器、不同优化级别编译的 IoT 固件映像进行二进制代码搜索来识别代码重用 方法：
-提出了一种新的中间表示函数模型，是一种用于跨体系结构二进制代码搜索的体系结构不确定模型 将二进制代码提升为 IR，通过补充隐式操作数和删除冗余指令来保留二进制函数的主要语言 使用 NLP 和卷积生成函数嵌入 将编译器、架构和优化级别的组合称为一个文件环境，采用 divide-and-conquer 策略将 $C_N^2$ 个跨文件环境场景的相似性问题转化为 $N-1$ 个嵌入转化子问题。 提出了一种基于熵的适配器，将不同文件环境中的函数嵌入传输到同一文件环境中，以缓解不同文件环境造成的差异 提出了一种渐进搜索策略 用细粒度特征补充函数嵌入，以减少修补函数造成的误报 意义：提高检测代码重用带来的漏洞的效率 效果：VulHawk 的性能优于 Asm2Vec、Asteria、BinDiff、GMN、PalmTree、SAFE 和 Trex。
-引言 现状：
-二进制代码搜索方法不够健壮，不能跨平台 Asm2Vec[10]、DeepBinDiff[11]和 PalmTree[27]使用自然语言处理 (NLP) 技术取得了令人鼓舞的结果（不能跨平台） InnerEye[60]将来自不同 isa 的二进制作为不同的自然语言，并使用神经机器翻译来计算二进制代码的相似度。SAFE[35]使用来自多个 isa 的二进制来训练其语言模型，以跨体系结构搜索二进制代码。（严重依赖于训练数据，很难实现多个 isa） 将特定于体系结构的二进制代码提升为与体系结构无关的中间表示 (IR) 是解决物联网固件中跨体系结构挑战的有效方法。但是 IR 和自然语言有本质区别。 相同源码经过不同优化级别的编译器编译后得到的二进制文件语义相似但结构不同 在本文中，我们考虑了 3 种架构 (x86、arm 和 mips)、2 种字大小 (32 位和 64 位)、2 个编译器 (Clang 和 GCC) 和 6 个优化级别 (O0、O1、O2、O3、Os 和 Ofast)，总共 72 种组合 (3 × 2 × 2 × 6)。 本文提出了一种新的跨架构二进制代码搜索方法 VulHawk</description>
+      <guid>https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/vulhawk-cross-architecture-vulnerability-detection-with-entropy-based-binary-code-search/</guid>
+      <description>中文译名：VulHawk：基于熵的二进制代码搜索的跨架构漏洞检测 作者：Zhenhao Luo 单位：国防科大 国家： #中国 年份： #2023年 来源： #N</description>
     </item>
     
     <item>
       <title>VulHawk 复现</title>
-      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E5%A4%8D%E7%8E%B0/vulhawk-%E5%A4%8D%E7%8E%B0/</link>
+      <link>https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E5%A4%8D%E7%8E%B0/vulhawk-%E5%A4%8D%E7%8E%B0/</link>
       <pubDate>Sun, 11 Jun 2023 02:01:58 +0530</pubDate>
       
-      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E5%A4%8D%E7%8E%B0/vulhawk-%E5%A4%8D%E7%8E%B0/</guid>
-      <description>[[VulHawk Cross-architecture Vulnerability Detection with Entropy-based Binary Code Search]]
-Get Started Prerequisites Windows (MacOS and Linux also work) Python 3.8.2 (64 bit) PyTorch 1.13.1 CUDA 11.7 IDA pro 7.5+ (only used for dataset processing) Quick Start File Environment Identification python 2_FileEnvironmentIdentification.py
-Function Embedding Generation python 3_function_embedding_generation.py
-Binary Function Similarity Detection python 4_binary_code_search.py
-论文基本流程 整体输入是二进制文件，然后分两部分进行：
-IRFM：对输入的二进制程序进行处理得到 IR，IR 作为 IRFM 的输入，输出是 IR 的词嵌入 首先进行 IR 生成和指令简化 然后使用 Masked Language Model (MLM)、根操作数预测 (ROP) 和相邻块预测 (ABP) 进行预训练 然后生成基本块嵌入 用基本块嵌入和 cfg 生成函数嵌入（GCN 网络是用来捕获 cfg 的） 基于熵的适配器： 首先计算二进制文件的熵值 使用残差神经网络作为分类器判断二进制文件属于哪种文件环境（编译器、优化级别等等） 上面两个一个得到二进制文件的函数嵌入，另一个得到二进制文件的文件环境，并且将二进制文件映射到一个中间环境中，减弱不同文件环境带来的影响。 用函数嵌入进行渐进式搜索</description>
+      <guid>https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96%E5%88%86%E6%9E%90/%E5%A4%8D%E7%8E%B0/vulhawk-%E5%A4%8D%E7%8E%B0/</guid>
+      <description>[[VulHawk Cross-architecture Vulnerability Detection with Entropy-based Binary Code Search]] Get Started Prerequisites Windows (MacOS and Linux also work) Python 3.8.2 (64 bit) PyTorch 1.13.1 CUDA 11.7 IDA pro 7.5+ (only used for dataset processing) Quick Start File Environment Identification python 2_FileEnvironmentIdentification.py Function Embedding Generation python 3_function_embedding_generation.py Binary Function Similarity Detection python 4_binary_code_search.py 论文基本流程 整体输入是二进制文件，然</description>
     </item>
     
   </channel>

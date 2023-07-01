@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Extractor_ Extracting Attack Behavior from Threat Reports | JUHUA&#39;s Blog</title>
+<meta name="keywords" content="论文阅读">
+<meta name="description" content="中文译名：提取器: 从威胁报表中提取攻击行为 作者：Kiavash Satvat 单位：伊利诺伊大学芝加哥分校 国家： #美国 年份： #2021年 来源： #SP 关键字： #">
+<meta name="author" content="JUHUA">
+<link rel="canonical" href="https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/extractor_-extracting-attack-behavior-from-threat-reports/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4ab2947a83bffe949c0838eecd8aec6f58435be7a122bafeab2b538d1cdcf5ad.css" integrity="sha256-SrKUeoO//pScCDjuzYrsb1hDW&#43;ehIrr&#43;qytTjRzc9a0=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://juhuax.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="icon" type="image/png" sizes="16x16" href="https://juhuax.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="icon" type="image/png" sizes="32x32" href="https://juhuax.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="apple-touch-icon" href="https://juhuax.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="mask-icon" href="https://juhuax.github.io/%3Clink%20/%20abs%20url%3E">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css" />
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-123-45', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script><meta property="og:title" content="Extractor_ Extracting Attack Behavior from Threat Reports" />
+<meta property="og:description" content="中文译名：提取器: 从威胁报表中提取攻击行为 作者：Kiavash Satvat 单位：伊利诺伊大学芝加哥分校 国家： #美国 年份： #2021年 来源： #SP 关键字： #" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/extractor_-extracting-attack-behavior-from-threat-reports/" /><meta property="og:image" content="https://juhuax.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-06-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-06-22T00:00:00+00:00" /><meta property="og:site_name" content="JUHUA&#39;s Blog" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://juhuax.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/>
+
+<meta name="twitter:title" content="Extractor_ Extracting Attack Behavior from Threat Reports"/>
+<meta name="twitter:description" content="中文译名：提取器: 从威胁报表中提取攻击行为 作者：Kiavash Satvat 单位：伊利诺伊大学芝加哥分校 国家： #美国 年份： #2021年 来源： #SP 关键字： #"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://juhuax.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "学习",
+      "item": "https://juhuax.github.io/posts/study/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "Extractor_ Extracting Attack Behavior from Threat Reports",
+      "item": "https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/extractor_-extracting-attack-behavior-from-threat-reports/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Extractor_ Extracting Attack Behavior from Threat Reports",
+  "name": "Extractor_ Extracting Attack Behavior from Threat Reports",
+  "description": "中文译名：提取器: 从威胁报表中提取攻击行为 作者：Kiavash Satvat 单位：伊利诺伊大学芝加哥分校 国家： #美国 年份： #2021年 来源： #SP 关键字： #",
+  "keywords": [
+    "论文阅读"
+  ],
+  "articleBody": "中文译名：提取器: 从威胁报表中提取攻击行为 作者：Kiavash Satvat 单位：伊利诺伊大学芝加哥分校 国家： #美国 年份： #2021年 来源： #SP 关键字： #提取信息 代码地址： https://github.com/ksatvat/Extractor 笔记建立时间： 2023-04-13 17:43\n摘要 提出 EXTRACTOR，可以从 CTI 报告（Cyber Threat Intelligence reports）中精确提取简洁的攻击行为 可以提取非结构化文本，对文本没有要求 1. Introduction 挑战 冗长：威胁报告中充斥着大量无关文本。 CTI 报告的句法和语义复杂性、技术术语的普遍使用以及缺乏适当的标点符号很容易影响报告的解释和攻击行为的提取。 难以准确地解释技术报告中的复杂逻辑。 目标 除了解决上面的挑战，作者还想实现两个目标：\n可操作的情报：EXTRACTOR 从文本中提取的攻击行为必须能在系统审计日志中被观察到，并能有效地用于威胁检测。不需要人员或工具的进一步处理 准确处理大量 CTI 报告。 自动挖掘更大的知识源（能够处理不同的文本） 从 CTI 报告中构建图表表示 从与不同组织中的同一攻击相关的各种 CTI 源提取信息 2. 问题和背景 问题描述 （实现效果） 报告 (左图)是 njRAT的自由改编，删除了不相关的句子。这个例子展示了语言的复杂性，这将在本文中讨论。在相应的来源图中 (右侧)，节点表示系统实体，边指向系统调用。矩形、椭圆形、五边形和菱形分别表示文件、进程、注册表和套接字。\n挑战 冗余 CTI 文本的复杂性 缺少标点符号——NLP 工具难以分辨句子边界 专业单词——NLP 工具是用通用英语来训练的。 省略：CTI 报告中经常出现缺少主语或宾语的情况 不能忽略代词。 复杂的语言结构：结构的复杂性和各种语言技术 (如回指、名词化和列表)的使用可能会混淆常见的 NLP 工具。总的影响是，许多主语、动词和宾语被错误地分类并无法解决。 关系的提取：不能仅仅依赖句子的语法结构，还要分析语义 3. APPROACH EXTRACTOR 有四个主要组成部分:1)归一化，2)resolution，3)摘要，4)图生成。\n规范化负责第一轮的句子简化和转换到标准形式。 Resolution 解决了这些句子中的歧义 摘要删除了与攻击行为不严格相关的部分文本。 最后，图生成负责解决文本中事件之间的时间和因果顺序，并构建最终的起源图 。 实例： A.归一化 目的：生成规范的句子形式——将长而复杂的句子分解成更短的句子，以规范的形式出现。直观的说，每个句子都表达一个单独的动作，这样动作的主体和对象以及动作本身就更容易识别。 操作：规范化由 Tokenization、Homogenization 和 Conversion.组成。这些步骤分别执行句子边界检测、单词同质化和被动到主动动词转换。\nTokenization 目的：划分句子\n使用标点符号、新行、项目符号、枚举数字以及标题和题目作为句子分隔符，将长句子分割为单词序列 如果每个短序列满足以下要求，就升级为一个长句子 以大写的主语开始，包含了构成一个完整句子所必须的所有成分，并且前后序列也是完整句子 以一个动词开始，并且该动词包含在系统调用字典中，序列包含了构成一个完整句子所必须的所有成分，并且前后序列也是完整句子 示例（图 4）： 4-9 是一个长句子, 首先被划分为更短的序列，然后用 POS 和 DP 为其标记。并检查是否满足以上两个条件。 第4行序列满足第一种情况的条件，而第5-9行序列满足第二种情况 (省略主语)的条件。 Homogenization 目的：将同一概念的多个文本表示替换为同一文本表示的过程。\nCTI 报告通常包含可能引入歧义并影响最终结果质量的结构和同义词。例如，C 2、C\u0026C 和 Command and Control 是同一个实体的不同表示，而像 stores、save 这样的动词可能表示对应于写入系统调用的操作。 操作：\n使用两个专门构建的字典对名词短语和动词进行 Homogenization，将 CTI 报告中出现的不同术语的同义词映射到审计日志中可以观察到的实体或操作。 Coversion 目的：EXTRACTOR 将被动语态转换为主动语态。这种转换有助于发现系统主体 (过程)和系统对象，以及使因果关系推断更准确. 操作：\n使用 POS 和 DP 来检测被动句 然后转换主语和实施者，并将被动动词转换为主动动词。 经过归一化的三部分后，长句被转换为短句，并且每个短句都以主动的形式来表达一个动作。\nResolution 这部分主要用于解决句子的歧义，作者原话是“Resolution 将引用同一实体的隐式引用与实际引用进行协调”，我的理解是隐式引用可能存在一些省略的主语导致句子产生歧义，那 Resolution 就需要对主语进行补充，将隐式引用转换为显式引用。\nEllipsis Subject（省略主语） Resolution (ESR) 图四示例中的第 5-9 都是省略主语 目的：找到并补充主语 操作：\n利用 POS 和 DP 找到缺少主语的句子 使用当前句子之前的句子中出现的实体构建一个候选主语列表 计算候选主语和缺少主语的句子之间的距离（以句子数计算），距离越近被选中的概率越高。 示例： 图四的5-9行句子中缺少主语。ESR 模块检测前面句子中的主语和其他宾语，并选择出现在冒号前面的代词作为主语。\nPronoun（代词） Resolution (PR) 目的：代词解析是将代词映射并替换到其所指的先行词实体的过程。 操作：\n采用了一个流行的共指解析模型 NeuralCoref。这个模型在解析 CTI 报表域中的代词时效果最好，特别是在前面的 ESR 和 Tokenization 步骤之后。图4，第4、5和6行演示了已解析的前名词 (即 it 和本身)及其对应的引用 (autoalization .exe)。 Entity Resolution (ER). 实体解析是指在同一句中指代另一个实体的名词或动词短语被该实体替换或作为冗余删除的过程。 （这部分和代词有点像，例如，在图4的第11行中，The following files 指的是 mscno. exe authorization. EXE-0AD199D6. pf。这部分就是要把 The following files 换成具体的实体名） 这类词主要有三类：Anaphora（指代），Nominalization（名词化），auxiliary verb（助动词）\n在 Resolution 模块过后，此时的文本由具有明确主语、宾语和动词的句子组成。\ntext summarization 目的：对审计报告中没有出现的内容进行删除，也就是说作者希望能够对文本更近一步的进行处理，不是简单的剔除非技术内容。 操作：\n使用 bert 模型将句子分为生产性和非生产性 使用 BiLSTM 推导生产性句子组件的语义角色，并删除不必要的单词 为了避免删除可能包含重要对象的句子组件，使得删除更加精确，使用系统实体提取器——如果一个被标记为需要删除的句子组成部分不包含 SEE 组件规则可以生成的任何实体，则该组成部分将被删除。 text summarization 是 EXTRACTOR 的核心组件之一。它负责大大降低文本的复杂性和数量，同时保留描述可观察行为的最重要的句子。 最后输出的文本形式是：系统主体 (例如，进程)、对象 (例如，文件、套接字)和操作 (例如，执行)。文本是明确的、有序的，并且大部分多余的文本被消除了\ngraph extraction 但是只是简单的将主语和对象设置为图中结点，动词设置为图中的边生成的图模糊且巨大。\nSemantic Role Labeling SRL SRL 可以从句子中提取角色，并且理解哪个是动作实施者，哪个是接受者。\n系统实体提取器 (SEE) SEE 模块，从 SRL 生成的角色中提取代表系统实体的简洁节点，并修剪掉不能构成可能的系统实体的无用部分。 SEE 使用超过 32 种不同的正则表达式和应用程序名称或知名进程的数据库检测可能的系统实体名称 (例如，文件或进程名称，IP，注册表项)。\ngraph builder GB 分两个步骤，第一步就是根据 see 修剪后剩下的文本，将主语作为结点，动作作为边构建图。 第二步就是基于因果推论来确定边的方向。\n因果推论 Causal Inference 这步用于确定图中边的方向。根据系统调用到系统流方向的映射。啥意思，就是看这个系统调用是干嘛的，比如对于发送系统调用，流从主语到对象，而对于接收系统调用，流从对象到主语。\n4. IMPLEMENTATION Tokenization 建立在 NLTK 句子标记器之上。NLTK (自然语言工具包)是一个常见的自然语言处理工具包，包含为英语开发的几个库和统计自然语言处理。我们选择 NLTK 是因为我们发现它比其他方法 (spaCy, Stanford)效果更好，并且在处理 CTI 域中的文本时更加一致。\nText Summarization 使用了一个12 个隐藏层 BERT 来区分生产性句子和非生产性句子。使用了8000个标记句子，训练模型。 为了理解单词在文本摘要器中的角色，使用了一个深度 BiLSTM 模型的重新实现。由于模型没有经过微调以处理网络安全句子，我们使用3,000个手动标记的句子来训练模型。\nSRL 为了实现 SRL，我们使用了[79]中描述的方法，该方法由[34]部署，该方法在 NLP 领域越来越流行。为了采用该系统并在网络安全领域获得更精确的输出，我们进一步用2000个网络安全句子重新训练模型，这些句子与我们注意到系统无法正确预测角色的领域相关。为了进一步完善，我们评估并展示了我们再培训的结果 (见章节 V-D)。\n数据构建 为了构建字典和我们的数据集，我们使用了从各种来源抓取的 CTI 报告池。我们使用了不同的来源，即 APT 报告存储库[6]、微软威胁中心[8]、赛门铁克安全中心[16]、威胁百科全书[18]和病毒雷达[20]，以确保多样性和覆盖范围。\n注意 先前的研究[52]，[45]，[89]利用各种 NLP 技术以 IOCs (即[52]，[89])和威胁行动 (即[45])的形式自动提取 CTI 报告中可用的知识。\n",
+  "wordCount" : "3509",
+  "inLanguage": "en",
+  "datePublished": "2023-06-22T00:00:00Z",
+  "dateModified": "2023-06-22T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "JUHUA"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/extractor_-extracting-attack-behavior-from-threat-reports/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "JUHUA's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://juhuax.github.io/%3Clink%20/%20abs%20url%3E"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://juhuax.github.io/" accesskey="h" title="JUHUA&#39;s Blog (Alt + H)">
+                <img src="https://juhuax.github.io/apple-touch-icon.png" alt="" aria-label="logo"
+                    height="35">JUHUA&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://juhuax.github.io/search" title="search (Alt &#43; /)" accesskey=/>
+                    <span>search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://juhuax.github.io/archives/" title="archives">
+                    <span>archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://juhuax.github.io/categories/" title="categories">
+                    <span>categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://juhuax.github.io/tags/" title="tags">
+                    <span>tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://juhuax.github.io/about" title="about">
+                    <span>about</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://juhuax.github.io/links" title="🤝友链">
+                    <span>🤝友链</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://juhuax.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://juhuax.github.io/posts/">Posts</a>&nbsp;»&nbsp;<a href="https://juhuax.github.io/posts/study/">学习</a></div>
+    <h1 class="post-title">
+      Extractor_ Extracting Attack Behavior from Threat Reports
+    </h1>
+  </header> <aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details  open>
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">Table of Contents</span>
+            </summary>
+
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#%e6%91%98%e8%a6%81" aria-label="摘要">摘要</a></li>
+                    <li>
+                        <a href="#1-introduction" aria-label="1. Introduction">1. Introduction</a><ul>
+                            
+                    <li>
+                        <a href="#%e6%8c%91%e6%88%98" aria-label="挑战">挑战</a></li>
+                    <li>
+                        <a href="#%e7%9b%ae%e6%a0%87" aria-label="目标">目标</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#2-%e9%97%ae%e9%a2%98%e5%92%8c%e8%83%8c%e6%99%af" aria-label="2. 问题和背景">2. 问题和背景</a><ul>
+                            
+                    <li>
+                        <a href="#%e9%97%ae%e9%a2%98%e6%8f%8f%e8%bf%b0" aria-label="问题描述">问题描述</a></li>
+                    <li>
+                        <a href="#%e6%8c%91%e6%88%98-1" aria-label="挑战">挑战</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#3-approach" aria-label="3. APPROACH">3. APPROACH</a><ul>
+                            
+                    <li>
+                        <a href="#a%e5%bd%92%e4%b8%80%e5%8c%96" aria-label="A.归一化">A.归一化</a><ul>
+                            
+                    <li>
+                        <a href="#tokenization" aria-label="Tokenization">Tokenization</a></li>
+                    <li>
+                        <a href="#homogenization" aria-label="Homogenization">Homogenization</a></li>
+                    <li>
+                        <a href="#coversion" aria-label="Coversion">Coversion</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#resolution" aria-label="Resolution">Resolution</a><ul>
+                            
+                    <li>
+                        <a href="#ellipsis-subject%e7%9c%81%e7%95%a5%e4%b8%bb%e8%af%ad-resolution-esr" aria-label="Ellipsis Subject（省略主语） Resolution (ESR)">Ellipsis Subject（省略主语） Resolution (ESR)</a></li>
+                    <li>
+                        <a href="#pronoun%e4%bb%a3%e8%af%8d-resolution-pr" aria-label="Pronoun（代词） Resolution (PR)">Pronoun（代词） Resolution (PR)</a></li>
+                    <li>
+                        <a href="#entity-resolution-er" aria-label="Entity Resolution (ER).">Entity Resolution (ER).</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#text-summarization" aria-label="text summarization">text summarization</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#graph-extraction" aria-label="graph extraction">graph extraction</a><ul>
+                            <ul>
+                            
+                    <li>
+                        <a href="#semantic-role-labeling-srl" aria-label="Semantic Role Labeling SRL">Semantic Role Labeling SRL</a></li>
+                    <li>
+                        <a href="#%e7%b3%bb%e7%bb%9f%e5%ae%9e%e4%bd%93%e6%8f%90%e5%8f%96%e5%99%a8-see" aria-label="系统实体提取器 (SEE)">系统实体提取器 (SEE)</a></li>
+                    <li>
+                        <a href="#graph-builder-gb" aria-label="graph builder GB">graph builder GB</a></li>
+                    <li>
+                        <a href="#%e5%9b%a0%e6%9e%9c%e6%8e%a8%e8%ae%ba-causal-inference" aria-label="因果推论 Causal Inference">因果推论 Causal Inference</a></li></ul>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#4-implementation" aria-label="4. IMPLEMENTATION">4. IMPLEMENTATION</a><ul>
+                            
+                    <li>
+                        <a href="#tokenization-1" aria-label="Tokenization">Tokenization</a></li>
+                    <li>
+                        <a href="#text-summarization-1" aria-label="Text Summarization">Text Summarization</a></li>
+                    <li>
+                        <a href="#srl" aria-label="SRL">SRL</a></li>
+                    <li>
+                        <a href="#%e6%95%b0%e6%8d%ae%e6%9e%84%e5%bb%ba" aria-label="数据构建">数据构建</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e6%b3%a8%e6%84%8f" aria-label="注意">注意</a>
+                    </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+
+  <div class="post-content"><p>中文译名：提取器: 从威胁报表中提取攻击行为
+作者：Kiavash Satvat
+单位：伊利诺伊大学芝加哥分校
+国家： #美国
+年份： #2021年
+来源： #SP
+关键字： #提取信息
+代码地址： <a href="https://github.com/ksatvat/Extractor">https://github.com/ksatvat/Extractor</a>
+笔记建立时间： 2023-04-13  17:43</p>
+<h2 id="摘要">摘要<a hidden class="anchor" aria-hidden="true" href="#摘要">#</a></h2>
+<ul>
+<li>提出 EXTRACTOR，可以从 CTI 报告（Cyber Threat Intelligence reports）中精确提取简洁的攻击行为</li>
+<li>可以提取非结构化文本，对文本没有要求</li>
+</ul>
+<h2 id="1-introduction">1. Introduction<a hidden class="anchor" aria-hidden="true" href="#1-introduction">#</a></h2>
+<h3 id="挑战">挑战<a hidden class="anchor" aria-hidden="true" href="#挑战">#</a></h3>
+<ul>
+<li>冗长：威胁报告中充斥着大量无关文本。</li>
+<li>CTI 报告的句法和语义复杂性、技术术语的普遍使用以及缺乏适当的标点符号很容易影响报告的解释和攻击行为的提取。</li>
+<li>难以准确地解释技术报告中的复杂逻辑。</li>
+</ul>
+<h3 id="目标">目标<a hidden class="anchor" aria-hidden="true" href="#目标">#</a></h3>
+<p>除了解决上面的挑战，作者还想实现两个目标：</p>
+<ul>
+<li>可操作的情报：EXTRACTOR 从文本中提取的攻击行为必须能在系统审计日志中被观察到，并能有效地用于威胁检测。不需要人员或工具的进一步处理</li>
+<li>准确处理大量 CTI 报告。
+<ul>
+<li>自动挖掘更大的知识源（能够处理不同的文本）</li>
+<li>从 CTI 报告中构建图表表示</li>
+<li>从与不同组织中的同一攻击相关的各种 CTI 源提取信息</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-问题和背景">2. 问题和背景<a hidden class="anchor" aria-hidden="true" href="#2-问题和背景">#</a></h2>
+<h3 id="问题描述">问题描述<a hidden class="anchor" aria-hidden="true" href="#问题描述">#</a></h3>
+<p><img loading="lazy" src="https://gitee.com/juhuahua/chart-bed/raw/master/20230415100420.png" alt="image.png"  />
+
+（实现效果）
+报告 (左图)是 njRAT的自由改编，删除了不相关的句子。这个例子展示了语言的复杂性，这将在本文中讨论。在相应的来源图中 (右侧)，节点表示系统实体，边指向系统调用。矩形、椭圆形、五边形和菱形分别表示文件、进程、注册表和套接字。</p>
+<h3 id="挑战-1">挑战<a hidden class="anchor" aria-hidden="true" href="#挑战-1">#</a></h3>
+<ul>
+<li>冗余</li>
+<li>CTI 文本的复杂性
+<ul>
+<li>缺少标点符号——NLP 工具难以分辨句子边界</li>
+<li>专业单词——NLP 工具是用通用英语来训练的。</li>
+<li>省略：CTI 报告中经常出现缺少主语或宾语的情况</li>
+<li>不能忽略代词。</li>
+<li>复杂的语言结构：结构的复杂性和各种语言技术 (如回指、名词化和列表)的使用可能会混淆常见的 NLP 工具。总的影响是，许多主语、动词和宾语被错误地分类并无法解决。</li>
+</ul>
+</li>
+<li>关系的提取：不能仅仅依赖句子的语法结构，还要分析语义</li>
+</ul>
+<h2 id="3-approach">3. APPROACH<a hidden class="anchor" aria-hidden="true" href="#3-approach">#</a></h2>
+<p><img loading="lazy" src="https://gitee.com/juhuahua/chart-bed/raw/master/20230415153215.png" alt="image.png"  />
+
+EXTRACTOR 有四个主要组成部分:1)归一化，2)resolution，3)摘要，4)图生成。</p>
+<ul>
+<li>规范化负责第一轮的句子简化和转换到标准形式。</li>
+<li>Resolution 解决了这些句子中的歧义</li>
+<li>摘要删除了与攻击行为不严格相关的部分文本。</li>
+<li>最后，图生成负责解决文本中事件之间的时间和因果顺序，并构建最终的起源图 。</li>
+</ul>
+<p>实例：
+<img loading="lazy" src="https://gitee.com/juhuahua/chart-bed/raw/master/20230415155952.png" alt="image.png"  />
+</p>
+<h3 id="a归一化">A.归一化<a hidden class="anchor" aria-hidden="true" href="#a归一化">#</a></h3>
+<p>目的：生成规范的句子形式——将长而复杂的句子分解成更短的句子，以规范的形式出现。直观的说，每个句子都表达一个单独的动作，这样动作的主体和对象以及动作本身就更容易识别。
+操作：规范化由 Tokenization、Homogenization 和 Conversion.组成。这些步骤分别执行句子边界检测、单词同质化和被动到主动动词转换。</p>
+<h4 id="tokenization">Tokenization<a hidden class="anchor" aria-hidden="true" href="#tokenization">#</a></h4>
+<p>目的：划分句子</p>
+<ul>
+<li>使用标点符号、新行、项目符号、枚举数字以及标题和题目作为句子分隔符，将长句子分割为单词序列</li>
+<li>如果每个短序列满足以下要求，就升级为一个长句子
+<ul>
+<li>以大写的主语开始，包含了构成一个完整句子所必须的所有成分，并且前后序列也是完整句子</li>
+<li>以一个动词开始，并且该动词包含在系统调用字典中，序列包含了构成一个完整句子所必须的所有成分，并且前后序列也是完整句子</li>
+</ul>
+</li>
+<li>示例（图 4）：
+<ul>
+<li>4-9 是一个长句子, 首先被划分为更短的序列，然后用 POS 和 DP 为其标记。并检查是否满足以上两个条件。</li>
+<li>第4行序列满足第一种情况的条件，而第5-9行序列满足第二种情况 (省略主语)的条件。</li>
+</ul>
+</li>
+</ul>
+<h4 id="homogenization">Homogenization<a hidden class="anchor" aria-hidden="true" href="#homogenization">#</a></h4>
+<p>目的：将同一概念的多个文本表示替换为同一文本表示的过程。</p>
+<ul>
+<li>CTI 报告通常包含可能引入歧义并影响最终结果质量的结构和同义词。例如，C 2、C&amp;C 和 Command and Control 是同一个实体的不同表示，而像 stores、save 这样的动词可能表示对应于写入系统调用的操作。</li>
+</ul>
+<p>操作：</p>
+<ul>
+<li>使用两个专门构建的字典对名词短语和动词进行 Homogenization，将 CTI 报告中出现的不同术语的同义词映射到审计日志中可以观察到的实体或操作。</li>
+</ul>
+<h4 id="coversion">Coversion<a hidden class="anchor" aria-hidden="true" href="#coversion">#</a></h4>
+<p>目的：EXTRACTOR 将被动语态转换为主动语态。这种转换有助于发现系统主体 (过程)和系统对象，以及使因果关系推断更准确.
+操作：</p>
+<ul>
+<li>使用 POS 和 DP 来检测被动句</li>
+<li>然后转换主语和实施者，并将被动动词转换为主动动词。</li>
+</ul>
+<p>经过归一化的三部分后，长句被转换为短句，并且每个短句都以主动的形式来表达一个动作。</p>
+<h3 id="resolution">Resolution<a hidden class="anchor" aria-hidden="true" href="#resolution">#</a></h3>
+<p>这部分主要用于解决句子的歧义，作者原话是“Resolution 将引用同一实体的隐式引用与实际引用进行协调”，我的理解是隐式引用可能存在一些省略的主语导致句子产生歧义，那 Resolution 就需要对主语进行补充，将隐式引用转换为显式引用。</p>
+<h4 id="ellipsis-subject省略主语-resolution-esr">Ellipsis Subject（省略主语） Resolution (ESR)<a hidden class="anchor" aria-hidden="true" href="#ellipsis-subject省略主语-resolution-esr">#</a></h4>
+<p>图四示例中的第 5-9 都是省略主语
+目的：找到并补充主语
+操作：</p>
+<ul>
+<li>利用 POS 和 DP 找到缺少主语的句子</li>
+<li>使用当前句子之前的句子中出现的实体构建一个候选主语列表</li>
+<li>计算候选主语和缺少主语的句子之间的距离（以句子数计算），距离越近被选中的概率越高。</li>
+</ul>
+<p>示例：
+图四的5-9行句子中缺少主语。ESR 模块检测前面句子中的主语和其他宾语，并选择出现在冒号前面的代词作为主语。</p>
+<h4 id="pronoun代词-resolution-pr">Pronoun（代词） Resolution (PR)<a hidden class="anchor" aria-hidden="true" href="#pronoun代词-resolution-pr">#</a></h4>
+<p>目的：代词解析是将代词映射并替换到其所指的先行词实体的过程。
+操作：</p>
+<ul>
+<li>采用了一个流行的共指解析模型 NeuralCoref。这个模型在解析 CTI 报表域中的代词时效果最好，特别是在前面的 ESR 和 Tokenization 步骤之后。图4，第4、5和6行演示了已解析的前名词 (即 it 和本身)及其对应的引用 (autoalization .exe)。</li>
+</ul>
+<h4 id="entity-resolution-er">Entity Resolution (ER).<a hidden class="anchor" aria-hidden="true" href="#entity-resolution-er">#</a></h4>
+<p>实体解析是指在同一句中指代另一个实体的名词或动词短语被该实体替换或作为冗余删除的过程。
+（这部分和代词有点像，例如，在图4的第11行中，The following files 指的是 mscno. exe authorization. EXE-0AD199D6. pf。这部分就是要把 The following files 换成具体的实体名）
+这类词主要有三类：Anaphora（指代），Nominalization（名词化），auxiliary verb（助动词）</p>
+<p>在 Resolution 模块过后，此时的文本由具有明确主语、宾语和动词的句子组成。</p>
+<h3 id="text-summarization">text summarization<a hidden class="anchor" aria-hidden="true" href="#text-summarization">#</a></h3>
+<p><img loading="lazy" src="https://gitee.com/juhuahua/chart-bed/raw/master/20230418173806.png" alt="image.png"  />
+
+目的：对审计报告中没有出现的内容进行删除，也就是说作者希望能够对文本更近一步的进行处理，不是简单的剔除非技术内容。
+操作：</p>
+<ul>
+<li>使用 bert 模型将句子分为生产性和非生产性</li>
+<li>使用 BiLSTM 推导生产性句子组件的语义角色，并删除不必要的单词
+<ul>
+<li>为了避免删除可能包含重要对象的句子组件，使得删除更加精确，使用系统实体提取器——如果一个被标记为需要删除的句子组成部分不包含 SEE 组件规则可以生成的任何实体，则该组成部分将被删除。</li>
+</ul>
+</li>
+</ul>
+<p>text summarization 是 EXTRACTOR 的核心组件之一。它负责大大降低文本的复杂性和数量，同时保留描述可观察行为的最重要的句子。
+最后输出的文本形式是：系统主体 (例如，进程)、对象 (例如，文件、套接字)和操作 (例如，执行)。文本是明确的、有序的，并且大部分多余的文本被消除了</p>
+<h2 id="graph-extraction">graph extraction<a hidden class="anchor" aria-hidden="true" href="#graph-extraction">#</a></h2>
+<p>但是只是简单的将主语和对象设置为图中结点，动词设置为图中的边生成的图模糊且巨大。</p>
+<h4 id="semantic-role-labeling-srl">Semantic Role Labeling SRL<a hidden class="anchor" aria-hidden="true" href="#semantic-role-labeling-srl">#</a></h4>
+<p>SRL 可以从句子中提取角色，并且理解哪个是动作实施者，哪个是接受者。</p>
+<h4 id="系统实体提取器-see">系统实体提取器 (SEE)<a hidden class="anchor" aria-hidden="true" href="#系统实体提取器-see">#</a></h4>
+<p>SEE 模块，从 SRL 生成的角色中提取代表系统实体的简洁节点，并修剪掉不能构成可能的系统实体的无用部分。
+SEE 使用超过 32 种不同的正则表达式和应用程序名称或知名进程的数据库检测可能的系统实体名称 (例如，文件或进程名称，IP，注册表项)。</p>
+<h4 id="graph-builder-gb">graph builder GB<a hidden class="anchor" aria-hidden="true" href="#graph-builder-gb">#</a></h4>
+<p>分两个步骤，第一步就是根据 see 修剪后剩下的文本，将主语作为结点，动作作为边构建图。
+第二步就是基于因果推论来确定边的方向。</p>
+<h4 id="因果推论-causal-inference">因果推论 Causal Inference<a hidden class="anchor" aria-hidden="true" href="#因果推论-causal-inference">#</a></h4>
+<p>这步用于确定图中边的方向。根据系统调用到系统流方向的映射。啥意思，就是看这个系统调用是干嘛的，比如对于发送系统调用，流从主语到对象，而对于接收系统调用，流从对象到主语。</p>
+<h2 id="4-implementation">4. IMPLEMENTATION<a hidden class="anchor" aria-hidden="true" href="#4-implementation">#</a></h2>
+<h3 id="tokenization-1">Tokenization<a hidden class="anchor" aria-hidden="true" href="#tokenization-1">#</a></h3>
+<p>建立在 NLTK 句子标记器之上。NLTK (自然语言工具包)是一个常见的自然语言处理工具包，包含为英语开发的几个库和统计自然语言处理。我们选择 NLTK 是因为我们发现它比其他方法 (spaCy, Stanford)效果更好，并且在处理 CTI 域中的文本时更加一致。</p>
+<h3 id="text-summarization-1">Text Summarization<a hidden class="anchor" aria-hidden="true" href="#text-summarization-1">#</a></h3>
+<p>使用了一个12 个隐藏层 BERT 来区分生产性句子和非生产性句子。使用了8000个标记句子，训练模型。
+为了理解单词在文本摘要器中的角色，使用了一个深度 BiLSTM 模型的重新实现。由于模型没有经过微调以处理网络安全句子，我们使用3,000个手动标记的句子来训练模型。</p>
+<h3 id="srl">SRL<a hidden class="anchor" aria-hidden="true" href="#srl">#</a></h3>
+<p>为了实现 SRL，我们使用了[79]中描述的方法，该方法由[34]部署，该方法在 NLP 领域越来越流行。为了采用该系统并在网络安全领域获得更精确的输出，我们进一步用2000个网络安全句子重新训练模型，这些句子与我们注意到系统无法正确预测角色的领域相关。为了进一步完善，我们评估并展示了我们再培训的结果 (见章节 V-D)。</p>
+<h3 id="数据构建">数据构建<a hidden class="anchor" aria-hidden="true" href="#数据构建">#</a></h3>
+<p>为了构建字典和我们的数据集，我们使用了从各种来源抓取的 CTI 报告池。我们使用了不同的来源，即 APT 报告存储库[6]、微软威胁中心[8]、赛门铁克安全中心[16]、威胁百科全书[18]和病毒雷达[20]，以确保多样性和覆盖范围。</p>
+<h2 id="注意">注意<a hidden class="anchor" aria-hidden="true" href="#注意">#</a></h2>
+<p>先前的研究[52]，[45]，[89]利用各种 NLP 技术以 IOCs (即[52]，[89])和威胁行动 (即[45])的形式自动提取 CTI 报告中可用的知识。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://juhuax.github.io/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/evil-exploiting-software-via-natural-language/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>EVIL Exploiting Software via Natural Language</span>
+  </a>
+  <a class="next" href="https://juhuax.github.io/posts/study/2.%E5%88%B7%E9%A2%98/ctf/pwn/fastbin-attack/">
+    <span class="title">Next »</span>
+    <br>
+    <span>fastbin attack</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share Extractor_ Extracting Attack Behavior from Threat Reports on twitter"
+        href="https://twitter.com/intent/tweet/?text=Extractor_%20Extracting%20Attack%20Behavior%20from%20Threat%20Reports&amp;url=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f2.%25E8%25AF%25A6%25E7%25BB%2586%25E7%25AC%2594%25E8%25AE%25B0%2fextractor_-extracting-attack-behavior-from-threat-reports%2f&amp;hashtags=%e8%ae%ba%e6%96%87%e9%98%85%e8%af%bb">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share Extractor_ Extracting Attack Behavior from Threat Reports on linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f2.%25E8%25AF%25A6%25E7%25BB%2586%25E7%25AC%2594%25E8%25AE%25B0%2fextractor_-extracting-attack-behavior-from-threat-reports%2f&amp;title=Extractor_%20Extracting%20Attack%20Behavior%20from%20Threat%20Reports&amp;summary=Extractor_%20Extracting%20Attack%20Behavior%20from%20Threat%20Reports&amp;source=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f2.%25E8%25AF%25A6%25E7%25BB%2586%25E7%25AC%2594%25E8%25AE%25B0%2fextractor_-extracting-attack-behavior-from-threat-reports%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share Extractor_ Extracting Attack Behavior from Threat Reports on reddit"
+        href="https://reddit.com/submit?url=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f2.%25E8%25AF%25A6%25E7%25BB%2586%25E7%25AC%2594%25E8%25AE%25B0%2fextractor_-extracting-attack-behavior-from-threat-reports%2f&title=Extractor_%20Extracting%20Attack%20Behavior%20from%20Threat%20Reports">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share Extractor_ Extracting Attack Behavior from Threat Reports on facebook"
+        href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f2.%25E8%25AF%25A6%25E7%25BB%2586%25E7%25AC%2594%25E8%25AE%25B0%2fextractor_-extracting-attack-behavior-from-threat-reports%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share Extractor_ Extracting Attack Behavior from Threat Reports on whatsapp"
+        href="https://api.whatsapp.com/send?text=Extractor_%20Extracting%20Attack%20Behavior%20from%20Threat%20Reports%20-%20https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f2.%25E8%25AF%25A6%25E7%25BB%2586%25E7%25AC%2594%25E8%25AE%25B0%2fextractor_-extracting-attack-behavior-from-threat-reports%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share Extractor_ Extracting Attack Behavior from Threat Reports on telegram"
+        href="https://telegram.me/share/url?text=Extractor_%20Extracting%20Attack%20Behavior%20from%20Threat%20Reports&amp;url=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f2.%25E8%25AF%25A6%25E7%25BB%2586%25E7%25AC%2594%25E8%25AE%25B0%2fextractor_-extracting-attack-behavior-from-threat-reports%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>JUHUA</span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

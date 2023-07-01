@@ -1,30 +1,25 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>作业 on BLOG</title>
+    <title>作业 on JUHUA&#39;s Blog</title>
     <link>https://juhuax.github.io/categories/%E4%BD%9C%E4%B8%9A/</link>
-    <description>Recent content in 作业 on BLOG</description>
+    <description>Recent content in 作业 on JUHUA&#39;s Blog</description>
     <image>
-      <title>BLOG</title>
+      <title>JUHUA&#39;s Blog</title>
       <url>https://juhuax.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
       <link>https://juhuax.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
+    <language>zh-cn</language>
+    <copyright>JUHUA</copyright>
     <lastBuildDate>Thu, 22 Jun 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://juhuax.github.io/categories/%E4%BD%9C%E4%B8%9A/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>HALucinator Firmware Re-hosting Through Abstraction Layer Emulation</title>
-      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/halucinator-firmware-re-hosting-through-abstraction-layer-emulation/</link>
+      <link>https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/halucinator-firmware-re-hosting-through-abstraction-layer-emulation/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/halucinator-firmware-re-hosting-through-abstraction-layer-emulation/</guid>
-      <description>中文译名：HALucinator: 通过抽象层仿真重新托管固件 作者：Abraham A. Clements 单位：桑迪亚国家实验室 国家： #美国 年份： #2020年 来源： #USENIX会议 关键字： #固件 #仿真托管 代码地址： 笔记建立时间： 2023-03-04 10:29
-摘要 背景：硬件和固件之间的紧密耦合以及嵌入式系统中的多样性使得对固件进行动态分析变得困难。 现状：固件开发人员经常使用抽象，如硬件抽象层（HAL），来简化他们的工作。 方法：利用这些抽象作为重新托管和分析固件的基础。通过为 HAL 函数提供高级替代（一个称为高级模拟 - HLE 的过程），将硬件和固件分离。首先通过二进制分析定位固件样本中的库函数，然后在全系统模拟器中提供这些函数的通用实现。 工作：对现有库匹配技术进行扩展，可以识别二进制固件中的库函数；使用简化处理程序喝外设模型来进行 re-hosting；集成到 AFL 来演示安全分析方面的应用
-1引言 背景： 固件动态分析难
-固件有硬件依赖性，传统的手段不好实施 嵌入式硬件提供有限的内省能力，包括极其有限数量的断点和监视点，大大限制了对固件进行动态分析的能力。 没有源代码，并且固件难以获得，即使得到固件也难以处理复杂的环境依赖 模拟具有局限性：
-嵌入式硬件中的异构性对固件模拟构成了重大障碍，模拟需要对片上外设和内存布局以专门方式支持 流行的开源 QEMU 模拟器支持不到 30 种 ARM 设备 英特尔的 SIMICS [38, 57]支持许多 CPU 和外设，但要求分析师手动构建硬件级别的完整系统模型。 大多数嵌入式系统还需要其他硬件组件才可能使固件运行（如传感器、存储设备或网络组件），然而这些外设几乎没有模拟支持 现状：
-模拟器将固件与不受支持的外设的交互转发的真实设备上 受硬件可用的限制 分析和插桩受限 记录并重放或建模来自硬件的数据 上述问题同样困扰固件开发人员 芯片供应商和各种第三方提供了硬件抽象层 HAL。HAL 是软件库，为程序员提供高级硬件操作，同时隐藏固件执行所在特定芯片或系统的细节。 方法： 通过使用高级抽象层和可重用的替换功能来实现嵌入式系统的可扩展模拟，称为高级模拟 (HLE)
-首先识别固件映像中负责硬件交互的 HAL 函数 然后 HLE 提供简单的、分析师创建的高级替换（称之为处理程序）替换 HAL 函数， 这种替换可以扩展到来自同一供应商的芯片，甚至扩展到使用相同中间件库的固件 这些处理程序可以使用外设模型，它们作为硬件外设通用类别的抽象，并在模拟环境和主机环境之间作为交互点，而无需复杂逻辑。 贡献：</description>
+      <guid>https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/halucinator-firmware-re-hosting-through-abstraction-layer-emulation/</guid>
+      <description>中文译名：HALucinator: 通过抽象层仿真重新托管固件 作者：Abraham A. Clements 单位：桑迪亚国家实验室 国家： #美国 年份： #2020年 来源</description>
     </item>
     
   </channel>

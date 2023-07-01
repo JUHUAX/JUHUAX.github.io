@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>pwn细碎知识 | JUHUA&#39;s Blog</title>
+<meta name="keywords" content="PWN知识点">
+<meta name="description" content="「二进制安全pwn基础」 - 网安 知识点 [[静态链接栈溢出]] 如何将一个数转化为底层二进制的机器码，最简单的方式就是在IDA中直接看汇编 (80条">
+<meta name="author" content="JUHUA">
+<link rel="canonical" href="https://juhuax.github.io/posts/study/2.%E5%88%B7%E9%A2%98/ctf/pwn/pwn%E7%BB%86%E7%A2%8E%E7%9F%A5%E8%AF%86/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4ab2947a83bffe949c0838eecd8aec6f58435be7a122bafeab2b538d1cdcf5ad.css" integrity="sha256-SrKUeoO//pScCDjuzYrsb1hDW&#43;ehIrr&#43;qytTjRzc9a0=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://juhuax.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="icon" type="image/png" sizes="16x16" href="https://juhuax.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="icon" type="image/png" sizes="32x32" href="https://juhuax.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="apple-touch-icon" href="https://juhuax.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="mask-icon" href="https://juhuax.github.io/%3Clink%20/%20abs%20url%3E">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css" />
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-123-45', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script><meta property="og:title" content="pwn细碎知识" />
+<meta property="og:description" content="「二进制安全pwn基础」 - 网安 知识点 [[静态链接栈溢出]] 如何将一个数转化为底层二进制的机器码，最简单的方式就是在IDA中直接看汇编 (80条" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://juhuax.github.io/posts/study/2.%E5%88%B7%E9%A2%98/ctf/pwn/pwn%E7%BB%86%E7%A2%8E%E7%9F%A5%E8%AF%86/" /><meta property="og:image" content="https://juhuax.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-06-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-06-22T00:00:00+00:00" /><meta property="og:site_name" content="JUHUA&#39;s Blog" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://juhuax.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/>
+
+<meta name="twitter:title" content="pwn细碎知识"/>
+<meta name="twitter:description" content="「二进制安全pwn基础」 - 网安 知识点 [[静态链接栈溢出]] 如何将一个数转化为底层二进制的机器码，最简单的方式就是在IDA中直接看汇编 (80条"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://juhuax.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "学习",
+      "item": "https://juhuax.github.io/posts/study/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "pwn细碎知识",
+      "item": "https://juhuax.github.io/posts/study/2.%E5%88%B7%E9%A2%98/ctf/pwn/pwn%E7%BB%86%E7%A2%8E%E7%9F%A5%E8%AF%86/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "pwn细碎知识",
+  "name": "pwn细碎知识",
+  "description": "「二进制安全pwn基础」 - 网安 知识点 [[静态链接栈溢出]] 如何将一个数转化为底层二进制的机器码，最简单的方式就是在IDA中直接看汇编 (80条",
+  "keywords": [
+    "PWN知识点"
+  ],
+  "articleBody": "「二进制安全pwn基础」 - 网安\n知识点 [[静态链接栈溢出]] 如何将一个数转化为底层二进制的机器码，最简单的方式就是在IDA中直接看汇编 (80条消息) 堆漏洞挖掘中的bins分类(fastbin、unsorted bin、small bin、large bin)_arena bins_董哥的黑板报的博客-CSDN博客 fastbin 大小在32字节~128字节（0x20~0x80） unsorted bin 对chunk的大小并没有限制，任何大小的chunk都可以归属到unsorted bin中 small bin 小于1024字节（0x400）的chunk large bin 大于等于1024字节（0x400）的chunk (80条消息) 堆漏洞挖掘中chunk的实际大小、最低大小、 mchunk_size成员_为什么申请的堆块大小会多加0x10_董哥的黑板报的博客-CSDN博客 当用户申请size大小的堆块时，在glibc中本质上是申请了size+16大小（64位系统中）的内存，因为要加上前两个成员 例如：malloc(0x10);申请了0x10大小的堆内存，本质上在glibc中申请了0x10+0x10=0x20大小的空间。 shellcode=asm(shellcraft.sh()) (68条消息) 堆中各个重要参数的意义（用于学习入门个人记录）_月阴荒的博客-CSDN博客 64 位记得用寄存器，32 位传参是在栈上 64位汇编传参，当参数少于7个时， 参数从左到右放入寄存器: rdi, rsi, rdx, rcx, r8, r9。 当参数为7个以上时， 前 6 个与前面一样， 但后面的依次从 “右向左” 放入栈中，即和32位汇编一样 要懂得多试几个，这道题的 printf_got 用不了，那就换成 read 关于两种 libc 1 2 3 4 5 6 7 8 libc_base = read_addr - libc.symbols[\"read\"] system_addr = libc_base + libc.symbols[\"system\"] str_bin_sh = libc_base + libc.search(b'/bin/sh').__next__() # libc = LibcSearcher('printf', printf_addr) # libc_base = printf_addr - libc.dump(\"printf\") # system_addr = libc_base + libc.dump(\"system\") # str_bin_sh = libc_base + libc.dump(\"str_bin_sh\") 关于接收地址 1 2 3 4 5 6 #32位用这个 print(p.recvuntil('\\n')) read_addr = u32(p.recv(4)) #64位用这个 read_addr = u64(p.recvuntil('\\x7f')[-6:].ljust(8,b'\\x00')) print(hex(read_addr)) 对ret栈对齐的解释 Ubuntu18以上系统64位的glibc的payload调用system函数时，所需注意的堆栈平衡问题 - PiCpo的阁楼\n常见的寄存器 sp/esp/rsp（16bit/32bit/64bit）栈寄存器—指向栈顶 bp/ebp/rbp 栈基址寄存器—指向栈底 ip/eip/rip 程序指令寄存器—指向下一条待执行指令 工具 checksec checksec -file=filename checksec工具使用-pwn - 简书 (jianshu.com)\nArch：程序的架构信息。判断是拖进64位IDA还是32位？exp编写时p64还是p32函数？ RELRO：Relocation Read-Only (RELRO) 此项技术主要针对 GOT 改写的攻击方式。它分为两种，Partial RELRO 和 Full RELRO。 Stack-canary：栈溢出保护是一种缓冲区溢出攻击缓解手段，当函数存在缓冲区溢出攻击漏洞时，攻击者可以覆盖栈上的返回地址来让shellcode能够得到执行。当启用栈保护后，函数开始执行的时候会先往栈里插入类似cookie的信息，当函数真正返回的时候会验证cookie信息是否合法，如果不合法就停止程序运行。攻击者在覆盖返回地址的时候往往也会将cookie信息给覆盖掉，导致栈保护检查失败而阻止shellcode的执行。在Linux中我们将cookie信息称为canary。 **NX：**NX enabled如果这个保护开启就是意味着栈中数据没有执行权限，如此一来, 当攻击者在堆栈上部署自己的 shellcode 并触发时, 只会直接造成程序的崩溃，但是可以利用rop这种方法绕过 PIE：PIE(Position-Independent Executable, 位置无关可执行文件)技术与 ASLR 技术类似,ASLR 将程序运行时的堆栈以及共享库的加载地址随机化, 而 PIE 技术则在编译时将程序编译为位置无关, 即程序运行时各个段（如代码段等）加载的虚拟地址也是在装载时才确定。这就意味着, 在 PIE 和 ASLR 同时开启的情况下, 攻击者将对程序的内存布局一无所知, 传统的改写GOT 表项的方法也难以进行, 因为攻击者不能获得程序的.got 段的虚地址。 若开启一般需在攻击时泄露地址信息 RPATH/RUNPATH：程序运行时的环境变量，运行时所需要的共享库文件优先从该目录寻找，可以fake lib造成攻击 FORTIFY：这是一个由GCC实现的源码级别的保护机制，其功能是在编译的时候检查源码以避免潜在的缓冲区溢出等错误。简单地说，加了这个保护之后,一些敏感函数如read, fgets,memcpy, printf等等可能导致漏洞出现的函数都会被替换成**read_chk,**fgets_chk, memcpy_chk, printf_chk等。这些带了chk的函数会检查读取/复制的字节长度是否超过缓冲区长度，通过检查诸如%n之类的字符串位置是否位于可能被用户修改的可写地址，避免了格式化字符串跳过某些参数（如直接%7$x）等方式来避免漏洞出现。开启了FORTIFY保护的程序会被checksec检出，此外，在反汇编时直接查看got表也会发现chk函数的存在。 GDB aslr – 查看 GDB 的 ASLR 设置 checksec – 查看各种安全配置 dumpargs – 显示函数的传参，当在 call 指令处断下时 dumprop – Dump 所有 ROP gadgets 在特定的内存范围 elfheader – 获取 header 的信息 elfsymbol – 获取 non-debugging 的符号信息 lookup – 在指定地址范围内查找地址引用 patch – 在内存开始处 (with string/hexstring/int) Patch pattern – 内存循环模式的操作 procinfo – 在 /proc/pid/ 显示各种信息 pshow – 显示各种 PEDA 操作和其他的设置 pset – 设置各种 PEDA 的操作和其他配置 readelf – 获取 elf 文件 header 信息 ropgadget – 获取 ROP gadgets (二进制或者库) ropsearch – 在内存中查找 ROP gadgets searchmem|find – 寻找内存的 pattern，支持 regex 查找 shellcode – 生成或者下载常见的 shellcodes skeleton – 生成 python 利用漏洞模板 vmmap – 获得 section 的虚拟映射地址范围 xormem – XOR a memory region with a key 通过 key XOR 一个内存域\nX 检查内存，常用。 x/nfu x n, f, 和 u 都是可选参数，用于指定要显示的内存以及如何格式化。 addr 是要开始显示内存的地址的表达式。 n 重复次数（默认值是 1），指定要显示多少个单位（由 u 指定）的内存值。 f 显示格式（初始默认值是 x），显示格式是 print(‘x’，’d’，‘u’，‘o’，’t’，‘a’，‘c’，‘f’，’s’) 使用的格式之一，再加 i（机器指令）。 u 单位大小，b 表示单字节，h 表示双字节，w 表示四字节，g 表示八字节。 disassemble（简写：disas） disas 反汇编指定函数 disas 反汇编某地址所在函数 disas 反汇编从开始地址到结束地址的部分 backtrace（简写：bt） 栈回溯 bt 打印整个栈的回溯，每个栈帧一行。 bt n 类似于上，但只打印最内层的 n 个栈帧。 bt -n 类似于上，但只打印最外层的 n 个栈帧。 bt full n 类似于 bt n，还打印局部变量的值。 资料 [原创][新手向] 一步一步学pwntools-Pwn-看雪论坛-安全社区|安全招聘|bbs.pediy.com\n",
+  "wordCount" : "2704",
+  "inLanguage": "en",
+  "datePublished": "2023-06-22T00:00:00Z",
+  "dateModified": "2023-06-22T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "JUHUA"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://juhuax.github.io/posts/study/2.%E5%88%B7%E9%A2%98/ctf/pwn/pwn%E7%BB%86%E7%A2%8E%E7%9F%A5%E8%AF%86/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "JUHUA's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://juhuax.github.io/%3Clink%20/%20abs%20url%3E"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://juhuax.github.io/" accesskey="h" title="JUHUA&#39;s Blog (Alt + H)">
+                <img src="https://juhuax.github.io/apple-touch-icon.png" alt="" aria-label="logo"
+                    height="35">JUHUA&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://juhuax.github.io/search" title="search (Alt &#43; /)" accesskey=/>
+                    <span>search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://juhuax.github.io/archives/" title="archives">
+                    <span>archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://juhuax.github.io/categories/" title="categories">
+                    <span>categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://juhuax.github.io/tags/" title="tags">
+                    <span>tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://juhuax.github.io/about" title="about">
+                    <span>about</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://juhuax.github.io/links" title="🤝友链">
+                    <span>🤝友链</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://juhuax.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://juhuax.github.io/posts/">Posts</a>&nbsp;»&nbsp;<a href="https://juhuax.github.io/posts/study/">学习</a></div>
+    <h1 class="post-title">
+      pwn细碎知识
+    </h1>
+  </header> <aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details  open>
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">Table of Contents</span>
+            </summary>
+
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#%e7%9f%a5%e8%af%86%e7%82%b9" aria-label="知识点">知识点</a><ul>
+                            <ul>
+                            
+                    <li>
+                        <a href="#%e5%85%b3%e4%ba%8e%e4%b8%a4%e7%a7%8d-libc" aria-label="关于两种 libc">关于两种 libc</a></li>
+                    <li>
+                        <a href="#%e5%85%b3%e4%ba%8e%e6%8e%a5%e6%94%b6%e5%9c%b0%e5%9d%80" aria-label="关于接收地址">关于接收地址</a></li>
+                    <li>
+                        <a href="#%e5%af%b9ret%e6%a0%88%e5%af%b9%e9%bd%90%e7%9a%84%e8%a7%a3%e9%87%8a" aria-label="对ret栈对齐的解释">对ret栈对齐的解释</a></li></ul>
+                        
+                    <li>
+                        <a href="#%e5%b8%b8%e8%a7%81%e7%9a%84%e5%af%84%e5%ad%98%e5%99%a8" aria-label="常见的寄存器">常见的寄存器</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e5%b7%a5%e5%85%b7" aria-label="工具">工具</a><ul>
+                            
+                    <li>
+                        <a href="#checksec" aria-label="checksec">checksec</a><ul>
+                            
+                    <li>
+                        <a href="#gdb" aria-label="GDB">GDB</a></li></ul>
+                    </li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e8%b5%84%e6%96%99" aria-label="资料">资料</a>
+                    </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+
+  <div class="post-content"><p><a href="https://www.wangan.com/docs/pwn-base">「二进制安全pwn基础」 - 网安</a></p>
+<h1 id="知识点">知识点<a hidden class="anchor" aria-hidden="true" href="#知识点">#</a></h1>
+<ul>
+<li>[[静态链接栈溢出]]</li>
+<li>如何将一个数转化为底层二进制的机器码，最简单的方式就是在IDA中直接看汇编</li>
+<li><a href="https://blog.csdn.net/qq_41453285/article/details/96865321">(80条消息) 堆漏洞挖掘中的bins分类(fastbin、unsorted bin、small bin、large bin)_arena bins_董哥的黑板报的博客-CSDN博客</a>
+<ul>
+<li>fastbin  大小在32字节~128字节（0x20~0x80）</li>
+<li>unsorted bin 对chunk的大小并没有限制，任何大小的chunk都可以归属到unsorted bin中</li>
+<li>small bin 小于1024字节（0x400）的chunk</li>
+<li>large bin 大于等于1024字节（0x400）的chunk</li>
+</ul>
+</li>
+<li><a href="https://blog.csdn.net/qq_41453285/article/details/97611079#:~:text=%E6%80%BB%E7%BB%93%EF%BC%9A,chunk%E7%9A%84%E5%AE%9E%E9%99%85%E5%A4%A7%E5%B0%8F%3Dmalloc%E7%9A%84%E5%A4%A7%E5%B0%8F%2Bchunk%E7%9A%84%E5%89%8D%E4%B8%A4%E4%B8%AA%E6%88%90%E5%91%98%2Bmchunk_prev_size%E6%88%90%E5%91%98%E7%9A%84%E5%90%88%E5%B9%B6%E6%93%8D%E4%BD%9C%2Bchunk%E5%AF%B9%E9%BD%90%E8%A7%84%E5%88%99%E3%80%82">(80条消息) 堆漏洞挖掘中chunk的实际大小、最低大小、 mchunk_size成员_为什么申请的堆块大小会多加0x10_董哥的黑板报的博客-CSDN博客</a>
+<ul>
+<li>当用户申请size大小的堆块时，在glibc中本质上是申请了size+16大小（64位系统中）的内存，因为要加上前两个成员</li>
+<li>例如：malloc(0x10);申请了0x10大小的堆内存，本质上在glibc中申请了0x10+0x10=0x20大小的空间。</li>
+</ul>
+</li>
+<li><code>shellcode=asm(shellcraft.sh())</code></li>
+<li><a href="https://blog.csdn.net/weixin_43847969/article/details/104897249">(68条消息) 堆中各个重要参数的意义（用于学习入门个人记录）_月阴荒的博客-CSDN博客</a></li>
+<li>64 位记得用寄存器，32 位传参是在栈上
+<ul>
+<li>64位汇编传参，当参数少于7个时， 参数从左到右放入寄存器: rdi, rsi, rdx, rcx, r8, r9。  当参数为7个以上时， 前 6 个与前面一样， 但后面的依次从 “右向左” 放入栈中，即和32位汇编一样</li>
+</ul>
+</li>
+<li>要懂得多试几个，这道题的 printf_got 用不了，那就换成 read</li>
+</ul>
+<h3 id="关于两种-libc">关于两种 libc<a hidden class="anchor" aria-hidden="true" href="#关于两种-libc">#</a></h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">libc_base</span> <span class="o">=</span> <span class="n">read_addr</span> <span class="o">-</span> <span class="n">libc</span><span class="o">.</span><span class="n">symbols</span><span class="p">[</span><span class="s2">&#34;read&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">system_addr</span> <span class="o">=</span> <span class="n">libc_base</span> <span class="o">+</span> <span class="n">libc</span><span class="o">.</span><span class="n">symbols</span><span class="p">[</span><span class="s2">&#34;system&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">str_bin_sh</span> <span class="o">=</span> <span class="n">libc_base</span> <span class="o">+</span> <span class="n">libc</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;/bin/sh&#39;</span><span class="p">)</span><span class="o">.</span><span class="fm">__next__</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># libc = LibcSearcher(&#39;printf&#39;, printf_addr)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># libc_base = printf_addr - libc.dump(&#34;printf&#34;)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># system_addr = libc_base + libc.dump(&#34;system&#34;)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># str_bin_sh = libc_base + libc.dump(&#34;str_bin_sh&#34;)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="关于接收地址">关于接收地址<a hidden class="anchor" aria-hidden="true" href="#关于接收地址">#</a></h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1">#32位用这个</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">read_addr</span> <span class="o">=</span> <span class="n">u32</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#64位用这个</span>
+</span></span><span class="line"><span class="cl"><span class="n">read_addr</span> <span class="o">=</span> <span class="n">u64</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\x7f</span><span class="s1">&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">6</span><span class="p">:]</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="n">read_addr</span><span class="p">))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="对ret栈对齐的解释">对ret栈对齐的解释<a hidden class="anchor" aria-hidden="true" href="#对ret栈对齐的解释">#</a></h3>
+<p><a href="http://picpo.top/2021/07/19/ubuntu18%E4%BB%A5%E4%B8%8A%E7%B3%BB%E7%BB%9F64%E4%BD%8D%E7%9A%84glibc%E7%9A%84payload%E8%B0%83%E7%94%A8system%E5%87%BD%E6%95%B0%E6%97%B6%EF%BC%8C%E6%89%80%E9%9C%80%E6%B3%A8%E6%84%8F%E7%9A%84%E5%A0%86/">Ubuntu18以上系统64位的glibc的payload调用system函数时，所需注意的堆栈平衡问题 - PiCpo的阁楼</a></p>
+<h2 id="常见的寄存器">常见的寄存器<a hidden class="anchor" aria-hidden="true" href="#常见的寄存器">#</a></h2>
+<p>sp/esp/rsp（16bit/32bit/64bit）栈寄存器&mdash;指向栈顶
+bp/ebp/rbp 栈基址寄存器&mdash;指向栈底
+ip/eip/rip 程序指令寄存器&mdash;指向下一条待执行指令
+<img loading="lazy" src="https://gitee.com/juhuahua/chart-bed/raw/master/1.png" alt="1.png"  />
+</p>
+<h1 id="工具">工具<a hidden class="anchor" aria-hidden="true" href="#工具">#</a></h1>
+<h2 id="checksec">checksec<a hidden class="anchor" aria-hidden="true" href="#checksec">#</a></h2>
+<p><code>checksec -file=filename</code>
+<a href="https://www.jianshu.com/p/755e52d48a77">checksec工具使用-pwn - 简书 (jianshu.com)</a></p>
+<ul>
+<li>Arch：程序的架构信息。判断是拖进64位IDA还是32位？exp编写时p64还是p32函数？</li>
+<li>RELRO：Relocation Read-Only (RELRO) 此项技术主要针对 GOT 改写的攻击方式。它分为两种，Partial RELRO 和 Full RELRO。</li>
+<li>Stack-canary：栈溢出保护是一种缓冲区溢出攻击缓解手段，当函数存在缓冲区溢出攻击漏洞时，攻击者可以覆盖栈上的返回地址来让shellcode能够得到执行。当启用栈保护后，函数开始执行的时候会先往栈里插入类似cookie的信息，当函数真正返回的时候会验证cookie信息是否合法，如果不合法就停止程序运行。攻击者在覆盖返回地址的时候往往也会将cookie信息给覆盖掉，导致栈保护检查失败而阻止shellcode的执行。在Linux中我们将cookie信息称为canary。</li>
+<li>**NX：**NX enabled如果这个保护开启就是意味着栈中数据没有执行权限，如此一来, 当攻击者在堆栈上部署自己的 shellcode 并触发时, 只会直接造成程序的崩溃，但是可以利用rop这种方法绕过</li>
+<li><strong>PIE</strong>：PIE(Position-Independent Executable, 位置无关可执行文件)技术与 ASLR 技术类似,ASLR 将程序运行时的堆栈以及共享库的加载地址随机化, 而 PIE 技术则在编译时将程序编译为位置无关, 即程序运行时各个段（如代码段等）加载的虚拟地址也是在装载时才确定。这就意味着, 在 PIE 和 ASLR 同时开启的情况下, 攻击者将对程序的内存布局一无所知, 传统的改写GOT 表项的方法也难以进行, 因为攻击者不能获得程序的.got 段的虚地址。 若开启一般需在攻击时泄露地址信息</li>
+<li>RPATH/RUNPATH：程序运行时的环境变量，运行时所需要的共享库文件优先从该目录寻找，可以fake lib造成攻击</li>
+<li>FORTIFY：这是一个由GCC实现的源码级别的保护机制，其功能是在编译的时候检查源码以避免潜在的缓冲区溢出等错误。简单地说，加了这个保护之后,一些敏感函数如read, fgets,memcpy, printf等等可能导致漏洞出现的函数都会被替换成**read_chk,**fgets_chk, <strong>memcpy_chk,</strong> printf_chk等。这些带了chk的函数会检查读取/复制的字节长度是否超过缓冲区长度，通过检查诸如%n之类的字符串位置是否位于可能被用户修改的可写地址，避免了格式化字符串跳过某些参数（如直接%7$x）等方式来避免漏洞出现。开启了FORTIFY保护的程序会被checksec检出，此外，在反汇编时直接查看got表也会发现chk函数的存在。</li>
+</ul>
+<h3 id="gdb">GDB<a hidden class="anchor" aria-hidden="true" href="#gdb">#</a></h3>
+<p>aslr – 查看 GDB 的 ASLR 设置 checksec – 查看各种安全配置 dumpargs – 显示函数的传参，当在 call 指令处断下时 dumprop – Dump 所有 ROP gadgets 在特定的内存范围 elfheader – 获取 header 的信息 elfsymbol – 获取 non-debugging 的符号信息 lookup – 在指定地址范围内查找地址引用 patch – 在内存开始处 (with string/hexstring/int) Patch pattern – 内存循环模式的操作 procinfo – 在 /proc/pid/ 显示各种信息 pshow – 显示各种 PEDA 操作和其他的设置 pset – 设置各种 PEDA 的操作和其他配置 readelf – 获取 elf 文件 header 信息 ropgadget – 获取 ROP gadgets (二进制或者库) ropsearch – 在内存中查找 ROP gadgets searchmem|find – 寻找内存的 pattern，支持 regex 查找 shellcode – 生成或者下载常见的 shellcodes skeleton – 生成 python 利用漏洞模板 vmmap – 获得 section 的虚拟映射地址范围 xormem – XOR a memory region with a key 通过 key XOR 一个内存域</p>
+<ul>
+<li>X 检查内存，常用。
+<ul>
+<li>x/nfu <addr></li>
+<li>x <addr>
+<ul>
+<li>n, f, 和 u 都是可选参数，用于指定要显示的内存以及如何格式化。 addr 是要开始显示内存的地址的表达式。 n 重复次数（默认值是 1），指定要显示多少个单位（由 u 指定）的内存值。 f 显示格式（初始默认值是 x），显示格式是 print(&lsquo;x&rsquo;，&rsquo;d&rsquo;，&lsquo;u&rsquo;，&lsquo;o&rsquo;，&rsquo;t&rsquo;，&lsquo;a&rsquo;，&lsquo;c&rsquo;，&lsquo;f&rsquo;，&rsquo;s&rsquo;) 使用的格式之一，再加 i（机器指令）。 u 单位大小，b 表示单字节，h 表示双字节，w 表示四字节，g 表示八字节。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>disassemble（简写：disas）
+<ul>
+<li>disas <func> 反汇编指定函数</li>
+<li>disas <addr> 反汇编某地址所在函数</li>
+<li>disas &lt;begin_addr&gt; &lt;end_addr&gt; 反汇编从开始地址到结束地址的部分</li>
+</ul>
+</li>
+<li>backtrace（简写：bt）
+<ul>
+<li>栈回溯</li>
+<li>bt 打印整个栈的回溯，每个栈帧一行。 bt n 类似于上，但只打印最内层的 n 个栈帧。 bt -n 类似于上，但只打印最外层的 n 个栈帧。 bt full n 类似于 bt n，还打印局部变量的值。</li>
+</ul>
+</li>
+</ul>
+<h1 id="资料">资料<a hidden class="anchor" aria-hidden="true" href="#资料">#</a></h1>
+<p><a href="https://bbs.pediy.com/thread-247217.htm">[原创][新手向] 一步一步学pwntools-Pwn-看雪论坛-安全社区|安全招聘|bbs.pediy.com</a></p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://juhuax.github.io/tags/pwn%E7%9F%A5%E8%AF%86%E7%82%B9/">PWN知识点</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://juhuax.github.io/posts/study/2.%E5%88%B7%E9%A2%98/ctf/pwn/%E5%88%B7%E9%A2%98/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>PWN简单题题解</span>
+  </a>
+  <a class="next" href="https://juhuax.github.io/posts/study/2.%E5%88%B7%E9%A2%98/ctf/pwn/ret2csu%E4%BB%A5ciscn_2019_s_3%E4%B8%BA%E4%BE%8B%E5%AD%90/">
+    <span class="title">Next »</span>
+    <br>
+    <span>ret2csu（以ciscn_2019_s_3为例子）</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share pwn细碎知识 on twitter"
+        href="https://twitter.com/intent/tweet/?text=pwn%e7%bb%86%e7%a2%8e%e7%9f%a5%e8%af%86&amp;url=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f2.%25E5%2588%25B7%25E9%25A2%2598%2fctf%2fpwn%2fpwn%25E7%25BB%2586%25E7%25A2%258E%25E7%259F%25A5%25E8%25AF%2586%2f&amp;hashtags=PWN%e7%9f%a5%e8%af%86%e7%82%b9">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share pwn细碎知识 on linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f2.%25E5%2588%25B7%25E9%25A2%2598%2fctf%2fpwn%2fpwn%25E7%25BB%2586%25E7%25A2%258E%25E7%259F%25A5%25E8%25AF%2586%2f&amp;title=pwn%e7%bb%86%e7%a2%8e%e7%9f%a5%e8%af%86&amp;summary=pwn%e7%bb%86%e7%a2%8e%e7%9f%a5%e8%af%86&amp;source=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f2.%25E5%2588%25B7%25E9%25A2%2598%2fctf%2fpwn%2fpwn%25E7%25BB%2586%25E7%25A2%258E%25E7%259F%25A5%25E8%25AF%2586%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share pwn细碎知识 on reddit"
+        href="https://reddit.com/submit?url=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f2.%25E5%2588%25B7%25E9%25A2%2598%2fctf%2fpwn%2fpwn%25E7%25BB%2586%25E7%25A2%258E%25E7%259F%25A5%25E8%25AF%2586%2f&title=pwn%e7%bb%86%e7%a2%8e%e7%9f%a5%e8%af%86">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share pwn细碎知识 on facebook"
+        href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f2.%25E5%2588%25B7%25E9%25A2%2598%2fctf%2fpwn%2fpwn%25E7%25BB%2586%25E7%25A2%258E%25E7%259F%25A5%25E8%25AF%2586%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share pwn细碎知识 on whatsapp"
+        href="https://api.whatsapp.com/send?text=pwn%e7%bb%86%e7%a2%8e%e7%9f%a5%e8%af%86%20-%20https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f2.%25E5%2588%25B7%25E9%25A2%2598%2fctf%2fpwn%2fpwn%25E7%25BB%2586%25E7%25A2%258E%25E7%259F%25A5%25E8%25AF%2586%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share pwn细碎知识 on telegram"
+        href="https://telegram.me/share/url?text=pwn%e7%bb%86%e7%a2%8e%e7%9f%a5%e8%af%86&amp;url=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f2.%25E5%2588%25B7%25E9%25A2%2598%2fctf%2fpwn%2fpwn%25E7%25BB%2586%25E7%25A2%258E%25E7%259F%25A5%25E8%25AF%2586%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>JUHUA</span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

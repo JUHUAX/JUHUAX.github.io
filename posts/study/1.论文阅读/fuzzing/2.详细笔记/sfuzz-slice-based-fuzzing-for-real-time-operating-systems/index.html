@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>SFuzz Slice-based Fuzzing for Real-Time Operating Systems | JUHUA&#39;s Blog</title>
+<meta name="keywords" content="论文阅读">
+<meta name="description" content="基于SFuzz切片的实时操作系统模糊 Abstract 背景：嵌入式系统大多是实时操作系统。 问题：RTOS的单体设计将各种任务和服务结合成一个单一的二进制文件">
+<meta name="author" content="JUHUA">
+<link rel="canonical" href="https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/sfuzz-slice-based-fuzzing-for-real-time-operating-systems/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4ab2947a83bffe949c0838eecd8aec6f58435be7a122bafeab2b538d1cdcf5ad.css" integrity="sha256-SrKUeoO//pScCDjuzYrsb1hDW&#43;ehIrr&#43;qytTjRzc9a0=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://juhuax.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="icon" type="image/png" sizes="16x16" href="https://juhuax.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="icon" type="image/png" sizes="32x32" href="https://juhuax.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="apple-touch-icon" href="https://juhuax.github.io/%3Clink%20/%20abs%20url%3E">
+<link rel="mask-icon" href="https://juhuax.github.io/%3Clink%20/%20abs%20url%3E">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css" />
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-123-45', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script><meta property="og:title" content="SFuzz Slice-based Fuzzing for Real-Time Operating Systems" />
+<meta property="og:description" content="基于SFuzz切片的实时操作系统模糊 Abstract 背景：嵌入式系统大多是实时操作系统。 问题：RTOS的单体设计将各种任务和服务结合成一个单一的二进制文件" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/sfuzz-slice-based-fuzzing-for-real-time-operating-systems/" /><meta property="og:image" content="https://juhuax.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-06-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-06-22T00:00:00+00:00" /><meta property="og:site_name" content="JUHUA&#39;s Blog" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://juhuax.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/>
+
+<meta name="twitter:title" content="SFuzz Slice-based Fuzzing for Real-Time Operating Systems"/>
+<meta name="twitter:description" content="基于SFuzz切片的实时操作系统模糊 Abstract 背景：嵌入式系统大多是实时操作系统。 问题：RTOS的单体设计将各种任务和服务结合成一个单一的二进制文件"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://juhuax.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "学习",
+      "item": "https://juhuax.github.io/posts/study/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "SFuzz Slice-based Fuzzing for Real-Time Operating Systems",
+      "item": "https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/sfuzz-slice-based-fuzzing-for-real-time-operating-systems/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "SFuzz Slice-based Fuzzing for Real-Time Operating Systems",
+  "name": "SFuzz Slice-based Fuzzing for Real-Time Operating Systems",
+  "description": "基于SFuzz切片的实时操作系统模糊 Abstract 背景：嵌入式系统大多是实时操作系统。 问题：RTOS的单体设计将各种任务和服务结合成一个单一的二进制文件",
+  "keywords": [
+    "论文阅读"
+  ],
+  "articleBody": "基于SFuzz切片的实时操作系统模糊\nAbstract 背景：嵌入式系统大多是实时操作系统。\n问题：RTOS的单体设计将各种任务和服务结合成一个单一的二进制文件，这阻碍了目前在RTOS系统上的程序测试和分析技术。\n目的：提出了SFuzz，一种新型的基于切片的模糊器，用于检测RTOS系统的安全漏洞。作者认为RTOS通常将一个复杂的二进制文件划分为许多分离但一心一意的任务。每个任务以确定的方式完成一个特定的事件，其控制流通常是直接和独立的。因此，作者从单一的RTOS二进制文件中识别出这样的代码，并合成一个切片进行有效的测试。\n方法：SFuzz首先识别处理用户输入的函数，构建从这些函数的调用者开始的调用图，并利用前向切片来构建基于调用图的执行树，并修剪独立于外部输入的路径。然后，它检测粗粒度范围内阻碍有效模糊处理的路障，如与用户输入无关的指令。然后，它在这些代码片段上进行覆盖率引导的模糊处理。最后，SFuzz利用前向和后向切片来跟踪和验证每个路径约束，并确定在模糊器中发现的错误是否是真正的漏洞。\n理解：貌似作者首先从用户输入的函数开始构建调用图，然后基于调用图利用前向切片构建执行树，\nINTRODUCTION 传统静态分析的挑战：单体RTOS二进制的大尺寸（路径爆炸）、难识别函数语义、无正确和稳定的仿真环境\n现状：要么只在特定的设备上工作，要么依赖真实的设备，要么检测有限的错误类型，要么需要人工分析和领域知识，总的来说，在RTOS中缺乏一种灵活和通用的方法来有效地发现漏洞。\n方法：因为RTOS通常将一个应用划分为许多分离的子任务，每个子任务的控制流都是独立的，它们的数据流或许会有类似的模式。所以首先寻找相同的数据流，然后定位对应函数，然后切片代码，对得到的切片代码进行模糊测试。“这些切片足够小，可以使用现有的模糊逻辑进行测试。此外，它们提出了更小但更关键的控制流范围。它可以大大缓解仿真难度和分析复杂性，这将使我们能够进行更有效和高效的测试，如灰盒模糊和符号执行。”\nSFuzz：四个主要部分\n正向切片机：定义启发式方法来定位函数，然后构造调用图，在调用图中进行前向切片。 控制流节点处理程序：使用控制流节点处理程序来给模糊器补充运行状态和运行上下文，指导模糊器确定如何处理与用户输入无关的函数调用和条件分支，这可以帮助模糊引擎提高路径探索的效率和稳定性。 微观模糊处理：我们的模糊引擎专注于修剪后的执行树中的指令。从输入源开始，它通过指令级仿真更新执行环境。该引擎将执行与输入相关的代码片段，并忽略大量不必要的路径，包括其他输入处理程序。为了检查危险的行为，它监测汇合点函数调用的上下文，并在上下文违反预定的安全策略时报告潜在的错误。 符号执行分析：对函数进行后向切片，然后从切片末尾进行符号执行，目的是补充上面修建而遗失的信息，最后实现一个完整而准确的路径条件来评估一个漏洞，从而过滤由于探索修剪和上下文缺失造成的假阳性结果。 PROBLEM AND APPROACH OVERVIEW RTOS and Embedded Devices 具有所有功能的单二进制 剥离了符号系统以减小文件大小 Motivation Example 举了个例子说明RTOS难分析\nNecessity and Reasonability of SFuzz 切片操作的优势：可以忽略模拟各种硬件和服务功能的困难，缓解符号执行的缓解路径爆炸问题 使用实例验证切片操作的正确性 Challenges of Slice-based Fuzzing 如何确定片段的范围？ 如何处理片段中与控制流有关的点？ 如何有效地进行基于切片的模糊处理和验证PoC？ DESIGN 前向切片机将调用图分析与前向污点分析相结合，以确定基于切片的模糊处理的每个任务的探索空间；控制流节点处理程序用于帮助后续的模糊处理部分跳过不必要的路径探索，这些节点会使模糊处理阶段卡住；微模糊引擎是一个混合灰盒模糊器，它结合了一些低级技术，如错误检测策略，使模糊器能够顺利运行并发现错误,Concolic分析器主要是为了帮助我们过滤由于探索修剪和上下文缺失造成的假阳性结果。\nForward Slicer 步骤概述：首先恢复固件中关键功能的语义，以定位外部数据入口点，然后利用前向切片模块输出与处理外部输入和全局数据有关的执行树。\n三部分：\n敏感调用图构造器 目的：检测输入获取函数和全局数据读取点，作为根节点 方法：没说 调用图修剪 目的：进一步修剪独立于外部输入的子图或路径 方法：利用轻量级(粗粒度)污染分析技术来跟踪调用图中的每个路径，确定外部输入和全局数据的影响范围，范围外的路径被修剪 调用图形拼接： 目的：在不同调用图的节点之间拼接一些边 方法：静态动态分析来识别相关节点，还有基于常量字符串进行搜索和匹配相关节点来拼接。 Control Flow Nodes Handler 控制流节点处理程序可以基于调用图构建目标代码段的执行树。但是为了使执行树上的模糊测试工作顺利进行，避免不必要的路径探索，需要处理与控制流相关的几种指令，换句话说需要策略来指导模糊器确定如何处理代码片段中的函数调用，并选择要跳转的条件语句的哪个分支。\nMicro Fuzzing 作为模糊引擎的核心，我们将基于切片的模糊技术称为微模糊。它接受代码片段作为输入，探索执行树中的路径，并忽略不相关的调用站点和其他输入数据处理程序。引擎同时检查接收器函数调用站点的上下文，并在根据预定义的策略进行内存访问时导出崩溃输入。\n镜像加载器：对切片代码进行预处理，插入跳转和结束指令，用于忽略不相关的调用站点和其他输入数据处理程序。 fuzz引擎：基于UnicornAFL，当调用核心引擎时，它加载RTOS系统，并从它的开始(执行树的根节点)重复执行目标代码片段。该引擎将在输入入口点生成随机数据。当核心模糊引擎卡住时，利用符号执行组件来引导模糊器沿着未探索的路径测试。 内存安全策略。这块没懂 Concolic Analyzer 目的是检测上面模糊测试得到漏洞是不是真的漏洞，因为修剪操作可能会产生假阳性漏洞。\n疑问 修建执行路径会不会导致覆盖率的降低 ",
+  "wordCount" : "2288",
+  "inLanguage": "en",
+  "datePublished": "2023-06-22T00:00:00Z",
+  "dateModified": "2023-06-22T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "JUHUA"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/sfuzz-slice-based-fuzzing-for-real-time-operating-systems/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "JUHUA's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://juhuax.github.io/%3Clink%20/%20abs%20url%3E"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://juhuax.github.io/" accesskey="h" title="JUHUA&#39;s Blog (Alt + H)">
+                <img src="https://juhuax.github.io/apple-touch-icon.png" alt="" aria-label="logo"
+                    height="35">JUHUA&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://juhuax.github.io/search" title="search (Alt &#43; /)" accesskey=/>
+                    <span>search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://juhuax.github.io/archives/" title="archives">
+                    <span>archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://juhuax.github.io/categories/" title="categories">
+                    <span>categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://juhuax.github.io/tags/" title="tags">
+                    <span>tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://juhuax.github.io/about" title="about">
+                    <span>about</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://juhuax.github.io/links" title="🤝友链">
+                    <span>🤝友链</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://juhuax.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://juhuax.github.io/posts/">Posts</a>&nbsp;»&nbsp;<a href="https://juhuax.github.io/posts/study/">学习</a></div>
+    <h1 class="post-title">
+      SFuzz Slice-based Fuzzing for Real-Time Operating Systems
+    </h1>
+  </header> <aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details  open>
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">Table of Contents</span>
+            </summary>
+
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#abstract" aria-label="Abstract">Abstract</a></li>
+                    <li>
+                        <a href="#introduction" aria-label="INTRODUCTION">INTRODUCTION</a></li>
+                    <li>
+                        <a href="#problem-and-approach-overview" aria-label="PROBLEM AND APPROACH OVERVIEW">PROBLEM AND APPROACH OVERVIEW</a><ul>
+                            
+                    <li>
+                        <a href="#rtos-and-embedded-devices" aria-label="RTOS and Embedded Devices">RTOS and Embedded Devices</a></li>
+                    <li>
+                        <a href="#motivation-example" aria-label="Motivation Example">Motivation Example</a></li>
+                    <li>
+                        <a href="#necessity-and-reasonability-of-sfuzz" aria-label="Necessity and Reasonability of SFuzz">Necessity and Reasonability of SFuzz</a></li>
+                    <li>
+                        <a href="#challenges-of-slice-based-fuzzing" aria-label="Challenges of Slice-based Fuzzing">Challenges of Slice-based Fuzzing</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#design" aria-label="DESIGN">DESIGN</a><ul>
+                            
+                    <li>
+                        <a href="#forward-slicer" aria-label="Forward Slicer">Forward Slicer</a></li>
+                    <li>
+                        <a href="#control-flow-nodes-handler" aria-label="Control Flow Nodes Handler">Control Flow Nodes Handler</a></li>
+                    <li>
+                        <a href="#micro-fuzzing" aria-label="Micro Fuzzing">Micro Fuzzing</a></li>
+                    <li>
+                        <a href="#concolic-analyzer" aria-label="Concolic Analyzer">Concolic Analyzer</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e7%96%91%e9%97%ae" aria-label="疑问">疑问</a>
+                    </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+
+  <div class="post-content"><p>基于SFuzz切片的实时操作系统模糊</p>
+<h2 id="abstract">Abstract<a hidden class="anchor" aria-hidden="true" href="#abstract">#</a></h2>
+<p>背景：嵌入式系统大多是实时操作系统。</p>
+<p>问题：RTOS的单体设计将各种任务和服务结合成一个单一的二进制文件，这阻碍了目前在RTOS系统上的程序测试和分析技术。</p>
+<p>目的：提出了SFuzz，一种新型的基于切片的模糊器，用于检测RTOS系统的安全漏洞。作者认为RTOS通常将一个复杂的二进制文件划分为许多分离但一心一意的任务。每个任务以确定的方式完成一个特定的事件，其控制流通常是直接和独立的。因此，作者从单一的RTOS二进制文件中识别出这样的代码，并合成一个切片进行有效的测试。</p>
+<p>方法：SFuzz首先识别处理用户输入的函数，<strong>构建</strong>从这些函数的调用者开始的<strong>调用图</strong>，并利用前向切片来<strong>构建基于调用图的执行树</strong>，并修剪独立于外部输入的路径。然后，它检测粗粒度范围内阻碍有效模糊处理的路障，如与用户输入无关的指令。然后，它在这些代码片段上<strong>进行覆盖率引导的模糊处理</strong>。最后，SFuzz利用前向和后向切片来跟踪和验证每个路径约束，并确定在模糊器中发现的错误是否是真正的漏洞。</p>
+<p>理解：貌似作者首先从用户输入的函数开始构建调用图，然后基于调用图利用前向切片构建执行树，</p>
+<h2 id="introduction">INTRODUCTION<a hidden class="anchor" aria-hidden="true" href="#introduction">#</a></h2>
+<p>传统静态分析的挑战：单体RTOS二进制的大尺寸（路径爆炸）、难识别函数语义、无正确和稳定的仿真环境</p>
+<p>现状：要么只在特定的设备上工作，要么依赖真实的设备，要么检测有限的错误类型，要么需要人工分析和领域知识，总的来说，在RTOS中缺乏一种灵活和通用的方法来有效地发现漏洞。</p>
+<p>方法：因为RTOS通常将一个应用划分为许多分离的子任务，每个子任务的控制流都是独立的，它们的数据流或许会有类似的模式。所以首先寻找相同的数据流，然后定位对应函数，然后切片代码，对得到的切片代码进行模糊测试。“这些切片足够小，可以使用现有的模糊逻辑进行测试。此外，它们提出了更小但更关键的控制流范围。它可以大大缓解仿真难度和分析复杂性，这将使我们能够进行更有效和高效的测试，如灰盒模糊和符号执行。”</p>
+<p>SFuzz：四个主要部分</p>
+<ul>
+<li>正向切片机：定义启发式方法来定位函数，然后构造调用图，在调用图中进行前向切片。</li>
+<li>控制流节点处理程序：使用控制流节点处理程序来给模糊器补充运行状态和运行上下文，指导模糊器确定如何处理与用户输入无关的函数调用和条件分支，这可以帮助模糊引擎提高路径探索的效率和稳定性。</li>
+<li>微观模糊处理：我们的模糊引擎专注于修剪后的执行树中的指令。从输入源开始，它通过指令级仿真更新执行环境。该引擎将执行与输入相关的代码片段，并忽略大量不必要的路径，包括其他输入处理程序。为了检查危险的行为，它监测汇合点函数调用的上下文，并在上下文违反预定的安全策略时报告潜在的错误。</li>
+<li>符号执行分析：对函数进行后向切片，然后从切片末尾进行符号执行，目的是补充上面修建而遗失的信息，最后实现一个完整而准确的路径条件来评估一个漏洞，从而过滤由于探索修剪和上下文缺失造成的假阳性结果。</li>
+</ul>
+<h2 id="problem-and-approach-overview">PROBLEM AND APPROACH OVERVIEW<a hidden class="anchor" aria-hidden="true" href="#problem-and-approach-overview">#</a></h2>
+<h3 id="rtos-and-embedded-devices">RTOS and Embedded Devices<a hidden class="anchor" aria-hidden="true" href="#rtos-and-embedded-devices">#</a></h3>
+<ul>
+<li>具有所有功能的单二进制</li>
+<li>剥离了符号系统以减小文件大小</li>
+</ul>
+<h3 id="motivation-example">Motivation Example<a hidden class="anchor" aria-hidden="true" href="#motivation-example">#</a></h3>
+<p>举了个例子说明RTOS难分析</p>
+<h3 id="necessity-and-reasonability-of-sfuzz">Necessity and Reasonability of SFuzz<a hidden class="anchor" aria-hidden="true" href="#necessity-and-reasonability-of-sfuzz">#</a></h3>
+<ul>
+<li>切片操作的优势：可以忽略模拟各种硬件和服务功能的困难，缓解符号执行的缓解路径爆炸问题</li>
+<li>使用实例验证切片操作的正确性</li>
+</ul>
+<h3 id="challenges-of-slice-based-fuzzing">Challenges of Slice-based Fuzzing<a hidden class="anchor" aria-hidden="true" href="#challenges-of-slice-based-fuzzing">#</a></h3>
+<ul>
+<li>如何确定片段的范围？</li>
+<li>如何处理片段中与控制流有关的点？</li>
+<li>如何有效地进行基于切片的模糊处理和验证PoC？</li>
+</ul>
+<h2 id="design">DESIGN<a hidden class="anchor" aria-hidden="true" href="#design">#</a></h2>
+<p><img loading="lazy" src="D:%5cDoc%5clocal_blog%5cpictures%5cimage-20221110163825829.png" alt="image-20221110163825829"  />
+</p>
+<p>前向切片机将调用图分析与前向污点分析相结合，以确定基于切片的模糊处理的每个任务的探索空间；控制流节点处理程序用于帮助后续的模糊处理部分跳过不必要的路径探索，这些节点会使模糊处理阶段卡住；微模糊引擎是一个混合灰盒模糊器，它结合了一些低级技术，如错误检测策略，使模糊器能够顺利运行并发现错误,Concolic分析器主要是为了帮助我们过滤由于探索修剪和上下文缺失造成的假阳性结果。</p>
+<h3 id="forward-slicer">Forward Slicer<a hidden class="anchor" aria-hidden="true" href="#forward-slicer">#</a></h3>
+<p>步骤概述：首先恢复固件中关键功能的语义，以定位外部数据入口点，然后利用前向切片模块输出与处理外部输入和全局数据有关的执行树。</p>
+<p>三部分：</p>
+<ul>
+<li>敏感调用图构造器
+<ul>
+<li>目的：检测输入获取函数和全局数据读取点，作为根节点</li>
+<li>方法：没说</li>
+</ul>
+</li>
+<li>调用图修剪
+<ul>
+<li>目的：进一步修剪独立于外部输入的子图或路径</li>
+<li>方法：利用轻量级(粗粒度)污染分析技术来跟踪调用图中的每个路径，确定外部输入和全局数据的影响范围，范围外的路径被修剪</li>
+</ul>
+</li>
+<li>调用图形拼接：
+<ul>
+<li>目的：在不同调用图的节点之间拼接一些边</li>
+<li>方法：静态动态分析来识别相关节点，还有基于常量字符串进行搜索和匹配相关节点来拼接。</li>
+</ul>
+</li>
+</ul>
+<h3 id="control-flow-nodes-handler">Control Flow Nodes Handler<a hidden class="anchor" aria-hidden="true" href="#control-flow-nodes-handler">#</a></h3>
+<p>控制流节点处理程序可以基于调用图构建目标代码段的执行树。但是为了使执行树上的模糊测试工作顺利进行，避免不必要的路径探索，需要处理与控制流相关的几种指令，换句话说需要策略来指导模糊器确定如何处理代码片段中的函数调用，并选择要跳转的条件语句的哪个分支。</p>
+<h3 id="micro-fuzzing">Micro Fuzzing<a hidden class="anchor" aria-hidden="true" href="#micro-fuzzing">#</a></h3>
+<p>作为模糊引擎的核心，我们将基于切片的模糊技术称为微模糊。它接受代码片段作为输入，探索执行树中的路径，并忽略不相关的调用站点和其他输入数据处理程序。引擎同时检查接收器函数调用站点的上下文，并在根据预定义的策略进行内存访问时导出崩溃输入。</p>
+<ul>
+<li>镜像加载器：对切片代码进行预处理，插入跳转和结束指令，用于忽略不相关的调用站点和其他输入数据处理程序。</li>
+<li>fuzz引擎：基于UnicornAFL，当调用核心引擎时，它加载RTOS系统，并从它的开始(执行树的根节点)重复执行目标代码片段。该引擎将在输入入口点生成随机数据。当核心模糊引擎卡住时，利用符号执行组件来引导模糊器沿着未探索的路径测试。</li>
+<li>内存安全策略。这块没懂</li>
+</ul>
+<h3 id="concolic-analyzer">Concolic Analyzer<a hidden class="anchor" aria-hidden="true" href="#concolic-analyzer">#</a></h3>
+<p>目的是检测上面模糊测试得到漏洞是不是真的漏洞，因为修剪操作可能会产生假阳性漏洞。</p>
+<h2 id="疑问">疑问<a hidden class="anchor" aria-hidden="true" href="#疑问">#</a></h2>
+<ul>
+<li>修建执行路径会不会导致覆盖率的降低</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://juhuax.github.io/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/3.%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/semfuzz-%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>SemFuzz 总结笔记</span>
+  </a>
+  <a class="next" href="https://juhuax.github.io/posts/study/2.%E5%88%B7%E9%A2%98/ctf/pwn/srop/">
+    <span class="title">Next »</span>
+    <br>
+    <span>SROP</span>
+  </a>
+</nav>
+
+
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share SFuzz Slice-based Fuzzing for Real-Time Operating Systems on twitter"
+        href="https://twitter.com/intent/tweet/?text=SFuzz%20Slice-based%20Fuzzing%20for%20Real-Time%20Operating%20Systems&amp;url=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f2.%25E8%25AF%25A6%25E7%25BB%2586%25E7%25AC%2594%25E8%25AE%25B0%2fsfuzz-slice-based-fuzzing-for-real-time-operating-systems%2f&amp;hashtags=%e8%ae%ba%e6%96%87%e9%98%85%e8%af%bb">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share SFuzz Slice-based Fuzzing for Real-Time Operating Systems on linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f2.%25E8%25AF%25A6%25E7%25BB%2586%25E7%25AC%2594%25E8%25AE%25B0%2fsfuzz-slice-based-fuzzing-for-real-time-operating-systems%2f&amp;title=SFuzz%20Slice-based%20Fuzzing%20for%20Real-Time%20Operating%20Systems&amp;summary=SFuzz%20Slice-based%20Fuzzing%20for%20Real-Time%20Operating%20Systems&amp;source=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f2.%25E8%25AF%25A6%25E7%25BB%2586%25E7%25AC%2594%25E8%25AE%25B0%2fsfuzz-slice-based-fuzzing-for-real-time-operating-systems%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share SFuzz Slice-based Fuzzing for Real-Time Operating Systems on reddit"
+        href="https://reddit.com/submit?url=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f2.%25E8%25AF%25A6%25E7%25BB%2586%25E7%25AC%2594%25E8%25AE%25B0%2fsfuzz-slice-based-fuzzing-for-real-time-operating-systems%2f&title=SFuzz%20Slice-based%20Fuzzing%20for%20Real-Time%20Operating%20Systems">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share SFuzz Slice-based Fuzzing for Real-Time Operating Systems on facebook"
+        href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f2.%25E8%25AF%25A6%25E7%25BB%2586%25E7%25AC%2594%25E8%25AE%25B0%2fsfuzz-slice-based-fuzzing-for-real-time-operating-systems%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share SFuzz Slice-based Fuzzing for Real-Time Operating Systems on whatsapp"
+        href="https://api.whatsapp.com/send?text=SFuzz%20Slice-based%20Fuzzing%20for%20Real-Time%20Operating%20Systems%20-%20https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f2.%25E8%25AF%25A6%25E7%25BB%2586%25E7%25AC%2594%25E8%25AE%25B0%2fsfuzz-slice-based-fuzzing-for-real-time-operating-systems%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share SFuzz Slice-based Fuzzing for Real-Time Operating Systems on telegram"
+        href="https://telegram.me/share/url?text=SFuzz%20Slice-based%20Fuzzing%20for%20Real-Time%20Operating%20Systems&amp;url=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f2.%25E8%25AF%25A6%25E7%25BB%2586%25E7%25AC%2594%25E8%25AE%25B0%2fsfuzz-slice-based-fuzzing-for-real-time-operating-systems%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
+</div>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>JUHUA</span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
