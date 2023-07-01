@@ -2,49 +2,49 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>模糊测试 on BLOG</title>
-    <link>https://examplesite.com/categories/%E6%A8%A1%E7%B3%8A%E6%B5%8B%E8%AF%95/</link>
+    <link>https://juhuax.github.io/categories/%E6%A8%A1%E7%B3%8A%E6%B5%8B%E8%AF%95/</link>
     <description>Recent content in 模糊测试 on BLOG</description>
     <image>
       <title>BLOG</title>
-      <url>https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+      <url>https://juhuax.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://juhuax.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 29 Jun 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://examplesite.com/categories/%E6%A8%A1%E7%B3%8A%E6%B5%8B%E8%AF%95/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 29 Jun 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://juhuax.github.io/categories/%E6%A8%A1%E7%B3%8A%E6%B5%8B%E8%AF%95/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Fuzzing Error Handling Code using Context-Sensitive Software Fault Injection</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/fuzzing-error-handling-code-using-context-sensitive-software-fault-injection/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/fuzzing-error-handling-code-using-context-sensitive-software-fault-injection/</link>
       <pubDate>Thu, 29 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/fuzzing-error-handling-code-using-context-sensitive-software-fault-injection/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/fuzzing-error-handling-code-using-context-sensitive-software-fault-injection/</guid>
       <description>使用上下文敏感软件故障注入模糊化错误处理代码</description>
     </item>
     
     <item>
       <title>Fuzzing Error Handling Code in Device Drivers Based on Software Fault Injection</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/fuzzing-error-handling-code-in-device-drivers-based-on-software-fault-injection/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/fuzzing-error-handling-code-in-device-drivers-based-on-software-fault-injection/</link>
       <pubDate>Tue, 27 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/fuzzing-error-handling-code-in-device-drivers-based-on-software-fault-injection/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/fuzzing-error-handling-code-in-device-drivers-based-on-software-fault-injection/</guid>
       <description>基于软件故障注入的设备驱动程序模糊错误处理代码</description>
     </item>
     
     <item>
       <title>AFLNET: A Greybox Fuzzer for Network Protocols 论文笔记</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/aflnet-a-greybox-fuzzer-for-network-protocols/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/aflnet-a-greybox-fuzzer-for-network-protocols/</link>
       <pubDate>Fri, 23 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/aflnet-a-greybox-fuzzer-for-network-protocols/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/aflnet-a-greybox-fuzzer-for-network-protocols/</guid>
       <description>AFLNET是一个状态灰盒模糊器，使自动状态模型推理和覆盖引导模糊协同工作; 模糊化有助于生成新的消息序列来覆盖新的状态，并使状态模型逐渐更加完整。同时，动态构建的状态模型通过使用保留消息序列的状态覆盖和代码覆盖信息，帮助将模糊测试推向更重要的代码部分。</description>
     </item>
     
     <item>
       <title>AFLGO Directed Greybox Fuzzing</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/aflgo-directed-greybox-fuzzing/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/aflgo-directed-greybox-fuzzing/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/aflgo-directed-greybox-fuzzing/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/aflgo-directed-greybox-fuzzing/</guid>
       <description>#定向fuzzing
 ABSTRACT 背景（问题）：现有灰盒fuzzer不能进行有效的定向fuzz 方法：基于模拟退火的power schedule，可以将更多的能量分配给更接近目标位置的种子，同时减少分配给距离目标距离更远的种子的能量。 成果：优于基于符号执行的定向白盒测试和非定向的灰盒测试；可以和谷歌持续模糊测试平台OSS-Fuzz进行整合；可以在几个模糊不清的安全关键项目（如LibXML2）中发现39个bug INTRODUCTION 定向fuzz的应用：补丁测试；崩溃重现；信息流检测
 基于符号执行的白盒定向模糊测试的问题：耗时长
@@ -69,10 +69,10 @@ Gi是控制流图
     
     <item>
       <title>Android SmartTVs Vulnerability Discovery via Log-Guided Fuzzing</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/android-smarttvs-vulnerability-discovery-via-log-guided-fuzzing/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/android-smarttvs-vulnerability-discovery-via-log-guided-fuzzing/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/android-smarttvs-vulnerability-discovery-via-log-guided-fuzzing/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/android-smarttvs-vulnerability-discovery-via-log-guided-fuzzing/</guid>
       <description>中文译名：通过日志引导的安卓智慧电视漏洞模糊测试 作者：Yousra Aafer 单位：滑铁卢大学 国家： #法国 年份： #2021年 来源： #USENIX会议 关键字： #fuzzing 代码地址： 笔记建立时间： 2023-04-22 14:16
 abstract 开发了一种新的动态模糊方法，其特点是基于日志的动态输入规范推导和反馈收集。我们的解决方案进一步引入了一种新的外部观察者，它可以监测与电视相关的物理症状 (即视觉和听觉)，以检测潜在的身体异常。
 introduction 静态分析发现“有趣”的定值目标，作者专注于供应商集成到操作系统中的 API 动态分析曹勇即时日志分析技术，推断目标 API 的输入规范并收集执行反馈。 background 操作系统定制化 API 多 操作设备物理状态的 API 运行在高权限环境中 大多数 API 缺乏保护机制 挑战 逆向分析目标接口 对输入标准的逆向 对本地层的 API 描述符的逆向 评估执行反馈——主要是程序肯能不会崩溃，但是设备的物理反应会存在异常 0 Design Overview 4 Fuzzing Target Locator 目的：提取程序中的定制服务 方法：将提取的 api 和 AOSP 模型的 API 比较，AOSP 中没有的就是定制 api 检测系统服务 API java 层 api 可以从相应服务 IBinder 接口的字节码中提取 本机层 api 求助于在底层 Binder IPC 中提取本地函数的接口 也就是说，对于每个本机 API，我们的目标是从本机二进制文件中恢复事务 id、参数、回复数据类型 提取本地函数接口 对这部分不感兴趣，跳过。</description>
@@ -80,30 +80,30 @@ introduction 静态分析发现“有趣”的定值目标，作者专注于供�
     
     <item>
       <title>Automated Exploitable Heap Layout Generation for Heap Overflows Through Manipulation Distance-Guided Fuzzing</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/automated-exploitable-heap-layout-generation-for-heap-overflows-through-manipulation-distance-guided-fuzzing/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/automated-exploitable-heap-layout-generation-for-heap-overflows-through-manipulation-distance-guided-fuzzing/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/automated-exploitable-heap-layout-generation-for-heap-overflows-through-manipulation-distance-guided-fuzzing/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/automated-exploitable-heap-layout-generation-for-heap-overflows-through-manipulation-distance-guided-fuzzing/</guid>
       <description>中文译名：通过操纵距离引导的模糊测试自动生成堆溢出的可利用堆布局 作者：Bin Zhang 单位：国防科大 国家： #中国 年份： #2023年 来源： #USENIX会议 关键字： #fuzzing #AGE 代码地址：Epeius/Scatter: Automatically Generate Exploitable Memory Layout for HeapOOB-Write Vulnerabilities in Non-Interpreter Software (github.com) （代码没有上传，只有readme） 笔记建立时间： 2023-05-31 09:35 #TODO
 Abstract heap primitives are leveraged to construnct exploitable states prior efforts only focus on particular program types or programs with dispatcher-loop structures, these are hard for general-purpose programs this paper present scatter, enabling the generation of exploitable heap layouts for heap overflows in generalpurpose programs in a primitive-free manner.</description>
     </item>
     
     <item>
       <title>Automated Extraction of Software Names from Vulnerability Reports using LSTM and Expert System</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/automated-extraction-of-software-names-from-vulnerability-reports-using-lstm-and-expert-system/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/automated-extraction-of-software-names-from-vulnerability-reports-using-lstm-and-expert-system/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/automated-extraction-of-software-names-from-vulnerability-reports-using-lstm-and-expert-system/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/automated-extraction-of-software-names-from-vulnerability-reports-using-lstm-and-expert-system/</guid>
       <description>中文译名：利用 LSTM 和专家系统从漏洞报告中自动提取软件名称 作者：Igor Khokhlov 单位：圣心大学 国家： #意大利 年份： #2022年 来源： #IEEE_STC 关键字： #提取信息 代码地址： 笔记建立时间： 2023-05-15 10:20
 Abstract proposes a machine learning method to extract software product names and version from unstructured CVE descriptions automatically create context-aware features by using Word2Vec and Char2Vec use this features to train a NER model using LSTM based on the previously published CVE descriptions, author create a set of Expert System (ES) rules to refine the predictions of the NER model and improve the preformance of the developed method.</description>
     </item>
     
     <item>
       <title>BEACON Directed Grey-Box Fuzzing with Provable Path Pruning</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/beacon-directed-grey-box-fuzzing-with-provable-path-pruning/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/beacon-directed-grey-box-fuzzing-with-provable-path-pruning/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/beacon-directed-grey-box-fuzzing-with-provable-path-pruning/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/beacon-directed-grey-box-fuzzing-with-provable-path-pruning/</guid>
       <description>中文译名：信标: 具有可证明路径剪枝的定向灰盒模糊测试 作者：Huang Heqing 单位：香港科技大学 国家： #中国 年份： #2022年
 来源： #SP 关键字： #定向fuzzing 代码地址： https://hub.docker.com/r/yguoaz/beacon 笔记建立时间： 2023-05-09 17:27
 摘要 当前的定向 fuzzer 不够高效，因为它们符号化或者具体的执行了很多不会到达 target code 到的 path，浪费了很多计算资源 beacon——通过一种可证明的方式在路径之海中引导灰盒模糊测试 轻量级的静态分析——用于计算到达目标的先决条件——用于修剪无法到达 target 的路径 引言 传统模糊测试应用于 检测漏洞路径 生成潜在漏洞的 poc 崩溃复现 追踪信息流 定向 fuzzing 现状 定向白盒模糊器依靠符号执行，通过求解路径约束来确定可达性，旨在为生成能够到达目标的输入提供理论保证。因此，它们对符号执行的固有使用从根本上限制了它们的扩展能力。 定向灰盒模糊器通常不考虑拒绝不可达路径。它们依靠从执行反馈中收集的启发式方法，根据到达目标代码的可能性对种子进行优先排序。他们要么使用轻量级的元启发式，例如，到目标的距离，要么使用机器学习技术来预测可达性，但不能保证这种优先级会导致拒绝任何不可行的路径。因此，在 AFLGo 中提到的24小时实验中，95%以上的输入无法到达给定的程序点。 定向 fuzzing 的关键在于尽可能早的剔除不能到达 target 的执行路径 BEACON 耗费低的静态分析计算程序变量的合理近似值，这些值用于决定某条路径是否可以到达 target 为了使得静态分析精确又高效，采用了两种新的优化方法：关系保持和有界析取 基于此对模糊测试中要执行的路径进行修剪（作者称可以达到 80%以上的修剪） 在路径遇到控制流图上不能到达目标的指令时，直接对路径进行剪枝 可到达目标但路径条件不满足的路径进行剪枝 提高： BEACON 平均可以早期拒绝82.94%的路径 与传统的定向模糊器相比，速度提高了11.50倍 对于 AFL、afl++和 Mopt 等 fuzzers, BEACON 可以分别加速6.31倍、11.86倍和10.92倍来重现目标 bug BEACON 发现了14个不完整的修复和8个新 bug 概述 输入为程序源代码和模糊测试目标 首先进行可达性分析，剔除无法到达任何目标的路径 进行反向区间分析 因为选择了区间域作为先决条件的抽象，损失了精确度，所以采用以下两种优化方法 关系保持——保留计算式类的约束条件 边界提取——设定阈值，超过阈值才合并路径 有选择性的插桩 在 BEACON 中，我们检测两种语句: 变量定义语句和分支语句 插桩用于修剪路径 方法 预备工作 作者给出了一个语言简化表示的语法 转换规则 Backward Interval Analysis 以图二为例，用该算法进行分析，从 18 行开始向上反向分析，初始的后置条件是 true，当分析到第 9 行时，碰到了第一个分支, 此时的先验条件分裂为两条，分别是： 在实际分析中可能会分裂为许多条，进行求解非常复杂，同时还需要在 18 行进行合并，还会丢失一定的精度。 为了提高效率，我们建议使用区间抽象来支持路径条件的轻量级推理和反向路径的合理过度逼近。（算法 7-18 行） 经过合并后的 pc 1 和 pc 2 如下图： 综上，我们可以看到后向间隔分析负责得到一个合理逼近的 target 的先验条件</description>
@@ -111,29 +111,29 @@ Abstract proposes a machine learning method to extract software product names an
     
     <item>
       <title>DGF generate POC base known information</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/idea/dgf-generate-poc-base-known-information/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/idea/dgf-generate-poc-base-known-information/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/idea/dgf-generate-poc-base-known-information/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/idea/dgf-generate-poc-base-known-information/</guid>
       <description>论文 CCS 17 [[SemFuzz Semantics-based Automatic Generation of Proof-of-Concept Exploits]]（中国人民大学游伟老师，也是一直有在做 fuzz） 思考一下如何推广到任意的二进制程序 他是如何将提取的漏洞信息通知 fuzzer 的 ![[SemFuzz 总结笔记#what can i improve]] [[Extractor_ Extracting Attack Behavior from Threat Reports]] 威胁报告中提取攻击行为 这篇论文的工作看起来是做的相当完善了 开源 突然想起来师姐的论文也有 cve 提取，看看师姐论文 [[Android SmartTVs Vulnerability Discovery via Log-Guided Fuzzing]]这个不知道有没有用，也是游伟老师团队的，还没下载 利用 word2vec + cnn 识别 log 中的目标信息，然后用这些目标信息来变异 没有开源代码，想知道它是怎么去指导变异的 [[ProFuzzer On-the-fly Input Type Probing for Better Zero-day Vulnerability Discovery]] 亮点在于对输入格式的探测 没有开源 [[Automated Extraction of Software Names from Vulnerability Reports using LSTM and Expert System]] 会议没听说过，可能会有点水 利用Word2Vec+LSTM构成的NRE模型实现对CVE description中每个单词的分类，分为software name和software version 使用作者总结的规则来判断SV和SN对 代码没开源 [[Towards the Detection of Inconsistencies in Public Security Vulnerability Reports]] 和上面那篇差不多，利用神经网络提取CVE报告中的software name和software version 但是使用的网络结构不同，这篇的网络结构比较复杂，使用了NER和RE模型 NER用于识别SN和SV，RE用于判断哪两个SN和SV是一对 代码开源 EVIL: Exploiting Software via Natural Language 可能相关一篇 B 类 用seq2seq和codeBert模型将自然语言翻译为代码 但是自然语言需要及其详细 Unleashing Coveraged-Based Fuzzing Through Comprehensive, Efficient, and Faithful Exploitable-Bug Exposing A 类期刊关于定向 fuzz Pangolin: Incremental Hybrid Fuzzing with Polyhedral Path Abstraction 增量混合 Chainsaw: Chained Automated Workflow-based Exploit Generation 自动生成 web 应用程序的漏洞利用，可能会有点启发 CRAXweb: Automatic Web Application Testing and Attack Generation 同上 Automatic Exploit Generation - 知乎 (zhihu.</description>
     </item>
     
     <item>
       <title>EVIL Exploiting Software via Natural Language</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/evil-exploiting-software-via-natural-language/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/evil-exploiting-software-via-natural-language/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/evil-exploiting-software-via-natural-language/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/evil-exploiting-software-via-natural-language/</guid>
       <description>中文译名：evil: 利用自然语言开发软件 作者：Pietro Liguori 单位：那不勒斯费德瑞科二世大学 国家： #意大利 年份： #2021年 来源： #IEEE_ISSRE_CCFB 关键字： #NLP_AGE 代码地址：dessertlab/EVIL: EVIL (Exploiting software VIa natural Language) is an approach to automatically generate software exploits in assembly/Python language from descriptions in natural language. The approach leverages Neural Machine Translation (NMT) techniques and a dataset that we developed for this work. (github.com) 笔记建立时间： 2023-05-15 22:29 这篇论文幸好是21年，要是今年发就惨了
 ABSTRACT EVIL can automatically generate exploits in assembly/python language from descriptions in natural language.</description>
     </item>
     
     <item>
       <title>Extractor_ Extracting Attack Behavior from Threat Reports</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/extractor_-extracting-attack-behavior-from-threat-reports/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/extractor_-extracting-attack-behavior-from-threat-reports/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/extractor_-extracting-attack-behavior-from-threat-reports/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/extractor_-extracting-attack-behavior-from-threat-reports/</guid>
       <description>中文译名：提取器: 从威胁报表中提取攻击行为 作者：Kiavash Satvat 单位：伊利诺伊大学芝加哥分校 国家： #美国 年份： #2021年 来源： #SP 关键字： #提取信息 代码地址： https://github.com/ksatvat/Extractor 笔记建立时间： 2023-04-13 17:43
 摘要 提出 EXTRACTOR，可以从 CTI 报告（Cyber Threat Intelligence reports）中精确提取简洁的攻击行为 可以提取非结构化文本，对文本没有要求 1. Introduction 挑战 冗长：威胁报告中充斥着大量无关文本。 CTI 报告的句法和语义复杂性、技术术语的普遍使用以及缺乏适当的标点符号很容易影响报告的解释和攻击行为的提取。 难以准确地解释技术报告中的复杂逻辑。 目标 除了解决上面的挑战，作者还想实现两个目标：
 可操作的情报：EXTRACTOR 从文本中提取的攻击行为必须能在系统审计日志中被观察到，并能有效地用于威胁检测。不需要人员或工具的进一步处理 准确处理大量 CTI 报告。 自动挖掘更大的知识源（能够处理不同的文本） 从 CTI 报告中构建图表表示 从与不同组织中的同一攻击相关的各种 CTI 源提取信息 2. 问题和背景 问题描述 （实现效果） 报告 (左图)是 njRAT的自由改编，删除了不相关的句子。这个例子展示了语言的复杂性，这将在本文中讨论。在相应的来源图中 (右侧)，节点表示系统实体，边指向系统调用。矩形、椭圆形、五边形和菱形分别表示文件、进程、注册表和套接字。
@@ -142,10 +142,10 @@ ABSTRACT EVIL can automatically generate exploits in assembly/python language fr
     
     <item>
       <title>FIRM-AFL: High-Throughput Greybox Fuzzing of IoT Firmware via Augmented Process Emulation</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/firm-afl_-high-throughput-greybox-fuzzing-of-iot-firmware-via-augmented-process-emulation/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/firm-afl_-high-throughput-greybox-fuzzing-of-iot-firmware-via-augmented-process-emulation/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/firm-afl_-high-throughput-greybox-fuzzing-of-iot-firmware-via-augmented-process-emulation/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/firm-afl_-high-throughput-greybox-fuzzing-of-iot-firmware-via-augmented-process-emulation/</guid>
       <description>中文译名：FIRM-AFL：通过增强过程仿真实现的物联网固件的高通量灰盒模糊测试 作者：郑 yaowen 单位：中国科学院信息工程研究所北京物联网重点实验室 国家： #中国 年份： #2019年 来源： #USENIX会议 关键字： #嵌入式 #fuzzing 笔记建立时间： 2023-02-07 09:13
 作者题目中提到的高通量在文章体现为仿真器的高吞吐量。什么意思呢，就是说固件需要仿真运行在仿真器中，模糊测试喂给固件大量测试用例，但是目前的仿真手段对于喂给的测试用例执行的很慢，1 秒可能只执行 1 个或几个测试用例，即吞吐量小，作者实现的 FIRM-AFL 吞吐量很高。
 摘要 FIRM-AFL 是第一个针对物联网固件的高通量的灰盒模糊测试器 解决了兼容性问题——对可以在系统仿真器仿真的 POSIX 兼容固件进行模糊测试 解决了性能瓶颈——增强进程模拟的新技术 增强型进程仿真以一种新颖的方式将系统模式仿真和用户模式仿真结合起来，提供了系统模式仿真的高兼容性和用户模式仿真的高吞吐量。 看来本篇文章的主要工作在于这个增强进程仿真技术 引言 吞吐量是影响模糊效果的关键因素。根据文章的实验，全系统仿真比用户模式仿真 (AFL 使用的用户模式仿真) 慢大约 10 倍。10 倍的减速意味着在物联网程序中查找漏洞所需的计算资源大约是桌面程序的 10 倍。 全系统仿真的巨大运行时开销的一部分来自内存管理单元 (即 SoftMMU) 的软件实现，用于将虚拟机中发生的每一次内存访问的客户虚拟地址转换为主机虚拟地址。开销的另一部分来自系统调用模拟开销。 我们的解决方案：通过增强过程仿真进行灰盒模糊测试。 优势在于透明度和效率 透明度，即不需要对固件中的程序进行修改， 效率，即整个系统的模糊吞吐量应该接近用户模式仿真。 关键在于将全系统仿真和用户模式仿真相结合，得到了全系统仿真的通用性和用户模式仿真的效率。 主要是通过系统仿真来加强进程（或者说用户模式）的仿真。具体来说是被测程序主要运行在用户态的仿真以达到高效的目的，只有在必要时切换到全系统仿真，以保证程序的正确执行，从而实现通用性。 FIRM-AFL 基于 AFL 和 Firmadyne 实现，AFL 负责覆盖引导模糊测试，Firmadyne 负责仿真和全系统仿真与用户态仿真之间的切换 背景和动机 Fuzzing 和 qemu 跳过，没啥意思
@@ -154,20 +154,20 @@ ABSTRACT EVIL can automatically generate exploits in assembly/python language fr
     
     <item>
       <title>fuzz待读</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/1.%E5%8E%9F%E6%96%87/%E5%BE%85%E8%AF%BB/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/1.%E5%8E%9F%E6%96%87/%E5%BE%85%E8%AF%BB/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/1.%E5%8E%9F%E6%96%87/%E5%BE%85%E8%AF%BB/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/1.%E5%8E%9F%E6%96%87/%E5%BE%85%E8%AF%BB/</guid>
       <description>(84条消息) 一个网安博士生的收藏夹_fuzzwiki_破落之实的博客-CSDN博客 2023-06-22 15:53
 The Progress, Challenges, and Perspectives of Directed Greybox Fuzzing 的阅读笔记 https://zhuanlan.zhihu.com/p/415316061 What You Corrupt Is Not What You Crash_ Challenges in Fuzzing Embedded Devices 的笔记 http://www.hackdig.com/09/hack-487712.htm 针对 UAF 类漏洞的定向 Fuzz 论文分享 http://www.hackdig.com/08/hack-442272.htm Binary-level Directed Fuzzing for Use-After-Free Vulnerabilities（论文名字） 物联网固件安全缺陷检测研究进展 (2022 年) 物联网固件安全缺陷检测研究进展-Research Progress on Security Defect Detection of IoT Firmware (iie.ac.cn) ![[What You Corrupt Is Not What You Crash Challenges in Fuzzing Embedded Devices#^eea5b5]] [[What You Corrupt Is Not What You Crash_ Challenges in Fuzzing Embedded Devices.</description>
     </item>
     
     <item>
       <title>fuzz整理</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/3.%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/fuzz%E6%95%B4%E7%90%86/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/3.%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/fuzz%E6%95%B4%E7%90%86/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/3.%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/fuzz%E6%95%B4%E7%90%86/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/3.%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/fuzz%E6%95%B4%E7%90%86/</guid>
       <description>#TODO [[SemFuzz Semantics-based Automatic Generation of Proof-of-Concept Exploits]]
 变异策略分为粗细粒度 粗粒度：将每次的输入称之为模糊实例，测量模糊实例和脆弱函数之间的距离（距离是两者之间最短路径的节点数），距离越小的输入作为新种子的优先级越高 粗粒度主要修改的是系统调用序列 细粒度：和粗粒度差不多，但是距离是两个基本块之间的距离 细粒度主要修改的是参数值 [[BEACON Directed Grey-Box Fuzzing with Provable Path Pruning]]
 本文提供了一个符号执行求解条件在fuzz应用上的一个折中的方法。从脆弱函数向上一直到入口函数，把条件积累。不去算符号的值，而是去算符号值的范围。这样就可以将很大一批随机变异得到的输入给排除掉。 [[ProFuzzer On-the-fly Input Type Probing for Better Zero-day Vulnerability Discovery]]
@@ -178,10 +178,10 @@ The Progress, Challenges, and Perspectives of Directed Greybox Fuzzing 的阅读
     
     <item>
       <title>Hawkeye： Towards a Desired Directed Grey-box Fuzzer</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/hawkeye-towards-a-desired-directed-grey-box-fuzzer/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/hawkeye-towards-a-desired-directed-grey-box-fuzzer/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/hawkeye-towards-a-desired-directed-grey-box-fuzzer/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/hawkeye-towards-a-desired-directed-grey-box-fuzzer/</guid>
       <description>中文译名：hawkeye: 需求导向的灰盒模糊测试 作者：Hongxu Chen 单位：南洋理工大学 国家： #新加坡 年份： #2018年 来源： #ccs 关键字： #定向fuzzing #fuzzing #灰盒 代码地址： https://github.com/hongxuchen/Hawkeye 介绍网站：Hawkeye (google.com) 笔记建立时间： 2023-02-28 09:30
 摘要 目的：提高灰盒模糊器的指向性 方法：静态分析收集信息（调用图、函数和基本块级别的目标距离）；基于静态信息和执行跟踪评估执行的种子，生成动态指标，用于种子优先级、能量分配和自适应变异 创新：新颖的静态分析、动态指标生成 效果：相比于 AFL 和 AFLGo 等最先进的灰盒模糊测试器，Hawkeye 可以更快地到达目标站点并重现崩溃。特别是，Hawkeye 可以将暴露某些漏洞的时间从约 3.5 小时缩短至 0.5 小时。
 1引言 在静态分析提取信息后，动态分析中有几个挑战——如何动态调整不同策略，以便尽快到达目标站点。第一个挑战是如何正确分配能量给不同距离的输入，以及如何优先考虑离目标更近的输入。这推导出第三个期望属性P3。第二个挑战是如何适应性地改变变异策略，因为GFs可能在粗粒度（例如批量删除）和细粒度（例如按位翻转）两个层次上拥有各种变异操作符。这推导出第四个期望属性P4。因此，第二个问题是对DGF中使用的动态策略进行适当调整。
@@ -190,19 +190,19 @@ The Progress, Challenges, and Perspectives of Directed Greybox Fuzzing 的阅读
     
     <item>
       <title>ideal</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/idea/ideal/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/idea/ideal/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/idea/ideal/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/idea/ideal/</guid>
       <description> 2023年5月15日 ^407193 对于semfuzz可以从两个方面进行改进 首先是信息提取，semfuzz是采用将信息构建成语法树，然后基于作者的规则从语法树中选择信息，这部分可以改成神经网络，为什么呢，因为semfuzz虽然说是语义级别的提取，但是总觉得有点粗暴生硬，改成神经网络或许可以得到一些隐式的信息，增强语义上的获取。 然后是在fuzz部分，semfuzz或者大多数定向fuzz的方法是计算测试用例的距离，距离越近越好。但是尝试去修剪到不了target的路径呢（参考 [[BEACON Directed Grey-Box Fuzzing with Provable Path Pruning]]） 定向 fuzz 解决定制缺陷，因为定制缺陷是指用户根据自己和环境需要对固件进行一定的修改, 这一缺陷的检测无需对整个固件进行测试, 可以将测试重点放在被修改及相关部分，恰恰符合定向 fuzz 的特点 [[物联网固件安全缺陷检测研究进展#^6e21ca]] </description>
     </item>
     
     <item>
       <title>𝑀𝐶2 Rigorous and Efficient Directed Greybox Fuzzing</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/%F0%9D%91%80%F0%9D%90%B62-rigorous-and-efficient-directed-greybox-fuzzing/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/%F0%9D%91%80%F0%9D%90%B62-rigorous-and-efficient-directed-greybox-fuzzing/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/%F0%9D%91%80%F0%9D%90%B62-rigorous-and-efficient-directed-greybox-fuzzing/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/%F0%9D%91%80%F0%9D%90%B62-rigorous-and-efficient-directed-greybox-fuzzing/</guid>
       <description>MC2 : 严格而高效的定向灰盒模糊法
 abstract 背景：most existing directed greybox fuzzers do not provied any theoretical analysis of their performence or optimality.大多数现有的有向灰盒模糊器都没有对其性能或最优性提供任何理论分析。
 方法：
@@ -218,10 +218,10 @@ fuzzing as oracle-guided search 该框架允许模糊器通过查询一个甲骨
     
     <item>
       <title>Poster Automated Discovery of Sensor Spoofing Attacks on Robotic Vehicles</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/poster-automated-discovery-of-sensor-spoofing-attacks-on-robotic-vehicles/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/poster-automated-discovery-of-sensor-spoofing-attacks-on-robotic-vehicles/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/poster-automated-discovery-of-sensor-spoofing-attacks-on-robotic-vehicles/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/poster-automated-discovery-of-sensor-spoofing-attacks-on-robotic-vehicles/</guid>
       <description>Poste：机器人车辆传感器欺骗攻击的自动发现
 摘要 在本文中，我们提出了一个新的传感器模糊框架SensorFuzz，它可以系统地发现机器人车辆上潜在的传感器欺骗攻击。它通过正式模拟现有的传感器攻击和利用高保真车辆模拟来产生恶意的传感器输入，然后用基于弹性的反馈机制分析输入对车辆的影响。
 introduction 研究背景:
@@ -236,30 +236,30 @@ DESIGN 首先，在模拟器中，我们对产生模拟器输入的函数进行�
     
     <item>
       <title>ProFuzzer On-the-fly Input Type Probing for Better Zero-day Vulnerability Discovery</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/profuzzer-on-the-fly-input-type-probing-for-better-zero-day-vulnerability-discovery/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/profuzzer-on-the-fly-input-type-probing-for-better-zero-day-vulnerability-discovery/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/profuzzer-on-the-fly-input-type-probing-for-better-zero-day-vulnerability-discovery/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/profuzzer-on-the-fly-input-type-probing-for-better-zero-day-vulnerability-discovery/</guid>
       <description>文译名：profuzzer：实时输入类型探测，以更好地发现零日漏洞 作者：游伟 单位：普顿大学 国家： #美国 年份： #2019年 来源： #SP 关键字： #fuzzing 代码地址： 笔记建立时间： 2023-04-26 09:31
 abstract 实时的探测技术。可以自动的发现和理解关键 fields，并且自动调节变异策略 用单个字节变异，然后自动分析其 fuzz 结果，将相关字节连接在一起，并识别连接后的字段类型，依据该类型的变异策略来进一步变异。 introduction changes most of input based grammar mutation lead to the same execution path and therefore only one of the should be tested futhermore, maybe inputs that exploit vulnerabilities not follow the grammar random mutation has large input space fuzzing the type probing propose a novel technology called profuzzer which has two stages:</description>
     </item>
     
     <item>
       <title>Revery from Proof-of-Concept to Exploitable</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/revery-from-proof-of-concept-to-exploitable/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/revery-from-proof-of-concept-to-exploitable/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/revery-from-proof-of-concept-to-exploitable/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/revery-from-proof-of-concept-to-exploitable/</guid>
       <description>中文译名：revery: 从概念验证到可利用 作者：Yan Wang 单位：IIE 国家： #中国 年份： #2018年 来源： #ccs 关键字： #AGE #fuzzing 代码地址： 笔记建立时间： 2023-05-17 14:32 #TODO
 ABSTRACT exploitable states do not always exist in crashing paths existing solutions heavily rely on symbolic execution and not scalable in path exploration and exploit generation few solutions could exploit heap-based vulnerabilities Revery can search exploitable statess in paths divering from crashing paths and generate control-flow hijacking exploits for heap-based vulnerabilities. a layout-contributor digraph 目的： 方法： 意义： 效果：</description>
     </item>
     
     <item>
       <title>Semantic-Informed Driver Fuzzing Without Both the Hardware Devices and the Emulators</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/semantic-informed-driver-fuzzing-without-both-the-hardware-devices-and-the-emulators/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/semantic-informed-driver-fuzzing-without-both-the-hardware-devices-and-the-emulators/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/semantic-informed-driver-fuzzing-without-both-the-hardware-devices-and-the-emulators/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/semantic-informed-driver-fuzzing-without-both-the-hardware-devices-and-the-emulators/</guid>
       <description>中文译名：不需要硬件设备和模拟器的语义驱动模糊 作者：Wenjia Zhao 单位：西安交通大学 国家： #中国 年份： #2022年 来源： #NDSS会议 关键字： #fuzzing #仿真托管 代码地址：secsysresearch/DRFuzz (github.com) 笔记建立时间： 2023-03-13 10:24
 摘要 背景：
 驱动接收来自用户空间或硬件的复杂且不可信的输入 驱动代码本身不可靠，开发开发人员经验少，开发结束后难测试 目的：构建不需要设备的驱动 fuzzing 系统 方法：
@@ -270,10 +270,10 @@ ABSTRACT exploitable states do not always exist in crashing paths existing solut
     
     <item>
       <title>SemFuzz Semantics-based Automatic Generation of Proof-of-Concept Exploits</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/semfuzz-semantics-based-automatic-generation-of-proof-of-concept-exploits/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/semfuzz-semantics-based-automatic-generation-of-proof-of-concept-exploits/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/semfuzz-semantics-based-automatic-generation-of-proof-of-concept-exploits/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/semfuzz-semantics-based-automatic-generation-of-proof-of-concept-exploits/</guid>
       <description>中文译名：SemFuzz:基于语义的概念验证漏洞自动生成 作者：wei you btw 二作和三作是 IIE，三作是陈凯 单位：印第安纳大学伯明顿分校 国家： #美国 年份： #2017年 来源： #ccs
 关键字： #fuzzing #定向fuzzing #generate_poc 代码地址： 笔记建立时间： 2023-04-10 09:47
 摘要 提出 semfuzz，利用漏洞相关文本（例如，CVE 报告和 Linux git 日志）来指导 PoC 的自动生成 基于 NLP 来进行信息提取 基于语义的模糊处理来生成 PoC SemFuzz 运行了过去五年报告的112个 Linux 内核缺陷，成功触发了其中的18个，并进一步发现了一个零日漏洞和一个未公开的漏洞。 怎么感觉成功触发的有点少啊
@@ -283,19 +283,19 @@ Instruction 漏洞的 CVE 报告，Linux git 日志、论坛和博客上发布�
     
     <item>
       <title>SemFuzz 总结笔记</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/3.%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/semfuzz-%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/3.%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/semfuzz-%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/3.%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/semfuzz-%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/3.%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/semfuzz-%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/</guid>
       <description>information source common vulnerabilities and exposures (CVE) systems CVE - CVE (mitre.org) Linux git logs CVE - CVE (mitre.org) bug descriptions posted on forums and blogs SEMANTIC INFORMATION RETRIEVING NLP tool process these information, output calling sequence. so, fuzzer utilizes the sequences to guidline the fuzz this part i want know how the fuzzer use these sequences, how two prune the unreachable path I noticed that the example both have cve report and git log Generating parse tree: the tool is pyStatParser，author use it to generate the syntax tree Retrieving affected version: basically, match through regular expressions Retrieving vulnerability type: from the 70 types of Linux kernel related CWEs, author choosed 16 types as the default type of semfuzz and semfuzz identified through the parse tree.</description>
     </item>
     
     <item>
       <title>SFuzz Slice-based Fuzzing for Real-Time Operating Systems</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/sfuzz-slice-based-fuzzing-for-real-time-operating-systems/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/sfuzz-slice-based-fuzzing-for-real-time-operating-systems/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/sfuzz-slice-based-fuzzing-for-real-time-operating-systems/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/sfuzz-slice-based-fuzzing-for-real-time-operating-systems/</guid>
       <description>基于SFuzz切片的实时操作系统模糊
 Abstract 背景：嵌入式系统大多是实时操作系统。
 问题：RTOS的单体设计将各种任务和服务结合成一个单一的二进制文件，这阻碍了目前在RTOS系统上的程序测试和分析技术。
@@ -317,50 +317,50 @@ Micro Fuzzing 作为模糊引擎的核心，我们将基于切片的模糊技术
     
     <item>
       <title>The Progress, Challenges, and Perspectives of Directed Greybox Fuzzing</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/the-progress-challenges-and-perspectives-of-directed-greybox-fuzzing/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/the-progress-challenges-and-perspectives-of-directed-greybox-fuzzing/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/the-progress-challenges-and-perspectives-of-directed-greybox-fuzzing/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/the-progress-challenges-and-perspectives-of-directed-greybox-fuzzing/</guid>
       <description>定向灰盒模糊技术的进展、挑战与展望 作者：王鹏飞 单位：国防科技大学 国家： #中国 年份： #2021年 来源： #arxiv 关键字： #定向fuzzing #综述 总结笔记：[[The Progress, Challenges, and Perspectives of Directed Greybox Fuzzing 总结笔记]] [[The Progress, Challenges, and Perspectives of Directed Greybox Fuzzing.pdf]]
 PUT program under test DSE directed symbolic execution 定向符号执行 Abstract 定向灰盒相对于普通灰盒测试更高效 定向灰盒适用于补丁测试，bug再现，特殊bug检测等场景 本文从更广泛的角度研究DGF，它不仅考虑了针对特定代码部分的位置导向类型，而且还考虑了旨在暴露异常程序行为的行为导向类型。通过分析DGF研究的好处和局限性，我们试图找出当前研究中的差距，同时，揭示新的研究机会，并提出进一步调查的领域。 Introuction Greybox fuzzing is widely used to test application software and libraries [5, 6], as well as kernel code [7–9] and protocols[10-12]. testing software by blindly extending code coverage is less e fficient Originally, directed fuzzers were based on symbolic execution[14-17].</description>
     </item>
     
     <item>
       <title>The Progress, Challenges, and Perspectives of Directed Greybox Fuzzing 总结笔记</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/3.%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/the-progress-challenges-and-perspectives-of-directed-greybox-fuzzing-%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/3.%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/the-progress-challenges-and-perspectives-of-directed-greybox-fuzzing-%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/3.%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/the-progress-challenges-and-perspectives-of-directed-greybox-fuzzing-%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/3.%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/the-progress-challenges-and-perspectives-of-directed-greybox-fuzzing-%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/</guid>
       <description>具体内容可看 [[The Progress, Challenges, and Perspectives of Directed Greybox Fuzzing]]
 术语缩写 ： PUT program under test DSE directed symbolic execution 定向符号执行 DGF 现在的一些研究方向（内容）： 设计新的 fitness 距离 相似度（比距离有优势）![[The Progress, Challenges, and Perspectives of Directed Greybox Fuzzing#^dfb282]] 脆弱性预测模型（脆弱概率）（目前精度不高） 实现多维度的 fitness 协调（感觉这个是比较好做的方向，堆料就行） 使用启发式算法来处理能量分配（本质上是在做优化，AFLgo 里面的模拟退火） Targets 预测 可以从代码位置和程序行为两方面入手 生成合法输入、或者过滤无效输入 动态污点分析 语义信息 深度学习 静态分析 变异策略 符号执行解决复杂约束 检测 bug 类型 前四项应该是属于 DGF 的特定任务，1-2 希望得到更有效的 fitness，3 希望能优化 fitness 的计算算法，第四项其实和 fitness 密切相关，往往 fitness 就是 targets 确定方法的一个量化。 而后几项感觉算是 fuzzing 研究通用的问题，主要是用来优化 fuzzing，提高 fuzzing 的效率 挑战 Fuzzing 性能下降，因为 DGF 有一些额外的处理 预处理 并行计算 提前过滤无效输入 轻量级算法 更加细粒度的调控 等加权指标偏差种子优先级 [[The Progress, Challenges, and Perspectives of Directed Greybox Fuzzing#Equal-weighted Metrics Bias Seed Prioritization 等加权指标偏差种子优先级]] 基于距离的度量的全局最优差异 勘探阶段和开发阶段的不灵活协调（EcoFuzz 解决了该问题） 过于依赖源代码（或者说二进制层次上的测试难以开展） 硬件辅助模拟 机器学习和启发式二进制差分法来识别 targets 应用 patch testing bug reproduction knowledge integration result validation energy saving dgf 的另一个有趣的应用是在测试资源有限的情况下。例如，当模糊物联网设备。在这种情况下，识别关键代码区域来指导测试比以无导向的方式测试整个程序更有效，这可以节省时间和计算资源花在没有 bug 的代码区域上。GREYHOUND[12]和 RVFUZZER[33]分别为 Wi-Fi 客户端和机器人车辆设计，均适用于此场景。 Special bug detection.</description>
     </item>
     
     <item>
       <title>Towards the Detection of Inconsistencies in Public Security Vulnerability Reports</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/towards-the-detection-of-inconsistencies-in-public-security-vulnerability-reports/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/towards-the-detection-of-inconsistencies-in-public-security-vulnerability-reports/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/towards-the-detection-of-inconsistencies-in-public-security-vulnerability-reports/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/towards-the-detection-of-inconsistencies-in-public-security-vulnerability-reports/</guid>
       <description>中文译名：浅谈公共安全漏洞报告不一致的检测 作者：Ying Dong 单位： 国科大 国家： #中国 年份： #2019年 来源： #USENIX会议 关键字： #提取信息 代码地址：pinkymm/inconsistency_detection: Towards the Detection of Inconsistencies in Public Security Vulnerability Reports (github.com) 笔记建立时间： 2023-05-15 14:53
 Abstract we propose an automated system VIEM to detect inconsistent information between the fully standardized NVD database and the unstructured CVE descriptions and their referenced vulnerability reports. VIEM is developed to extract vulnerable software names and vulnerable versions from unstructured text. We introduce customized designs to deep-learning-based named entity recognition (NER) and relation extraction (RE) so that VIEM can recognize previous unseen software names and versions based on sentence structure and contexts.</description>
     </item>
     
     <item>
       <title>What You Corrupt Is Not What You Crash Challenges in Fuzzing Embedded Devices</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/what-you-corrupt-is-not-what-you-crash-challenges-in-fuzzing-embedded-devices/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/what-you-corrupt-is-not-what-you-crash-challenges-in-fuzzing-embedded-devices/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/what-you-corrupt-is-not-what-you-crash-challenges-in-fuzzing-embedded-devices/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/what-you-corrupt-is-not-what-you-crash-challenges-in-fuzzing-embedded-devices/</guid>
       <description>你破坏的不是你破坏的: Fuzzing 嵌入式设备的挑战 作者：Marius Muench 单位：巴黎高等电信学院 国家： #法国 年份： #2018年 来源： #NDSS会议 关键字： #嵌入式 #综述 [[What You Corrupt Is Not What You Crash_ Challenges in Fuzzing Embedded Devices.pdf]]
 Abstract 传统的测试方法依赖于程序中看的见的崩溃, 而二进制插装技术是用来改善针对这些缺陷状态的检测方法 演示了 memory corruption 漏洞，展示 embedded devices 和 desktop systems 的不同 分析了几种 embedded devices 设备的差异 Introduction Memory corruption 导致的漏洞普遍存在，模糊测试是发现这些漏洞最流行的技术之一，适合大规模自动化 因为 embedded devices 的有限的 I/O 和计算能力，受限的成本，其上没有大部分 desktop systems 拥有的防御机制，所以发生内存损坏的概率更高 但是 embedded devices 存在缺少源码，识别 memory corruption 的传统方法不适用于的问题。 本文首次全面分析了内存损坏对不同类别的嵌入式系统的影响，并且提出的技术可以 100%检测到在模糊过程中触发的内存损坏状态 FUZZING EMBEDDED SYSTEMS 首先介绍将在本文其余部分使用的嵌入式系统的分类。然后，我们讨论了之前将模糊测试应用于不同嵌入式设备的实验，最后我们提出了在该领域应用模糊测试所遇到的挑战。</description>
     </item>
     
     <item>
       <title>What You Corrupt Is Not What You Crash Challenges in Fuzzing Embedded Devices 总结笔记</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/3.%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/what-you-corrupt-is-not-what-you-crash-challenges-in-fuzzing-embedded-devices-%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/3.%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/what-you-corrupt-is-not-what-you-crash-challenges-in-fuzzing-embedded-devices-%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/3.%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/what-you-corrupt-is-not-what-you-crash-challenges-in-fuzzing-embedded-devices-%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/3.%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/what-you-corrupt-is-not-what-you-crash-challenges-in-fuzzing-embedded-devices-%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/</guid>
       <description>[[What You Corrupt Is Not What You Crash Challenges in Fuzzing Embedded Devices]] 参考：浅谈固件Fuzz_黑客技术 (hackdig.com)
 嵌入式设备分类 基于 Linux OS 的嵌入式设备：对于初次接触固件漏洞挖掘的读者往往接触的都是这类嵌入式设备，如大部分的摄像头、路由器。 自定义操作系统的嵌入式设备：可能不存在内存管理单元(MMU)，不过内核和用户层仍然存在逻辑分离。 没有抽象操作系统的嵌入式设备：编译后的代码系统空间和用户空间是混在一起的，不存在内核与用户层的逻辑分离。 参考的博客给出了这样一个观点：对这种类型的设备进行 fuzz 似乎本来就比较少见，因为该种类型的设备代码量一般较小，只用逆向说不定都可以还原。 对嵌入式设备 fuzz 的难点 错误检测：嵌入式设备的防御机制少，即使触发了漏洞，但是系统没有崩溃，fuzz 器就得不到反馈，就以为没有触发漏洞。 性能和可扩展性：难以并行，每轮都要重启设备 插桩 后续作者针对错误检测这一个问题，将嵌入式设备分为三类进行测试，将它们的反应分为了 6 种情况。![[What You Corrupt Is Not What You Crash Challenges in Fuzzing Embedded Devices#Observed Behavior]]
 启发式方法加强错误检测 段追踪 格式说明符跟踪 堆对象追踪 调用栈追踪 调用帧追踪 栈对象追踪 针对嵌入式设备 fuzz 问题的一些方法 （作者原文中对每种方法都给出了需要的工具和资源）
@@ -370,10 +370,10 @@ Abstract 传统的测试方法依赖于程序中看的见的崩溃, 而二进制
     
     <item>
       <title>模糊测试分类</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/1.%E5%8E%9F%E6%96%87/%E5%88%86%E7%B1%BB/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/1.%E5%8E%9F%E6%96%87/%E5%88%86%E7%B1%BB/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/1.%E5%8E%9F%E6%96%87/%E5%88%86%E7%B1%BB/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/1.%E5%8E%9F%E6%96%87/%E5%88%86%E7%B1%BB/</guid>
       <description>2023-06-22 16:07 L2Fuzz: Discovering Bluetooth L2CAP Vulnerabilities Using Stateful Fuzz Testing.	DSN	2022
 关于蓝牙设备的fuzz 解决的问题：不能有效地生成蓝牙的畸形数据包 本文提出的方法生成的畸形数据包数量增加了46倍，数据包拒绝率大大降低；从八个真实蓝牙设备中检测到五个零日漏洞 Torpedo: A Fuzzing Framework for Discovering Adversarial Container Workloads.	DSN	2022
 提出一种方法检测容器中异常的工作负载 Towards Fuzzing Target Lines.	DSN	2022
@@ -384,10 +384,10 @@ Abstract 传统的测试方法依赖于程序中看的见的崩溃, 而二进制
     
     <item>
       <title>物联网固件安全缺陷检测研究进展</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/%E7%89%A9%E8%81%94%E7%BD%91%E5%9B%BA%E4%BB%B6%E5%AE%89%E5%85%A8%E7%BC%BA%E9%99%B7%E6%A3%80%E6%B5%8B%E7%A0%94%E7%A9%B6%E8%BF%9B%E5%B1%95/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/%E7%89%A9%E8%81%94%E7%BD%91%E5%9B%BA%E4%BB%B6%E5%AE%89%E5%85%A8%E7%BC%BA%E9%99%B7%E6%A3%80%E6%B5%8B%E7%A0%94%E7%A9%B6%E8%BF%9B%E5%B1%95/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/%E7%89%A9%E8%81%94%E7%BD%91%E5%9B%BA%E4%BB%B6%E5%AE%89%E5%85%A8%E7%BC%BA%E9%99%B7%E6%A3%80%E6%B5%8B%E7%A0%94%E7%A9%B6%E8%BF%9B%E5%B1%95/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/%E7%89%A9%E8%81%94%E7%BD%91%E5%9B%BA%E4%BB%B6%E5%AE%89%E5%85%A8%E7%BC%BA%E9%99%B7%E6%A3%80%E6%B5%8B%E7%A0%94%E7%A9%B6%E8%BF%9B%E5%B1%95/</guid>
       <description>中文译名： 作者：张弛 单位：计算机软件新技术国家重点实验室 (南京大学) 国家： #中国 年份： #2021年 来源： #信息安全学报 关键字： #综述 #嵌入式 笔记建立时间： 2023-02-02 : 21:12
 摘要 归纳典型物联网固件实现缺陷类型、产生机理 评价静态分析、符号执行、模糊测试、程序验证、基于机器学习的方法 引言 IEEE 标准 12207-2008 将固件定义为“硬件设备和以只读软件形式存储于硬件设备中的计算机指令和数据的结合”。 固件分为三类 单片固件, 通常采取单个二进制镜像的形式, 无需底层操作系统, 直接基于底层硬件驱动完成所有功能, 或者只包含部分系统的库; 基于 Linux 的固件, 以 Linux 作为底层的系统, 基于 Linux 进行开发; 基于 RTOS 的固件。RTOS (real-time operating system) 是指实时处理数据、没有缓冲延迟的操作系统。 固件中存在缺陷是造成物联网设备遭受安全攻击的根本原因之一。 挑战： 无法获取源码且代码类型复杂 不同类型的固件差别较大 测试用例难以构建 依赖资源及技术不足 固件缺陷及其机理分析 固件中的缺陷可以分为实现缺陷、配置缺陷和定制缺陷。
 实现缺陷 内存损坏类缺陷：内存损坏类缺陷指不正确的内存访问导致堆、栈内存发生错误。 命令注入缺陷：命令注入缺陷指由于缺少对用户输入进行完备的检查导致恶意用户可以通过构造输入来运行非预期的命令。 程序逻辑缺陷：程序逻辑缺陷是指程序不严谨的逻辑所留下的缺陷, 使软件无法正常运行或给了不法分子可乘之机。 并发问题缺陷：并发问题缺陷指对多线程运行的固件设计不合理导致固件运行时产生数据竞争、死锁等行为。 配置缺陷 固件上的配置缺陷目前学术界研究缺失, 但大型软件系统和云系统中都有较多研究, 这些研究对固件配置缺陷检测或许会有启发。

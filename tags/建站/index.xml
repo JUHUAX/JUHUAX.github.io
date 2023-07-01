@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>建站 on BLOG</title>
-    <link>https://examplesite.com/tags/%E5%BB%BA%E7%AB%99/</link>
+    <link>https://juhuax.github.io/tags/%E5%BB%BA%E7%AB%99/</link>
     <description>Recent content in 建站 on BLOG</description>
     <image>
       <title>BLOG</title>
-      <url>https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+      <url>https://juhuax.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://juhuax.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 01 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://examplesite.com/tags/%E5%BB%BA%E7%AB%99/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 01 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://juhuax.github.io/tags/%E5%BB%BA%E7%AB%99/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>对一些问题的说明</title>
-      <link>https://examplesite.com/posts/%E5%BB%BA%E7%AB%99/%E5%AF%B9%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98%E7%9A%84%E8%AF%B4%E6%98%8E/</link>
+      <link>https://juhuax.github.io/posts/%E5%BB%BA%E7%AB%99/%E5%AF%B9%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98%E7%9A%84%E8%AF%B4%E6%98%8E/</link>
       <pubDate>Sat, 01 Jul 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/%E5%BB%BA%E7%AB%99/%E5%AF%B9%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98%E7%9A%84%E8%AF%B4%E6%98%8E/</guid>
+      <guid>https://juhuax.github.io/posts/%E5%BB%BA%E7%AB%99/%E5%AF%B9%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98%E7%9A%84%E8%AF%B4%E6%98%8E/</guid>
       <description>因为之前一直在本地写乱七八糟的东西，某一天想搭个博客来分享。 于是搭好了，东西一股脑的全放了上来。 之前的文章还是有一些问题的，比如图片不加载（码云防盗链，之后拿github做图床了），公式不渲染等等。 2023年7月后的文章应该不会有这些问题了（大概吧&amp;hellip;&amp;hellip;）</description>
     </item>
     

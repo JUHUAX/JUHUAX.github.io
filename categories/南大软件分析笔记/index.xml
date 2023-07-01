@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>南大软件分析笔记 on BLOG</title>
-    <link>https://examplesite.com/categories/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%94%E8%AE%B0/</link>
+    <link>https://juhuax.github.io/categories/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%94%E8%AE%B0/</link>
     <description>Recent content in 南大软件分析笔记 on BLOG</description>
     <image>
       <title>BLOG</title>
-      <url>https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+      <url>https://juhuax.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://juhuax.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 11 Jun 2023 02:01:58 +0530</lastBuildDate><atom:link href="https://examplesite.com/categories/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%94%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 11 Jun 2023 02:01:58 +0530</lastBuildDate><atom:link href="https://juhuax.github.io/categories/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%94%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>南大软件分析前5节笔记</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E5%89%8D5%E8%8A%82%E7%AC%94%E8%AE%B0/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E5%89%8D5%E8%8A%82%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Sun, 11 Jun 2023 02:01:58 +0530</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E5%89%8D5%E8%8A%82%E7%AC%94%E8%AE%B0/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E5%89%8D5%E8%8A%82%E7%AC%94%E8%AE%B0/</guid>
       <description>IR Intermediate Representation 中间表示 3AC 三地址码 3-Address Code 每条3AC至多有三个地址，地址可以是名称，常量，编译器生成的临时变量 其实3AC就是指令的一种表示形式 BB 基本块 basic block 基本块是满足一下性质的连续3AC：只能从块的第一条指令进入；只能从块的最后一条指令离开 构建程序P的基本块算法 寻找leader（leader就是基本块的入口） P的第一条指令是一个leader 跳转目标是一个leader 跳转指令的后一条指令也是一个leader 一个基本块就是一个leader一直到下一个leader前的所有指令 CFG 控制流图 control flow graph 控制流图的一个结点可以是一条单独的3AC，更常见的是一个基本块BB 构建控制流图算法 首先构建程序基本块 构建边：块 A 和块 B 之间有一条边，当且仅当：A 的末尾有一条指向了 B 开头的跳转指令；A 的末尾紧接着 B 的开头，且 A 的末尾不是一条无条件跳转指令 数据流分析 PP 程序点 program point 在数据流分析中，我们会把每一个PP关联一个数据流值，代表在该点中可观察到的抽象的程序状态。 输入输出状态 每一条IR的执行，都会使状态从输入状态变成新的输出状态 输入/输出状态与语句前/后的 program point相关联。 转移方程 每条语句 s 都会使程序状态发生改变，这个所谓的方程f_x()对应的就是语句使得状态发生变化的操作 分析数据流有前向后后向两种，每条语句对应的状态转移方程也有两种。 控制流约束 这指的是状态的变化需要和控制流对应，比如说有两个基本块A1和A2都指向基本块B，那么B的输入状态就应该是A1、A2输出状态的交集 Reaching Definitions Analysis 到达定义分析 假设v在PPp处有定义x，如果存在一个路径从PPp到PPq，并且在该路径上没有v的其他定义，则称v的定义x到达p点。 如果在这条路径上有v的其他定义，则称变量v的定义x被killed 应用举例：分析程序是否存在变量未初始化：在程序入口为各变量引入一个 dummy 定值。当程序出口的某变量定值依然为 dummy，则我们可以认为该变量未被定义。 到达定义的转移方程 $$ \begin{matrix}OUT[B]=gen_B\cup(IN[B]-kill_B) \ IN[B]=\cup_{p,a,predecessor,of, B}OUT[P] \end{matrix}</description>
     </item>
     
     <item>
       <title>南大软件分析第七节笔记</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E4%B8%83%E8%8A%82%E7%AC%94%E8%AE%B0/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E4%B8%83%E8%8A%82%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Sun, 11 Jun 2023 02:01:58 +0530</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E4%B8%83%E8%8A%82%E7%AC%94%E8%AE%B0/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E4%B8%83%E8%8A%82%E7%AC%94%E8%AE%B0/</guid>
       <description>视频： 南京大学《软件分析》课程07（Interprocedural Analysis 课程主页：Static Program Analysis | Tai-e (pascal-lab.net) 笔记参考：(34条消息) 【课程笔记】南大软件分析课程—16课时完整版_bsauce的博客-CSDN博客_南京大学软件分析 软件分析（七）Inter-procedural Analysis - 知乎 (zhihu.com) 软件分析 - 知乎 (zhihu.com) PPT： Interprocedural Analysis (nju.edu.cn)
 1.Motivation 1. 1为什么需要过程间分析（Interprocedural Analysis） 我们之前学习的是过程内分析（Interprocedural Analysis），过程内分析聚焦于函数内部，对于函数间的调用采取的策略是最保守（安全）的假设，但是安全性高伴随的就是精确度低，如下图，过程内分析就会将变量 x，y，n 设置为 NAC 但是过程间分析增加了 call 和 return 边，这样可以将不同函数的数据流信息通过边来传输，如下图所示，x，y，n 分别为 42， 43， 10 想要进行过程间分析，那么我们就需要调用图（call graph）
 1. 2调用图 调用图就是程序中调用关系的表示，本质是调用边的集合，从调用点（call-sites）到目标函数（target methods / callees）的边 应用：是所有过程间分析（跨函数分析）的基础，对于程序优化，程序理解，程序调试等有很重要的作用。
@@ -35,10 +35,10 @@
     
     <item>
       <title>南大软件分析第九节——Pointer Analysis - Foundations I</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E4%B9%9D%E8%8A%82pointer-analysis-foundations-i/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E4%B9%9D%E8%8A%82pointer-analysis-foundations-i/</link>
       <pubDate>Sun, 11 Jun 2023 02:01:58 +0530</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E4%B9%9D%E8%8A%82pointer-analysis-foundations-i/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E4%B9%9D%E8%8A%82pointer-analysis-foundations-i/</guid>
       <description>视频：南京大学《软件分析》课程09（Pointer Analysis - Foundations I）哔哩哔哩_bilibili 课程主页：Static Program Analysis | Tai-e (pascal-lab.net) 笔记参考：(34条消息) 【课程笔记】南大软件分析课程—16课时完整版_bsauce的博客-CSDN博客_南京大学软件分析 软件分析 - 知乎 (zhihu.com) PPT： Pointer Analysis: Foundations (nju.edu.cn)
 1指针分析规则 首先确定分析域和记号的表示 变量、函数、对象、实例域、指针、指向关系 针对上节课末尾提到的四种句子进行分析 横线上的是前提条件，横线下的是结论
 2 如何实现指针分析 本质上指针分析就是要将指针关系通过指针（variables&amp;amp;fields）进行传播 关键在于当 pt (x) 发生改变，将改变的部分传播到 x 相关的指针。 用图来解决如何传播的问题
@@ -48,10 +48,10 @@ Nodes：指针，A node n represents a variable or a field of an abstract object
     
     <item>
       <title>南大软件分析第八节笔记</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E5%85%AB%E8%8A%82%E7%AC%94%E8%AE%B0/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E5%85%AB%E8%8A%82%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Sun, 11 Jun 2023 02:01:58 +0530</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E5%85%AB%E8%8A%82%E7%AC%94%E8%AE%B0/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E5%85%AB%E8%8A%82%E7%AC%94%E8%AE%B0/</guid>
       <description>视频： 南京大学《软件分析》课程 08（Pointer Analysis 课程主页：Static Program Analysis | Tai-e (pascal-lab.net) 笔记参考：(34条消息) 【课程笔记】南大软件分析课程—16课时完整版_bsauce的博客-CSDN博客_南京大学软件分析 软件分析 - 知乎 (zhihu.com) PPT： Pointer Analysis (nju.edu.cn)
 Motivation CHA 算法存在缺陷（上一节课有说） 上一节提到过 CHA 算法是针对 call site 的声明类寻找目标函数，所以如上图所示，n.get 的声明类是 Number，Number 有三个子类，所以找到的目标函数就是三个结果，但是这个结果是不准确的，所以我们需要用到指针分析，去寻找 call site 真正指向的那个函数。
 Introduction to Pointer Analysis 指针分析 指针分析是基本的静态分析，用于计算一个指针可以指向的内存位置，对于面向对象程序来说是计算一个指针（变量或字段）可以指向哪些对象 指针分析是一种 may 分析，它的分析结果是可以指向的对象的集合 如上图的例子，指针分析得到的是指向关系（point-to relations） 指针分析和别名分析的区别 两个密切相关但不同的概念 指针分析: 指针可以指向哪些对象? 别名分析: 两个指针可以指向同一个对象吗? 别名信息可以从指向关系中获得
@@ -60,10 +60,10 @@ Introduction to Pointer Analysis 指针分析 指针分析是基本的静态分�
     
     <item>
       <title>南大软件分析第六节笔记</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E5%85%AD%E8%8A%82%E7%AC%94%E8%AE%B0/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E5%85%AD%E8%8A%82%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Sun, 11 Jun 2023 02:01:58 +0530</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E5%85%AD%E8%8A%82%E7%AC%94%E8%AE%B0/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E5%85%AD%E8%8A%82%E7%AC%94%E8%AE%B0/</guid>
       <description>视频： 南京大学《软件分析》课程 06（Data Flow Analysis - Foundations II 课程主页：Static Program Analysis | Tai-e (pascal-lab.net) 笔记参考：(34条消息) 软件分析——数据流分析2_zcc今天好好学习了吗的博客-CSDN博客 (33条消息) 【课程笔记】南大软件分析课程—16课时完整版_bsauce的博客-CSDN博客_南京大学软件分析笔记 PPT： https://cs.nju.edu.cn/tiantan/software-analysis/DFA-FD.pdf
 将不动点定理应用于算法 第 5 节课向我们介绍了不动点定理：完全 lattice 且是单调的、有限的，那么存在不动点且从⊤开始迭代找得到最大不动点和从⊥开始迭代找得到最小不动点；现在的问题是：如何关联迭代算法和不动点理论（那么就能证明算法解存在、且最优） 依据不动点定理的条件，我们只需要证明 CFG 是个 complete lattice + 证明转移函数是单调的。
 因为每一个 $v_i$ 都是 complete&amp;amp;finite lattices 那么，他们的笛卡尔积得到的 product lattice 也是 complete&amp;amp;finite 的（lattice 的性质） 转移函数有两步：第一步对每个 node 应用转移函数，第二步是进行 join 或 meet 处理。 第一步的转移函数中就是 gen 和 kill 操作，而 gen 和 kill 操作是固定的，结果只能是 0 变成 1 或者 1 变成 1，显然单调。 这里我琢磨了好久，要注意的是这里的转移函数是每次迭代的转移函数，而不是 BBs 之间的转移函数。BBs 之间转移函数的时候是可能将上一个 BB 位向量中的 1 kill 为 0，此时比较的是上一个 BB 和当前 BB 的位向量；但是在迭代层面我们去比较的是当前 BB 在上一次迭代和这次迭代的位向量，因为 gen 和 kill 操作是固定的，结果只能是 0 变成 1 或者 1 变成 1，所以是单调的。 第二步需要分别证明 join 和 meet 是单调的 Meet 证明方法同上 至此，我们将不动点定理与我们的算法联系起来了，迭代算法是可以终止的（到达不动点），并且不动点是最小或者最大不动点 下面来解答第三个问题，算法什么时候达到不动点（复杂度问题）</description>
@@ -71,10 +71,10 @@ Introduction to Pointer Analysis 指针分析 指针分析是基本的静态分�
     
     <item>
       <title>南大软件分析第十一节——Pointer Analysis - Context Sensitivity I</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E5%8D%81%E4%B8%80%E8%8A%82pointer-analysis-context-sensitivity-i/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E5%8D%81%E4%B8%80%E8%8A%82pointer-analysis-context-sensitivity-i/</link>
       <pubDate>Sun, 11 Jun 2023 02:01:58 +0530</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E5%8D%81%E4%B8%80%E8%8A%82pointer-analysis-context-sensitivity-i/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E5%8D%81%E4%B8%80%E8%8A%82pointer-analysis-context-sensitivity-i/</guid>
       <description>视频：南京大学《软件分析》课程10（Pointer Analysis - Foundations II）哔哩哔哩_bilibili 课程主页：Static Program Analysis | Tai-e (pascal-lab.net) 笔记参考：【课程笔记】南大软件分析课程8——指针分析-上下文敏感（课时11/12） - 简书 (jianshu.com) (34条消息) 【课程笔记】南大软件分析课程—16课时完整版_bsauce的博客-CSDN博客_南京大学软件分析 PPT：Pointer Analysis: Context Sensitivity (nju.edu.cn) 上下文不敏感带来的问题 对于上述这段代码，当我们不考虑上下文去处理第 5、6 行的 id 函数调用的时候，id 的参数和返回值会和两次调用的参数和返回值杂糅在一起，这样假如在进行常量传播的时候，变量 i 就会被分析为 NAC，这是不对的。所以要对函数调用添加上下文，这样去分析第 7 行的时候 get 指向的就只有对象 One 里面的 get 函数
 Introduction btw 上下文不敏感的英文是 contex insensitivity，缩写是 C.I. 上下文敏感的英文是 contex sensitivity，缩写是 C.S.
 目前 oldest 和 best-know 的上下文敏感策略是 call-site sensitivity（call-string） 使用 call site 链来表示每个方法的上下文（非重点） cloning-based 上下文敏感（最直观的方法去实现上下文敏感）、 每个上下文就会对变量和方法进行一次克隆 上下文敏感的堆 OO 程序是典型的堆敏感，因为程序会频繁的修改堆，所以也要对堆抽象添加上下文
@@ -85,19 +85,19 @@ Introduction btw 上下文不敏感的英文是 contex insensitivity，缩写是
     
     <item>
       <title>南大软件分析第十三节——Static Analysis for Security</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E5%8D%81%E4%B8%89%E8%8A%82static-analysis-for-security/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E5%8D%81%E4%B8%89%E8%8A%82static-analysis-for-security/</link>
       <pubDate>Sun, 11 Jun 2023 02:01:58 +0530</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E5%8D%81%E4%B8%89%E8%8A%82static-analysis-for-security/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E5%8D%81%E4%B8%89%E8%8A%82static-analysis-for-security/</guid>
       <description>视频：南京大学《软件分析》课程13（Static Analysis for Security）哔哩哔哩_bilibili 课程主页：Static Program Analysis | Tai-e (pascal-lab.net) 笔记参考：【课程笔记】南大软件分析课程9——污点分析（课时13） - 简书 (jianshu.com) (34条消息) 【课程笔记】南大软件分析课程—16课时完整版_bsauce的博客-CSDN博客_南京大学软件分析 PPT：Static Analysis for Security (nju.edu.cn) 没什么新东西，懒得写笔记了。</description>
     </item>
     
     <item>
       <title>南大软件分析第十二节——Pointer Analysis - Context Sensitivity II</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E5%8D%81%E4%BA%8C%E8%8A%82pointer-analysis-context-sensitivity-ii/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E5%8D%81%E4%BA%8C%E8%8A%82pointer-analysis-context-sensitivity-ii/</link>
       <pubDate>Sun, 11 Jun 2023 02:01:58 +0530</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E5%8D%81%E4%BA%8C%E8%8A%82pointer-analysis-context-sensitivity-ii/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E5%8D%81%E4%BA%8C%E8%8A%82pointer-analysis-context-sensitivity-ii/</guid>
       <description>视频：南京大学《软件分析》课程10（Pointer Analysis - Foundations II）哔哩哔哩_bilibili 课程主页：Static Program Analysis | Tai-e (pascal-lab.net) 笔记参考：【课程笔记】南大软件分析课程8——指针分析-上下文敏感（课时11/12） - 简书 (jianshu.com) (34条消息) 【课程笔记】南大软件分析课程—16课时完整版_bsauce的博客-CSDN博客_南京大学软件分析 PPT：Pointer Analysis: Context Sensitivity (nju.edu.cn) 本节讲上下文敏感的过程间指针分析的算法 Context Sensitive Pointer Analysis：Algorithms C.S.和 C.I.的算法本质上没有什么区别，基本上就是把对象、变量前加了上下文的标识 唯一的区别在于 ProcessCall 中添加了 select 方法来找到目标函数 m 的上下文标识。 select 方法的细节在后面详细讲。
 Context Sensitivity Variants 上下文的生成主要有三种策略：
 call-site sensitivity object sensitivity type sensitivity call-site sensitivity call-site sensitivity 的策略如上图所示，就是在原来上下文链的基础上，把调用点处的上下文加上去。 下图是例子。但是这样的分析策略带来了一个问题，就是图中 15 行，bar 方法内又调用自己，那么这样分析就不会终止，就会生成一个无穷无尽的上下文链。并且在实际分析程序中，即使没有想图中这样的情况，但是因为程序本身就很复杂，生成的上下文链也会很长，这样就会影响分析性能。 所以，call-site sensitivity 设定了上下文链的长度最长为 k，因此它又被称为 k-CFA。 设置了长度限制可以
@@ -106,10 +106,10 @@ call-site sensitivity object sensitivity type sensitivity call-site sensitivity 
     
     <item>
       <title>南大软件分析第十节——Pointer Analysis - Foundations II</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E5%8D%81%E8%8A%82pointer-analysis-foundations-ii/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E5%8D%81%E8%8A%82pointer-analysis-foundations-ii/</link>
       <pubDate>Sun, 11 Jun 2023 02:01:58 +0530</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E5%8D%81%E8%8A%82pointer-analysis-foundations-ii/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/4.%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90/%E5%8D%97%E5%A4%A7%E8%BD%AF%E4%BB%B6%E5%88%86%E6%9E%90%E7%AC%AC%E5%8D%81%E8%8A%82pointer-analysis-foundations-ii/</guid>
       <description>视频：南京大学《软件分析》课程10（Pointer Analysis - Foundations II）哔哩哔哩_bilibili PPT： https://cs.nju.edu.cn/tiantan/software-analysis/PTA-FD.pdf 笔记参考：(34条消息) 【课程笔记】南大软件分析课程—16课时完整版_bsauce的博客-CSDN博客_南京大学软件分析 【课程笔记】南大软件分析课程7——指针分析基础（课时9/10） - 简书 (jianshu.com) 书接上回
 指针分析如何处理函数调用 老师再次提及了 CHA 算法的缺陷，CHA 是基于声明类型，所以不精准，可能会引入冗余的调用边和指针关系。
 因为声明类型可能是父类，而实例化的实际是个子类，当变量调用子类方法的时候，CHA 分析的时候会将父类的所有子类都纳入变量的指向关系，这样就多了很多实际没有的调用边和指针关系 所以相对于 CHA，基于 pt (a)的指针分析要更加精准，以过程间指针分析和 CG 构造同时进行，动态的去传播和添加指向关系，这样构成的调用图就没有冗余边了。

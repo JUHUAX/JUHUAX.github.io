@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>PWN知识点 on BLOG</title>
-    <link>https://examplesite.com/tags/pwn%E7%9F%A5%E8%AF%86%E7%82%B9/</link>
+    <link>https://juhuax.github.io/tags/pwn%E7%9F%A5%E8%AF%86%E7%82%B9/</link>
     <description>Recent content in PWN知识点 on BLOG</description>
     <image>
       <title>BLOG</title>
-      <url>https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+      <url>https://juhuax.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://juhuax.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 22 Jun 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://examplesite.com/tags/pwn%E7%9F%A5%E8%AF%86%E7%82%B9/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 22 Jun 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://juhuax.github.io/tags/pwn%E7%9F%A5%E8%AF%86%E7%82%B9/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>fastbin attack</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/fastbin-attack/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/fastbin-attack/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/fastbin-attack/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/fastbin-attack/</guid>
       <description>(72条消息) 堆漏洞挖掘——fastbin attack漏洞_董哥的黑板报的博客-CSDN博客 fastbin attack总体上来说就是去修改挂在fastbin上free chunk的fd指针。比如现在fastbin上挂着一个free的chunk a，它的fd指针为0。因为没有别的free chunk了。我们修改了这fd指针，指向了一个我们想编辑的区域，这样相当于是让系统误以为在a chunk后还有一个free chunk。我们通过两次malloc就可以得到fake chunk的指针，从而实现编辑该区域。 但是伪造fake chunk需要满足两个条件，size大小合适，并且PREV_INUSE为1。 由于系统中0x7f这样的数值比较好找，所以我们在目标区域周围找一找有没有0x7f，然后让fake chunk的size字段位于这个0x7f区域，这样就可以通过检查。 那如果找不到0x7f呢。需要 [[unsortedbin attack]]
 double free (72条消息) 好好说话之Fastbin Attack（1）：Fastbin Double Free_hollk的博客-CSDN博客
 house of spirit (72条消息) 好好说话之Fastbin Attack（2）：House Of Spirit_hollk的博客-CSDN博客 直接看例题好理解一点 [ZJCTF 2019]EasyHeap 漏洞点出在edit_heap函数，它没有对写入的size进行限制。 （btw，system函数的cat flag是假的） 这道题可以修改got表，我们的目标就是修改某个函数的got表，然后当调用这个函数的时候，调用了system函数。 比如我们将free函数的got表写成system函数的地址，那么我们调用free (&amp;quot;/bin/sh&amp;quot;) 就是system (&amp;quot;/bin/sh&amp;quot;) free函数的got地址可以通过elf. got[&amp;lsquo;free&amp;rsquo;]得到。同样的system地址也可以得到 那么如何修改free的got呢，我们可以伪造一个指向free got的fake chunk，然后将该fake chunk申请下来，就能修改free got的值 思路： 我们申请两个chunk a和b，将b free，然后通过a溢出修改b，将b的fb指向目标地址（就是got），这里要注意要找个有0x7f的地方。然后将b申请回来，然后再申请一个0x60大小的chunk就拿到了我们的fake chunk，修改fake chunk就把free的got改成system了。 然后我们申请一个chunk，chunk内容是&amp;quot;/bin/sh&amp;quot;，然后释放这个chunk，就ok了。 free (heaparray[n]) == system (heaparray[n]) == system (&amp;quot;/bin/sh&amp;quot;)</description>
@@ -25,10 +25,10 @@ house of spirit (72条消息) 好好说话之Fastbin Attack（2）：House Of Sp
     
     <item>
       <title>overlapping heap（以0ctf babyheap为例）</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/overlapping-heap%E4%BB%A50ctf-babyheap%E4%B8%BA%E4%BE%8B/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/overlapping-heap%E4%BB%A50ctf-babyheap%E4%B8%BA%E4%BE%8B/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/overlapping-heap%E4%BB%A50ctf-babyheap%E4%B8%BA%E4%BE%8B/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/overlapping-heap%E4%BB%A50ctf-babyheap%E4%B8%BA%E4%BE%8B/</guid>
       <description>(68条消息) [pwn]堆：fastbin attack 详解_breezeO_o 的博客-CSDN 博客 (68条消息) [BUUCTF]PWN——babyheap_0ctf_2017_Angel~Yan 的博客-CSDN 博客 【学习分享】babyheap_0ctf_2017，一道入门堆的题 这个视频非常详细，非常好
 （主要是对上面两个 writeup 的补充和思路的整理） 这道题主要分为两个步骤
 泄露 libc 地址 修改 malloc_hook 为 onegadget 为什么我们需要泄露 libc 地址呢，因为我们需要知道 malloc_hook 的地址。而 malloc_hook 是一个 libc 上的函数指针，调用 malloc 时如果该指针不为空则执行它指向的函数，可以通过将 mall_hook 指向一个 onegadget 来 getshell。
@@ -38,29 +38,29 @@ alloc(0x18) #0 alloc(0x68) #1 alloc(0x68) #2 alloc(0x18) #3 然后，我们通�
     
     <item>
       <title>PWN格式化字符串漏洞</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/pwn%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/pwn%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/pwn%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/pwn%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/</guid>
       <description>![[刷题#2023.2.9 JarvisOJ fm]]</description>
     </item>
     
     <item>
       <title>pwn细碎知识</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/pwn%E7%BB%86%E7%A2%8E%E7%9F%A5%E8%AF%86/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/pwn%E7%BB%86%E7%A2%8E%E7%9F%A5%E8%AF%86/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/pwn%E7%BB%86%E7%A2%8E%E7%9F%A5%E8%AF%86/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/pwn%E7%BB%86%E7%A2%8E%E7%9F%A5%E8%AF%86/</guid>
       <description>「二进制安全pwn基础」 - 网安
 知识点 [[静态链接栈溢出]] 如何将一个数转化为底层二进制的机器码，最简单的方式就是在IDA中直接看汇编 (80条消息) 堆漏洞挖掘中的bins分类(fastbin、unsorted bin、small bin、large bin)_arena bins_董哥的黑板报的博客-CSDN博客 fastbin 大小在32字节~128字节（0x20~0x80） unsorted bin 对chunk的大小并没有限制，任何大小的chunk都可以归属到unsorted bin中 small bin 小于1024字节（0x400）的chunk large bin 大于等于1024字节（0x400）的chunk (80条消息) 堆漏洞挖掘中chunk的实际大小、最低大小、 mchunk_size成员_为什么申请的堆块大小会多加0x10_董哥的黑板报的博客-CSDN博客 当用户申请size大小的堆块时，在glibc中本质上是申请了size+16大小（64位系统中）的内存，因为要加上前两个成员 例如：malloc(0x10);申请了0x10大小的堆内存，本质上在glibc中申请了0x10+0x10=0x20大小的空间。 shellcode=asm(shellcraft.sh()) (68条消息) 堆中各个重要参数的意义（用于学习入门个人记录）_月阴荒的博客-CSDN博客 64 位记得用寄存器，32 位传参是在栈上 64位汇编传参，当参数少于7个时， 参数从左到右放入寄存器: rdi, rsi, rdx, rcx, r8, r9。 当参数为7个以上时， 前 6 个与前面一样， 但后面的依次从 “右向左” 放入栈中，即和32位汇编一样 要懂得多试几个，这道题的 printf_got 用不了，那就换成 read 关于两种 libc libc_base = read_addr - libc.symbols[&amp;#34;read&amp;#34;] system_addr = libc_base + libc.symbols[&amp;#34;system&amp;#34;] str_bin_sh = libc_base + libc.</description>
     </item>
     
     <item>
       <title>ret2csu（以ciscn_2019_s_3为例子）</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/ret2csu%E4%BB%A5ciscn_2019_s_3%E4%B8%BA%E4%BE%8B%E5%AD%90/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/ret2csu%E4%BB%A5ciscn_2019_s_3%E4%B8%BA%E4%BE%8B%E5%AD%90/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/ret2csu%E4%BB%A5ciscn_2019_s_3%E4%B8%BA%E4%BE%8B%E5%AD%90/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/ret2csu%E4%BB%A5ciscn_2019_s_3%E4%B8%BA%E4%BE%8B%E5%AD%90/</guid>
       <description>参考：(67条消息) 中级ROP之ret2csu_西杭的博客-CSDN博客
 适用场景 在我们想要调用系统调用，或者在 64 位程序中通过寄存器传递参数，需要设置寄存器中的值，但是有的时候可能没有搜到足够 gadgets 来对寄存器设置值。这个时候需要 csu 函数。
 概述 __libc_csu_init 函数是用来对 libc 进行初始化操作的，而一般的程序都会调用 libc 函数，所以这个函数一定会存在。我们可以构造栈的分布，然后控制程序跳转到 csu，将寄存器的值设置为所需要的值。
@@ -69,10 +69,10 @@ alloc(0x18) #0 alloc(0x68) #1 alloc(0x68) #2 alloc(0x18) #3 然后，我们通�
     
     <item>
       <title>SROP</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/srop/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/srop/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/srop/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/srop/</guid>
       <description>SROP srop 的全称是 Sigreturn Oriented Programming。所以我们首先需要了解一下 Linux 的信号机制
 signal 机制 如图所示，当有中断或异常产生时，内核会向某个进程发送一个 signal，该进程被挂起并进入内核（1），然后内核为该进程保存相应的上下文，然后跳转到之前注册好的 signal handler 中处理相应的 signal（2），当 signal handler 返回后（3），内核为该进程恢复之前保存的上下文，最终恢复进程的执行（4）。如图所示，当有中断或异常产生时，内核会向某个进程发送一个 signal，该进程被挂起并进入内核（1），然后内核为该进程保存相应的上下文，然后跳转到之前注册好的 signal handler 中处理相应的 signal（2），当 signal handler 返回后（3），内核为该进程恢复之前保存的上下文，最终恢复进程的执行（4）。
 一个 signal frame 被添加到栈，这个 frame 中包含了当前寄存器的值和一些 signal 信息。 一个新的返回地址被添加到栈顶，这个返回地址指向 sigreturn 系统调用。 signal handler 被调用，signal handler 的行为取决于收到什么 signal。 signal handler 执行完之后，如果程序没有终止，则返回地址用于执行 sigreturn 系统调用。 sigreturn 利用 signal frame 恢复所有寄存器以回到之前的状态。 最后，程序执行继续。 64 位的 signal frame 如下图所示，signal frame 由 ucontext_t 结构体实现。 // defined in /usr/include/sys/ucontext.h /* Userlevel context.</description>
@@ -80,19 +80,19 @@ signal 机制 如图所示，当有中断或异常产生时，内核会向某个
     
     <item>
       <title>unsortedbin attack</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/unsortedbin-attack/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/unsortedbin-attack/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/unsortedbin-attack/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/unsortedbin-attack/</guid>
       <description>(72条消息) 堆漏洞挖掘——unsortedbin attack漏洞_unsorted bin attack_董哥的黑板报的博客-CSDN博客 ubsortedbin attack是用来配合 [[fastbin attack]] 的。 ubsortedbin attack是双向链表，所以系统会将我们伪造的fake chunk的fd和bk都指回unsortedbin链，而这个地址肯定是0x7f开头的大数值，所以就在目标地址处写入了0x7f。</description>
     </item>
     
     <item>
       <title>栈迁移</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/%E6%A0%88%E8%BF%81%E7%A7%BB/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/%E6%A0%88%E8%BF%81%E7%A7%BB/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/%E6%A0%88%E8%BF%81%E7%A7%BB/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/%E6%A0%88%E8%BF%81%E7%A7%BB/</guid>
       <description>参考：栈迁移原理介绍与应用 - Max1z - 博客园 (cnblogs.com)（这篇写的及其详细）
 适用场景 当栈上的空间，或者程序的输入字符数量不够我们进行溢出操作的时候，可以进行栈迁移。比如一般栈溢出的题目都会有一个字符串数组，当程序在读入我们的输入的时候将读取的字符数量写死的时候，可能我们就没有足够的空间去填入 ROP 链。
 概述 栈迁移顾名思义就是将原来的程序栈迁移到另一个地方，使得我们可以将构造的 ROP 链完整的填入。 那么想要修改栈的位置，那么就需要修改寄存器 esp 和 ebp 的值。 想要修改 esp 和 ebp 的值，我们需要用到 leave 和 ret 两个 gadget。
@@ -102,10 +102,10 @@ signal 机制 如图所示，当有中断或异常产生时，内核会向某个
     
     <item>
       <title>静态链接栈溢出</title>
-      <link>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5%E6%A0%88%E6%BA%A2%E5%87%BA/</link>
+      <link>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5%E6%A0%88%E6%BA%A2%E5%87%BA/</link>
       <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5%E6%A0%88%E6%BA%A2%E5%87%BA/</guid>
+      <guid>https://juhuax.github.io/posts/1.%E5%AD%A6%E4%B9%A0/2.%E5%88%B7%E9%A2%98/ctf/pwn/%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5%E6%A0%88%E6%BA%A2%E5%87%BA/</guid>
       <description>利用int 80h系统调用 设置系统调用参数即可执行 execve(&amp;quot;\bin\sh&amp;quot;,0,0)，获取shell ，四个参数分别是 eax、ebx、ecx、edx 使用 mprotect 方法修改bss段, 执行shellcode 借助ROPgadget工具自动生成ropchain，ROPgadget --binary simplerop --ropchain 但是这种方法生成的ropchain太长，可能无法全部输入 例题：cmcc_simplerop（write up） (80条消息) BUUCTF：cmcc_simplerop（write up）_　筱的博客-CSDN博客 (80条消息) CMCC&amp;ndash;simplerop 题解_cmcc simplerop___lifanxin的博客-CSDN博客</description>
     </item>
     
