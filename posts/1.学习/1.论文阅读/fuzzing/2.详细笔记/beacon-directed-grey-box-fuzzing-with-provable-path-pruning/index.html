@@ -1,285 +1,38 @@
-<!DOCTYPE html>
-<html><head>
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>BEACON Directed Grey-Box Fuzzing with Provable Path Pruning - Blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="中文译名：信标: 具有可证明路径剪枝的定向灰盒模糊测试 作者：Huang Heqing 单位：香港科技大学 国家： #中国 年份： #2022年
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>BEACON Directed Grey-Box Fuzzing with Provable Path Pruning | BLOG</title><meta name=keywords content="论文阅读"><meta name=description content="中文译名：信标: 具有可证明路径剪枝的定向灰盒模糊测试 作者：Huang Heqing 单位：香港科技大学 国家： #中国 年份： #2022年
 来源： #SP 关键字： #定向fuzzing 代码地址： https://hub.docker.com/r/yguoaz/beacon 笔记建立时间： 2023-05-09 17:27
-摘要 当前的定向 fuzzer 不够高效，因为它们符号化或者具体的执行了很多不会到达 target code 到的 path，浪费了很多计算资源 beacon——通过一种可证明的方式在路径之海中引导灰盒模糊测试 轻量级的静态分析——用于计算到达目标的先决条件——用于修剪无法到达 target 的路径 引言 传统模糊测试应用于 检测漏洞路径 生成潜在漏洞的 poc 崩溃复现 追踪信息流 定向 fuzzing 现状 定向白盒模糊器依靠符号执行，通过求解路径约束来确定可达性，旨在为生成能够到达目标的输入提供理论保证。因此，它们对符号执行的固有使用从根本上限制了它们的扩展能力。 定向灰盒模糊器通常不考虑拒绝不可达路径。它们依靠从执行反馈中收集的启发式方法，根据到达目标代码的可能性对种子进行优先排序。他们要么使用轻量级的元启发式，例如，到目标的距离，要么使用机器学习技术来预测可达性，但不能保证这种优先级会导致拒绝任何不可行的路径。因此，在 AFLGo 中提到的24小时实验中，95%以上的输入无法到达给定的程序点。 定向 fuzzing 的关键在于尽可能早的剔除不能到达 target 的执行路径 BEACON 耗费低的静态分析计算程序变量的合理近似值，这些值用于决定某条路径是否可以到达 target 为了使得静态分析精确又高效，采用了两种新的优化方法：关系保持和有界析取 基于此对模糊测试中要执行的路径进行修剪（作者称可以达到 80%以上的修剪） 在路径遇到控制流图上不能到达目标的指令时，直接对路径进行剪枝 可到达目标但路径条件不满足的路径进行剪枝 提高： BEACON 平均可以早期拒绝82.94%的路径 与传统的定向模糊器相比，速度提高了11.50倍 对于 AFL、afl&#43;&#43;和 Mopt 等 fuzzers, BEACON 可以分别加速6.31倍、11.86倍和10.92倍来重现目标 bug BEACON 发现了14个不完整的修复和8个新 bug 概述 输入为程序源代码和模糊测试目标 首先进行可达性分析，剔除无法到达任何目标的路径 进行反向区间分析 因为选择了区间域作为先决条件的抽象，损失了精确度，所以采用以下两种优化方法 关系保持——保留计算式类的约束条件 边界提取——设定阈值，超过阈值才合并路径 有选择性的插桩 在 BEACON 中，我们检测两种语句: 变量定义语句和分支语句 插桩用于修剪路径 方法 预备工作 作者给出了一个语言简化表示的语法 转换规则 Backward Interval Analysis 以图二为例，用该算法进行分析，从 18 行开始向上反向分析，初始的后置条件是 true，当分析到第 9 行时，碰到了第一个分支, 此时的先验条件分裂为两条，分别是： 在实际分析中可能会分裂为许多条，进行求解非常复杂，同时还需要在 18 行进行合并，还会丢失一定的精度。 为了提高效率，我们建议使用区间抽象来支持路径条件的轻量级推理和反向路径的合理过度逼近。（算法 7-18 行） 经过合并后的 pc 1 和 pc 2 如下图： 综上，我们可以看到后向间隔分析负责得到一个合理逼近的 target 的先验条件" />
-	<meta property="og:image" content=""/>
-	<meta property="og:title" content="BEACON Directed Grey-Box Fuzzing with Provable Path Pruning" />
-<meta property="og:description" content="中文译名：信标: 具有可证明路径剪枝的定向灰盒模糊测试 作者：Huang Heqing 单位：香港科技大学 国家： #中国 年份： #2022年
+摘要 当前的定向 fuzzer 不够高效，因为它们符号化或者具体的执行了很多不会到达 target code 到的 path，浪费了很多计算资源 beacon——通过一种可证明的方式在路径之海中引导灰盒模糊测试 轻量级的静态分析——用于计算到达目标的先决条件——用于修剪无法到达 target 的路径 引言 传统模糊测试应用于 检测漏洞路径 生成潜在漏洞的 poc 崩溃复现 追踪信息流 定向 fuzzing 现状 定向白盒模糊器依靠符号执行，通过求解路径约束来确定可达性，旨在为生成能够到达目标的输入提供理论保证。因此，它们对符号执行的固有使用从根本上限制了它们的扩展能力。 定向灰盒模糊器通常不考虑拒绝不可达路径。它们依靠从执行反馈中收集的启发式方法，根据到达目标代码的可能性对种子进行优先排序。他们要么使用轻量级的元启发式，例如，到目标的距离，要么使用机器学习技术来预测可达性，但不能保证这种优先级会导致拒绝任何不可行的路径。因此，在 AFLGo 中提到的24小时实验中，95%以上的输入无法到达给定的程序点。 定向 fuzzing 的关键在于尽可能早的剔除不能到达 target 的执行路径 BEACON 耗费低的静态分析计算程序变量的合理近似值，这些值用于决定某条路径是否可以到达 target 为了使得静态分析精确又高效，采用了两种新的优化方法：关系保持和有界析取 基于此对模糊测试中要执行的路径进行修剪（作者称可以达到 80%以上的修剪） 在路径遇到控制流图上不能到达目标的指令时，直接对路径进行剪枝 可到达目标但路径条件不满足的路径进行剪枝 提高： BEACON 平均可以早期拒绝82.94%的路径 与传统的定向模糊器相比，速度提高了11.50倍 对于 AFL、afl++和 Mopt 等 fuzzers, BEACON 可以分别加速6.31倍、11.86倍和10.92倍来重现目标 bug BEACON 发现了14个不完整的修复和8个新 bug 概述 输入为程序源代码和模糊测试目标 首先进行可达性分析，剔除无法到达任何目标的路径 进行反向区间分析 因为选择了区间域作为先决条件的抽象，损失了精确度，所以采用以下两种优化方法 关系保持——保留计算式类的约束条件 边界提取——设定阈值，超过阈值才合并路径 有选择性的插桩 在 BEACON 中，我们检测两种语句: 变量定义语句和分支语句 插桩用于修剪路径 方法 预备工作 作者给出了一个语言简化表示的语法 转换规则 Backward Interval Analysis 以图二为例，用该算法进行分析，从 18 行开始向上反向分析，初始的后置条件是 true，当分析到第 9 行时，碰到了第一个分支, 此时的先验条件分裂为两条，分别是： 在实际分析中可能会分裂为许多条，进行求解非常复杂，同时还需要在 18 行进行合并，还会丢失一定的精度。 为了提高效率，我们建议使用区间抽象来支持路径条件的轻量级推理和反向路径的合理过度逼近。（算法 7-18 行） 经过合并后的 pc 1 和 pc 2 如下图： 综上，我们可以看到后向间隔分析负责得到一个合理逼近的 target 的先验条件"><meta name=author content="JUHUA"><link rel=canonical href=https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/beacon-directed-grey-box-fuzzing-with-provable-path-pruning/><meta name=google-site-verification content="XYZabc"><meta name=yandex-verification content="XYZabc"><meta name=msvalidate.01 content="XYZabc"><link crossorigin=anonymous href=/assets/css/stylesheet.4e75d3a6e83470cbf55a23cee683af5cbbe70b5bf3928f07329fc682ebf90c12.css integrity="sha256-TnXTpug0cMv1WiPO5oOvXLvnC1vzko8HMp/Gguv5DBI=" rel="preload stylesheet" as=style><script defer crossorigin=anonymous src=/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG+9vmJ0cTS+ovo0FeA=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://examplesite.com/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=16x16 href=https://examplesite.com/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=32x32 href=https://examplesite.com/%3Clink%20/%20abs%20url%3E><link rel=apple-touch-icon href=https://examplesite.com/%3Clink%20/%20abs%20url%3E><link rel=mask-icon href=https://examplesite.com/%3Clink%20/%20abs%20url%3E><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-123-45","auto"),ga("send","pageview"))</script><meta property="og:title" content="BEACON Directed Grey-Box Fuzzing with Provable Path Pruning"><meta property="og:description" content="中文译名：信标: 具有可证明路径剪枝的定向灰盒模糊测试 作者：Huang Heqing 单位：香港科技大学 国家： #中国 年份： #2022年
 来源： #SP 关键字： #定向fuzzing 代码地址： https://hub.docker.com/r/yguoaz/beacon 笔记建立时间： 2023-05-09 17:27
-摘要 当前的定向 fuzzer 不够高效，因为它们符号化或者具体的执行了很多不会到达 target code 到的 path，浪费了很多计算资源 beacon——通过一种可证明的方式在路径之海中引导灰盒模糊测试 轻量级的静态分析——用于计算到达目标的先决条件——用于修剪无法到达 target 的路径 引言 传统模糊测试应用于 检测漏洞路径 生成潜在漏洞的 poc 崩溃复现 追踪信息流 定向 fuzzing 现状 定向白盒模糊器依靠符号执行，通过求解路径约束来确定可达性，旨在为生成能够到达目标的输入提供理论保证。因此，它们对符号执行的固有使用从根本上限制了它们的扩展能力。 定向灰盒模糊器通常不考虑拒绝不可达路径。它们依靠从执行反馈中收集的启发式方法，根据到达目标代码的可能性对种子进行优先排序。他们要么使用轻量级的元启发式，例如，到目标的距离，要么使用机器学习技术来预测可达性，但不能保证这种优先级会导致拒绝任何不可行的路径。因此，在 AFLGo 中提到的24小时实验中，95%以上的输入无法到达给定的程序点。 定向 fuzzing 的关键在于尽可能早的剔除不能到达 target 的执行路径 BEACON 耗费低的静态分析计算程序变量的合理近似值，这些值用于决定某条路径是否可以到达 target 为了使得静态分析精确又高效，采用了两种新的优化方法：关系保持和有界析取 基于此对模糊测试中要执行的路径进行修剪（作者称可以达到 80%以上的修剪） 在路径遇到控制流图上不能到达目标的指令时，直接对路径进行剪枝 可到达目标但路径条件不满足的路径进行剪枝 提高： BEACON 平均可以早期拒绝82.94%的路径 与传统的定向模糊器相比，速度提高了11.50倍 对于 AFL、afl&#43;&#43;和 Mopt 等 fuzzers, BEACON 可以分别加速6.31倍、11.86倍和10.92倍来重现目标 bug BEACON 发现了14个不完整的修复和8个新 bug 概述 输入为程序源代码和模糊测试目标 首先进行可达性分析，剔除无法到达任何目标的路径 进行反向区间分析 因为选择了区间域作为先决条件的抽象，损失了精确度，所以采用以下两种优化方法 关系保持——保留计算式类的约束条件 边界提取——设定阈值，超过阈值才合并路径 有选择性的插桩 在 BEACON 中，我们检测两种语句: 变量定义语句和分支语句 插桩用于修剪路径 方法 预备工作 作者给出了一个语言简化表示的语法 转换规则 Backward Interval Analysis 以图二为例，用该算法进行分析，从 18 行开始向上反向分析，初始的后置条件是 true，当分析到第 9 行时，碰到了第一个分支, 此时的先验条件分裂为两条，分别是： 在实际分析中可能会分裂为许多条，进行求解非常复杂，同时还需要在 18 行进行合并，还会丢失一定的精度。 为了提高效率，我们建议使用区间抽象来支持路径条件的轻量级推理和反向路径的合理过度逼近。（算法 7-18 行） 经过合并后的 pc 1 和 pc 2 如下图： 综上，我们可以看到后向间隔分析负责得到一个合理逼近的 target 的先验条件" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://example.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/beacon-directed-grey-box-fuzzing-with-provable-path-pruning/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2023-06-22T00:00:00+00:00" />
-<meta property="article:modified_time" content="2023-06-22T00:00:00+00:00" />
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="BEACON Directed Grey-Box Fuzzing with Provable Path Pruning"/>
-<meta name="twitter:description" content="中文译名：信标: 具有可证明路径剪枝的定向灰盒模糊测试 作者：Huang Heqing 单位：香港科技大学 国家： #中国 年份： #2022年
+摘要 当前的定向 fuzzer 不够高效，因为它们符号化或者具体的执行了很多不会到达 target code 到的 path，浪费了很多计算资源 beacon——通过一种可证明的方式在路径之海中引导灰盒模糊测试 轻量级的静态分析——用于计算到达目标的先决条件——用于修剪无法到达 target 的路径 引言 传统模糊测试应用于 检测漏洞路径 生成潜在漏洞的 poc 崩溃复现 追踪信息流 定向 fuzzing 现状 定向白盒模糊器依靠符号执行，通过求解路径约束来确定可达性，旨在为生成能够到达目标的输入提供理论保证。因此，它们对符号执行的固有使用从根本上限制了它们的扩展能力。 定向灰盒模糊器通常不考虑拒绝不可达路径。它们依靠从执行反馈中收集的启发式方法，根据到达目标代码的可能性对种子进行优先排序。他们要么使用轻量级的元启发式，例如，到目标的距离，要么使用机器学习技术来预测可达性，但不能保证这种优先级会导致拒绝任何不可行的路径。因此，在 AFLGo 中提到的24小时实验中，95%以上的输入无法到达给定的程序点。 定向 fuzzing 的关键在于尽可能早的剔除不能到达 target 的执行路径 BEACON 耗费低的静态分析计算程序变量的合理近似值，这些值用于决定某条路径是否可以到达 target 为了使得静态分析精确又高效，采用了两种新的优化方法：关系保持和有界析取 基于此对模糊测试中要执行的路径进行修剪（作者称可以达到 80%以上的修剪） 在路径遇到控制流图上不能到达目标的指令时，直接对路径进行剪枝 可到达目标但路径条件不满足的路径进行剪枝 提高： BEACON 平均可以早期拒绝82.94%的路径 与传统的定向模糊器相比，速度提高了11.50倍 对于 AFL、afl++和 Mopt 等 fuzzers, BEACON 可以分别加速6.31倍、11.86倍和10.92倍来重现目标 bug BEACON 发现了14个不完整的修复和8个新 bug 概述 输入为程序源代码和模糊测试目标 首先进行可达性分析，剔除无法到达任何目标的路径 进行反向区间分析 因为选择了区间域作为先决条件的抽象，损失了精确度，所以采用以下两种优化方法 关系保持——保留计算式类的约束条件 边界提取——设定阈值，超过阈值才合并路径 有选择性的插桩 在 BEACON 中，我们检测两种语句: 变量定义语句和分支语句 插桩用于修剪路径 方法 预备工作 作者给出了一个语言简化表示的语法 转换规则 Backward Interval Analysis 以图二为例，用该算法进行分析，从 18 行开始向上反向分析，初始的后置条件是 true，当分析到第 9 行时，碰到了第一个分支, 此时的先验条件分裂为两条，分别是： 在实际分析中可能会分裂为许多条，进行求解非常复杂，同时还需要在 18 行进行合并，还会丢失一定的精度。 为了提高效率，我们建议使用区间抽象来支持路径条件的轻量级推理和反向路径的合理过度逼近。（算法 7-18 行） 经过合并后的 pc 1 和 pc 2 如下图： 综上，我们可以看到后向间隔分析负责得到一个合理逼近的 target 的先验条件"><meta property="og:type" content="article"><meta property="og:url" content="https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/beacon-directed-grey-box-fuzzing-with-provable-path-pruning/"><meta property="og:image" content="https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="article:section" content="posts"><meta property="article:published_time" content="2023-06-22T00:00:00+00:00"><meta property="article:modified_time" content="2023-06-22T00:00:00+00:00"><meta property="og:site_name" content="ExampleSite"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta name=twitter:title content="BEACON Directed Grey-Box Fuzzing with Provable Path Pruning"><meta name=twitter:description content="中文译名：信标: 具有可证明路径剪枝的定向灰盒模糊测试 作者：Huang Heqing 单位：香港科技大学 国家： #中国 年份： #2022年
 来源： #SP 关键字： #定向fuzzing 代码地址： https://hub.docker.com/r/yguoaz/beacon 笔记建立时间： 2023-05-09 17:27
-摘要 当前的定向 fuzzer 不够高效，因为它们符号化或者具体的执行了很多不会到达 target code 到的 path，浪费了很多计算资源 beacon——通过一种可证明的方式在路径之海中引导灰盒模糊测试 轻量级的静态分析——用于计算到达目标的先决条件——用于修剪无法到达 target 的路径 引言 传统模糊测试应用于 检测漏洞路径 生成潜在漏洞的 poc 崩溃复现 追踪信息流 定向 fuzzing 现状 定向白盒模糊器依靠符号执行，通过求解路径约束来确定可达性，旨在为生成能够到达目标的输入提供理论保证。因此，它们对符号执行的固有使用从根本上限制了它们的扩展能力。 定向灰盒模糊器通常不考虑拒绝不可达路径。它们依靠从执行反馈中收集的启发式方法，根据到达目标代码的可能性对种子进行优先排序。他们要么使用轻量级的元启发式，例如，到目标的距离，要么使用机器学习技术来预测可达性，但不能保证这种优先级会导致拒绝任何不可行的路径。因此，在 AFLGo 中提到的24小时实验中，95%以上的输入无法到达给定的程序点。 定向 fuzzing 的关键在于尽可能早的剔除不能到达 target 的执行路径 BEACON 耗费低的静态分析计算程序变量的合理近似值，这些值用于决定某条路径是否可以到达 target 为了使得静态分析精确又高效，采用了两种新的优化方法：关系保持和有界析取 基于此对模糊测试中要执行的路径进行修剪（作者称可以达到 80%以上的修剪） 在路径遇到控制流图上不能到达目标的指令时，直接对路径进行剪枝 可到达目标但路径条件不满足的路径进行剪枝 提高： BEACON 平均可以早期拒绝82.94%的路径 与传统的定向模糊器相比，速度提高了11.50倍 对于 AFL、afl&#43;&#43;和 Mopt 等 fuzzers, BEACON 可以分别加速6.31倍、11.86倍和10.92倍来重现目标 bug BEACON 发现了14个不完整的修复和8个新 bug 概述 输入为程序源代码和模糊测试目标 首先进行可达性分析，剔除无法到达任何目标的路径 进行反向区间分析 因为选择了区间域作为先决条件的抽象，损失了精确度，所以采用以下两种优化方法 关系保持——保留计算式类的约束条件 边界提取——设定阈值，超过阈值才合并路径 有选择性的插桩 在 BEACON 中，我们检测两种语句: 变量定义语句和分支语句 插桩用于修剪路径 方法 预备工作 作者给出了一个语言简化表示的语法 转换规则 Backward Interval Analysis 以图二为例，用该算法进行分析，从 18 行开始向上反向分析，初始的后置条件是 true，当分析到第 9 行时，碰到了第一个分支, 此时的先验条件分裂为两条，分别是： 在实际分析中可能会分裂为许多条，进行求解非常复杂，同时还需要在 18 行进行合并，还会丢失一定的精度。 为了提高效率，我们建议使用区间抽象来支持路径条件的轻量级推理和反向路径的合理过度逼近。（算法 7-18 行） 经过合并后的 pc 1 和 pc 2 如下图： 综上，我们可以看到后向间隔分析负责得到一个合理逼近的 target 的先验条件"/>
-
-	
-        <link href="https://example.com/css/fonts.11a1877508139eac0b5b4852ceb110c35641b3533321e66e39149e901ed5756b.css" rel="stylesheet">
-	
-
-	
-	<link rel="stylesheet" type="text/css" media="screen" href="https://example.com/css/main.d902908ac6e0fab67957de5db5aea1b6455b19ae2ca98eac4c95a4a0fdc02238.css" />
-		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://example.com/css/dark.c95c5dcf5f32f8b67bd36f7dab66680e068fce2b303087294114aabf7a7c080b.css" media="(prefers-color-scheme: dark)"  />
-	
-
-	
-	
-
-	
-	
-	
-	
-</head>
-<body>
-        <div class="content"><header>
-	<div class="main">
-		<a href="https://example.com">Blog</a>
-	</div>
-	<nav>
-		
-		<a href="/">Home</a>
-		
-		<a href="/posts">All posts</a>
-		
-		<a href="/categories">Categories</a>
-		
-		<a href="/tags">Tags</a>
-		
-		<a href="/about">About</a>
-		
-		
-	</nav>
-</header>
-
-<main>
-	<article>
-		<div class="title">
-			<h1 class="title">BEACON Directed Grey-Box Fuzzing with Provable Path Pruning</h1>
-			<div class="meta">Posted on Jun 22, 2023</div>
-		</div>
-		
-
-		<section class="body">
-			<p>中文译名：信标: 具有可证明路径剪枝的定向灰盒模糊测试
+摘要 当前的定向 fuzzer 不够高效，因为它们符号化或者具体的执行了很多不会到达 target code 到的 path，浪费了很多计算资源 beacon——通过一种可证明的方式在路径之海中引导灰盒模糊测试 轻量级的静态分析——用于计算到达目标的先决条件——用于修剪无法到达 target 的路径 引言 传统模糊测试应用于 检测漏洞路径 生成潜在漏洞的 poc 崩溃复现 追踪信息流 定向 fuzzing 现状 定向白盒模糊器依靠符号执行，通过求解路径约束来确定可达性，旨在为生成能够到达目标的输入提供理论保证。因此，它们对符号执行的固有使用从根本上限制了它们的扩展能力。 定向灰盒模糊器通常不考虑拒绝不可达路径。它们依靠从执行反馈中收集的启发式方法，根据到达目标代码的可能性对种子进行优先排序。他们要么使用轻量级的元启发式，例如，到目标的距离，要么使用机器学习技术来预测可达性，但不能保证这种优先级会导致拒绝任何不可行的路径。因此，在 AFLGo 中提到的24小时实验中，95%以上的输入无法到达给定的程序点。 定向 fuzzing 的关键在于尽可能早的剔除不能到达 target 的执行路径 BEACON 耗费低的静态分析计算程序变量的合理近似值，这些值用于决定某条路径是否可以到达 target 为了使得静态分析精确又高效，采用了两种新的优化方法：关系保持和有界析取 基于此对模糊测试中要执行的路径进行修剪（作者称可以达到 80%以上的修剪） 在路径遇到控制流图上不能到达目标的指令时，直接对路径进行剪枝 可到达目标但路径条件不满足的路径进行剪枝 提高： BEACON 平均可以早期拒绝82.94%的路径 与传统的定向模糊器相比，速度提高了11.50倍 对于 AFL、afl++和 Mopt 等 fuzzers, BEACON 可以分别加速6.31倍、11.86倍和10.92倍来重现目标 bug BEACON 发现了14个不完整的修复和8个新 bug 概述 输入为程序源代码和模糊测试目标 首先进行可达性分析，剔除无法到达任何目标的路径 进行反向区间分析 因为选择了区间域作为先决条件的抽象，损失了精确度，所以采用以下两种优化方法 关系保持——保留计算式类的约束条件 边界提取——设定阈值，超过阈值才合并路径 有选择性的插桩 在 BEACON 中，我们检测两种语句: 变量定义语句和分支语句 插桩用于修剪路径 方法 预备工作 作者给出了一个语言简化表示的语法 转换规则 Backward Interval Analysis 以图二为例，用该算法进行分析，从 18 行开始向上反向分析，初始的后置条件是 true，当分析到第 9 行时，碰到了第一个分支, 此时的先验条件分裂为两条，分别是： 在实际分析中可能会分裂为许多条，进行求解非常复杂，同时还需要在 18 行进行合并，还会丢失一定的精度。 为了提高效率，我们建议使用区间抽象来支持路径条件的轻量级推理和反向路径的合理过度逼近。（算法 7-18 行） 经过合并后的 pc 1 和 pc 2 如下图： 综上，我们可以看到后向间隔分析负责得到一个合理逼近的 target 的先验条件"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://examplesite.com/posts/"},{"@type":"ListItem","position":2,"name":"BEACON Directed Grey-Box Fuzzing with Provable Path Pruning","item":"https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/beacon-directed-grey-box-fuzzing-with-provable-path-pruning/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"BEACON Directed Grey-Box Fuzzing with Provable Path Pruning","name":"BEACON Directed Grey-Box Fuzzing with Provable Path Pruning","description":"中文译名：信标: 具有可证明路径剪枝的定向灰盒模糊测试 作者：Huang Heqing 单位：香港科技大学 国家： #中国 年份： #2022年\n来源： #SP 关键字： #定向fuzzing 代码地址： https://hub.docker.com/r/yguoaz/beacon 笔记建立时间： 2023-05-09 17:27\n摘要 当前的定向 fuzzer 不够高效，因为它们符号化或者具体的执行了很多不会到达 target code 到的 path，浪费了很多计算资源 beacon——通过一种可证明的方式在路径之海中引导灰盒模糊测试 轻量级的静态分析——用于计算到达目标的先决条件——用于修剪无法到达 target 的路径 引言 传统模糊测试应用于 检测漏洞路径 生成潜在漏洞的 poc 崩溃复现 追踪信息流 定向 fuzzing 现状 定向白盒模糊器依靠符号执行，通过求解路径约束来确定可达性，旨在为生成能够到达目标的输入提供理论保证。因此，它们对符号执行的固有使用从根本上限制了它们的扩展能力。 定向灰盒模糊器通常不考虑拒绝不可达路径。它们依靠从执行反馈中收集的启发式方法，根据到达目标代码的可能性对种子进行优先排序。他们要么使用轻量级的元启发式，例如，到目标的距离，要么使用机器学习技术来预测可达性，但不能保证这种优先级会导致拒绝任何不可行的路径。因此，在 AFLGo 中提到的24小时实验中，95%以上的输入无法到达给定的程序点。 定向 fuzzing 的关键在于尽可能早的剔除不能到达 target 的执行路径 BEACON 耗费低的静态分析计算程序变量的合理近似值，这些值用于决定某条路径是否可以到达 target 为了使得静态分析精确又高效，采用了两种新的优化方法：关系保持和有界析取 基于此对模糊测试中要执行的路径进行修剪（作者称可以达到 80%以上的修剪） 在路径遇到控制流图上不能到达目标的指令时，直接对路径进行剪枝 可到达目标但路径条件不满足的路径进行剪枝 提高： BEACON 平均可以早期拒绝82.94%的路径 与传统的定向模糊器相比，速度提高了11.50倍 对于 AFL、afl++和 Mopt 等 fuzzers, BEACON 可以分别加速6.31倍、11.86倍和10.92倍来重现目标 bug BEACON 发现了14个不完整的修复和8个新 bug 概述 输入为程序源代码和模糊测试目标 首先进行可达性分析，剔除无法到达任何目标的路径 进行反向区间分析 因为选择了区间域作为先决条件的抽象，损失了精确度，所以采用以下两种优化方法 关系保持——保留计算式类的约束条件 边界提取——设定阈值，超过阈值才合并路径 有选择性的插桩 在 BEACON 中，我们检测两种语句: 变量定义语句和分支语句 插桩用于修剪路径 方法 预备工作 作者给出了一个语言简化表示的语法 转换规则 Backward Interval Analysis 以图二为例，用该算法进行分析，从 18 行开始向上反向分析，初始的后置条件是 true，当分析到第 9 行时，碰到了第一个分支, 此时的先验条件分裂为两条，分别是： 在实际分析中可能会分裂为许多条，进行求解非常复杂，同时还需要在 18 行进行合并，还会丢失一定的精度。 为了提高效率，我们建议使用区间抽象来支持路径条件的轻量级推理和反向路径的合理过度逼近。（算法 7-18 行） 经过合并后的 pc 1 和 pc 2 如下图： 综上，我们可以看到后向间隔分析负责得到一个合理逼近的 target 的先验条件","keywords":["论文阅读"],"articleBody":"中文译名：信标: 具有可证明路径剪枝的定向灰盒模糊测试 作者：Huang Heqing 单位：香港科技大学 国家： #中国 年份： #2022年\n来源： #SP 关键字： #定向fuzzing 代码地址： https://hub.docker.com/r/yguoaz/beacon 笔记建立时间： 2023-05-09 17:27\n摘要 当前的定向 fuzzer 不够高效，因为它们符号化或者具体的执行了很多不会到达 target code 到的 path，浪费了很多计算资源 beacon——通过一种可证明的方式在路径之海中引导灰盒模糊测试 轻量级的静态分析——用于计算到达目标的先决条件——用于修剪无法到达 target 的路径 引言 传统模糊测试应用于 检测漏洞路径 生成潜在漏洞的 poc 崩溃复现 追踪信息流 定向 fuzzing 现状 定向白盒模糊器依靠符号执行，通过求解路径约束来确定可达性，旨在为生成能够到达目标的输入提供理论保证。因此，它们对符号执行的固有使用从根本上限制了它们的扩展能力。 定向灰盒模糊器通常不考虑拒绝不可达路径。它们依靠从执行反馈中收集的启发式方法，根据到达目标代码的可能性对种子进行优先排序。他们要么使用轻量级的元启发式，例如，到目标的距离，要么使用机器学习技术来预测可达性，但不能保证这种优先级会导致拒绝任何不可行的路径。因此，在 AFLGo 中提到的24小时实验中，95%以上的输入无法到达给定的程序点。 定向 fuzzing 的关键在于尽可能早的剔除不能到达 target 的执行路径 BEACON 耗费低的静态分析计算程序变量的合理近似值，这些值用于决定某条路径是否可以到达 target 为了使得静态分析精确又高效，采用了两种新的优化方法：关系保持和有界析取 基于此对模糊测试中要执行的路径进行修剪（作者称可以达到 80%以上的修剪） 在路径遇到控制流图上不能到达目标的指令时，直接对路径进行剪枝 可到达目标但路径条件不满足的路径进行剪枝 提高： BEACON 平均可以早期拒绝82.94%的路径 与传统的定向模糊器相比，速度提高了11.50倍 对于 AFL、afl++和 Mopt 等 fuzzers, BEACON 可以分别加速6.31倍、11.86倍和10.92倍来重现目标 bug BEACON 发现了14个不完整的修复和8个新 bug 概述 输入为程序源代码和模糊测试目标 首先进行可达性分析，剔除无法到达任何目标的路径 进行反向区间分析 因为选择了区间域作为先决条件的抽象，损失了精确度，所以采用以下两种优化方法 关系保持——保留计算式类的约束条件 边界提取——设定阈值，超过阈值才合并路径 有选择性的插桩 在 BEACON 中，我们检测两种语句: 变量定义语句和分支语句 插桩用于修剪路径 方法 预备工作 作者给出了一个语言简化表示的语法 转换规则 Backward Interval Analysis 以图二为例，用该算法进行分析，从 18 行开始向上反向分析，初始的后置条件是 true，当分析到第 9 行时，碰到了第一个分支, 此时的先验条件分裂为两条，分别是： 在实际分析中可能会分裂为许多条，进行求解非常复杂，同时还需要在 18 行进行合并，还会丢失一定的精度。 为了提高效率，我们建议使用区间抽象来支持路径条件的轻量级推理和反向路径的合理过度逼近。（算法 7-18 行） 经过合并后的 pc 1 和 pc 2 如下图： 综上，我们可以看到后向间隔分析负责得到一个合理逼近的 target 的先验条件\nOptimizations for Maintaining Precision Relationship Preservation 我们设计了如图5所示的推断规则来执行间隔抽象。 与传统的区间分析不同，我们的分析不仅跟踪变量的区间，还跟踪路径条件中出现的表达式。 使用这些规则来分析 pc 2，与传统的分析的区别如下图所示 可以看到分析结果要比传统的区间分析精度更高。 Bounded Disjunctions 当路径数量小于阈值的时候，不进行合并，保留了精度 当路径大于阈值的时候，就需要合并，合并就意味着要丢失精度， 上图的 AB 合并，就会损失中间部分的精度，下面 AB 合并不会有精度损失 依照上述公式进行计算损失，哪个合并损失少，就合并哪两个路径 例子 Precondition Instrumentation 我们首先将程序转换为 SSA 形式[42]，并且只考虑变量定义作为插装的候选程序位置。这是正确的，因为 SSA 表单保证变量在定义之后不会被写入。 当变量 v1的值仅依赖于另一个变量 v2时，不应该检测 v1。这些信息可以通过定义数据流分析来计算[43]。例如，在图2中，v 仅依赖于 u 而不是 x 或 z。 评价 实现 基于LLVM实现执行先决条件分析、检查先决条件的检测和其他与覆盖率相关的检测，输出可执行的二进制文件 使用AFLGo作为模糊测试引擎 Compared to the State of the Art 和AFLGo比较 BEACON分别在Binutils、Ming和Lrzip中检测到3个、9个和2个不完整的补丁，以及8个额外的bug，而AFLGo只检测到6个不完整的补丁。 对于那些可在AFLGo中重现的漏洞，BEACON需要较少的覆盖率 (平均91.2%) 在某些场景下，特别是在AFLGo无法重现漏洞的情况下，BEACON可以实现更高的覆盖率。 和Hawkeye比较 BEACON对所有漏洞的再现均优于AFLGo和Hawkeye，且p值均小于0.05。特别是对于CVE-2016-4491和CVE-20166131, BEACON相比Hawkeye可以实现3.6倍和5.7倍的加速。 和AFL, AFL++, and Mopt比较 与原始工具相比，AFL+BEACON AFL++ BEACON和Mopt+BEACON分别可以实现6.31倍、11.86倍和10.92倍的加速。 路径切片的影响与前提条件检查 在重现漏洞方面，BEACON比BEACON*要快得多 (1.1倍到18.4倍)，因为它平均比BEACON多修剪29.1%的路径。在某些情况下 (例如，CVE-2017-8397)， BEACON *甚至无法在120小时内重现漏洞。这一结果证明了前置条件分析的重要性和必要性，使我们的性能得到了显著的提高。 关系保持与有界析取的影响 在重现漏洞时，BEACON比BEACON-rp和BEACON-bd分别快得多 (1.05倍到4.9倍，1.05倍到5.34倍)。这一结果证明了这两种策略的重要性和必要性，因为它们都有助于前提条件分析的精度，它们的组合可以使我们在模糊测试中获得更高的精度并修剪更多的路径。 当绑定阈值从5增加到50时，执行过滤率从0.9%略微提高到3.2%。然而，时间成本急剧增加，甚至耗尽了服务器内存。因此，BEACON使用5作为阈值，以获得效率和有效性的最佳点。\n插桩开销 其中显示了每个程序的执行次数 (Nexec)、原始时间成本 (Torig)和插装后的时间成本 (TBeacon)。我们观察到，BEACON引入了高达9.8%的运行时开销，平均为5.7%。我们认为这样低的开销在实践中是可以接受的，并且之前的评估表明BEACON比现有的模糊器要快得多。\n相关工作 定向白盒fuzzing Klee[49]，以生成可利用的输入，用于漏洞复现 然而，路径爆炸问题和众所周知的昂贵约束求解使得它们难以扩展到现实世界的程序中。 现有的工作试图利用对漏洞的先验知识，使符号执行专注于相关的程序状态。一个方向是优先考虑程序路径，以供符号执行探索。例如，Hercules[50]使用了一个不健全的函数摘要来确定可达路径的优先级。其他人要么依赖bug报告[51]、关键系统调用[10]，要么依赖补丁中的变化[52]来识别潜在的bug踪迹。然而，这些工作通常需要手工专业知识来确保这些先验知识的质量，这可能导致不同程序的不同表现。另一个方向是加速符号执行本身，以便更快地接近目标。例如，现有的作品通过快照机制象征性地[53]或具体地[54]保留执行状态，以避免冗余的路径探索。Chopper[55]采用在线静态分析来提供状态合并策略，同时最小化动态分析路径的数量。DiSE[56]识别分支条件之间的关系，并逐步解决它们。 覆盖引导fuzzing 可以通过动态污染分析来优化输入生成。其基本思想是改变相关的输入偏移量以满足未覆盖的分支条件。 Angora[57]采用字节级污染跟踪来发现目标条件的相关输入字节，然后应用基于梯度下降的搜索策略。 为了使基于梯度下降的搜索更加合理，Neuzz[58]提出使用神经网络平滑搜索过程。 还有一些技术涉及轻量级程序分析和转换，以提高突变的有效性。Fairfuzz[59]识别了不需要改变值的输入偏移量，因此，最小化输入搜索空间提高了突变的效率。Mopt[13]提出了一种新的突变算子调度策略来调整不同程序的突变策略。 将模糊器与集合/符号执行相结合，即混合模糊，用于解决复杂和严格的路径约束。 Driller[60]提出解决那些未发现的路径进行模糊化，而不是用集合执行来探索所有路径。然而，如何有效地将协同执行与模糊测试相结合一直是人们关注的问题。 QSYM[61]解决了基种子的部分路径约束，并对满足实际条件的验证输入利用了突变。 Intriguer[62]进一步用动态污染分析取代符号仿真，这减少了建模大量类移动指令的开销。 Pangolin[63]建议将约束保留为抽象，并重用它来指导进一步的输入生成。 ","wordCount":"211","inLanguage":"en","datePublished":"2023-06-22T00:00:00Z","dateModified":"2023-06-22T00:00:00Z","author":{"@type":"Person","name":"JUHUA"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/beacon-directed-grey-box-fuzzing-with-provable-path-pruning/"},"publisher":{"@type":"Organization","name":"BLOG","logo":{"@type":"ImageObject","url":"https://examplesite.com/%3Clink%20/%20abs%20url%3E"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://examplesite.com/ accesskey=h title="JUHUA BLOG (Alt + H)"><img src=https://examplesite.com/apple-touch-icon.png alt aria-label=logo height=35>JUHUA BLOG</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://examplesite.com/archives/ title=archives><span>archives</span></a></li><li><a href=https://examplesite.com/categories/ title=categories><span>categories</span></a></li><li><a href=https://examplesite.com/tags/ title=tags><span>tags</span></a></li><li><a href=https://examplesite.com/about/ title=about><span>about</span></a></li><li><a href=https://examplesite.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://examplesite.com/>Home</a>&nbsp;»&nbsp;<a href=https://examplesite.com/posts/>Posts</a></div><h1 class=post-title>BEACON Directed Grey-Box Fuzzing with Provable Path Pruning</h1><div class=post-meta><span title='2023-06-22 00:00:00 +0000 UTC'>June 22, 2023</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;211 words&nbsp;·&nbsp;JUHUA
+创建:&nbsp;<span title='2023-06-22 00:00:00 +0000 UTC'>June 22, 2023</span>&nbsp;|&nbsp;时长: 1分钟&nbsp;|&nbsp;JUHUA&nbsp;|&nbsp;<a href=https://github.com/%3cpath_to_repo%3e/content/posts/1.%e5%ad%a6%e4%b9%a0/1.%e8%ae%ba%e6%96%87%e9%98%85%e8%af%bb/fuzzing/2.%e8%af%a6%e7%bb%86%e7%ac%94%e8%ae%b0/BEACON%20Directed%20Grey-Box%20Fuzzing%20with%20Provable%20Path%20Pruning.md rel="noopener noreferrer" target=_blank>Suggest Changes</a></div></header><aside id=toc-container class="toc-container wide"><div class=toc><details><summary accesskey=c title="(Alt + C)"><span class=details>Table of Contents</span></summary><div class=inner><ul><ul><li><a href=#%e6%91%98%e8%a6%81 aria-label=摘要>摘要</a></li><li><a href=#%e5%bc%95%e8%a8%80 aria-label=引言>引言</a></li><li><a href=#%e6%a6%82%e8%bf%b0 aria-label=概述>概述</a></li></ul><li><a href=#%e6%96%b9%e6%b3%95 aria-label=方法>方法</a><ul><ul><li><a href=#%e9%a2%84%e5%a4%87%e5%b7%a5%e4%bd%9c aria-label=预备工作>预备工作</a></li><li><a href=#backward-interval-analysis aria-label="Backward Interval Analysis">Backward Interval Analysis</a></li><li><a href=#optimizations-for-maintaining-precision aria-label="Optimizations for Maintaining Precision">Optimizations for Maintaining Precision</a><ul><li><a href=#relationship-preservation aria-label="Relationship Preservation">Relationship Preservation</a></li><li><a href=#bounded-disjunctions aria-label="Bounded Disjunctions">Bounded Disjunctions</a></li><li><a href=#precondition-instrumentation aria-label="Precondition Instrumentation">Precondition Instrumentation</a></li></ul></li></ul><li><a href=#%e8%af%84%e4%bb%b7 aria-label=评价>评价</a><ul><li><a href=#%e5%ae%9e%e7%8e%b0 aria-label=实现>实现</a></li><li><a href=#compared-to-the-state-of-the-art aria-label="Compared to the State of the Art">Compared to the State of the Art</a></li><li><a href=#%e8%b7%af%e5%be%84%e5%88%87%e7%89%87%e7%9a%84%e5%bd%b1%e5%93%8d%e4%b8%8e%e5%89%8d%e6%8f%90%e6%9d%a1%e4%bb%b6%e6%a3%80%e6%9f%a5 aria-label=路径切片的影响与前提条件检查>路径切片的影响与前提条件检查</a></li><li><a href=#%e5%85%b3%e7%b3%bb%e4%bf%9d%e6%8c%81%e4%b8%8e%e6%9c%89%e7%95%8c%e6%9e%90%e5%8f%96%e7%9a%84%e5%bd%b1%e5%93%8d aria-label=关系保持与有界析取的影响>关系保持与有界析取的影响</a></li><li><a href=#%e6%8f%92%e6%a1%a9%e5%bc%80%e9%94%80 aria-label=插桩开销>插桩开销</a></li></ul></li><li><a href=#%e7%9b%b8%e5%85%b3%e5%b7%a5%e4%bd%9c aria-label=相关工作>相关工作</a><ul><li><a href=#%e5%ae%9a%e5%90%91%e7%99%bd%e7%9b%92fuzzing aria-label=定向白盒fuzzing>定向白盒fuzzing</a></li><li><a href=#%e8%a6%86%e7%9b%96%e5%bc%95%e5%af%bcfuzzing aria-label=覆盖引导fuzzing>覆盖引导fuzzing</a></li></ul></li></ul></li></ul></div></details></div></aside><script>let activeElement,elements;window.addEventListener("DOMContentLoaded",function(){checkTocPosition(),elements=document.querySelectorAll("h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]"),activeElement=elements[0];const t=encodeURI(activeElement.getAttribute("id")).toLowerCase();document.querySelector(`.inner ul li a[href="#${t}"]`).classList.add("active")},!1),window.addEventListener("resize",function(){checkTocPosition()},!1),window.addEventListener("scroll",()=>{activeElement=Array.from(elements).find(e=>{if(getOffsetTop(e)-window.pageYOffset>0&&getOffsetTop(e)-window.pageYOffset<window.innerHeight/2)return e})||activeElement,elements.forEach(e=>{const t=encodeURI(e.getAttribute("id")).toLowerCase();e===activeElement?document.querySelector(`.inner ul li a[href="#${t}"]`).classList.add("active"):document.querySelector(`.inner ul li a[href="#${t}"]`).classList.remove("active")})},!1);const main=parseInt(getComputedStyle(document.body).getPropertyValue("--article-width"),10),toc=parseInt(getComputedStyle(document.body).getPropertyValue("--toc-width"),10),gap=parseInt(getComputedStyle(document.body).getPropertyValue("--gap"),10);function checkTocPosition(){const e=document.body.scrollWidth;e-main-toc*2-gap*4>0?document.getElementById("toc-container").classList.add("wide"):document.getElementById("toc-container").classList.remove("wide")}function getOffsetTop(e){if(!e.getClientRects().length)return 0;let t=e.getBoundingClientRect(),n=e.ownerDocument.defaultView;return t.top+n.pageYOffset}</script><div class=post-content><p>中文译名：信标: 具有可证明路径剪枝的定向灰盒模糊测试
 作者：Huang Heqing
 单位：香港科技大学
 国家： #中国
-年份： #2022年<br>
-来源： #SP
+年份： #2022年<br>来源： #SP
 关键字： #定向fuzzing
-代码地址： <a href="https://hub.docker.com/r/yguoaz/beacon">https://hub.docker.com/r/yguoaz/beacon</a>
-笔记建立时间： 2023-05-09  17:27</p>
-<h2 id="摘要">摘要</h2>
-<ul>
-<li>当前的定向 fuzzer 不够高效，因为它们符号化或者具体的执行了很多不会到达 target code 到的 path，浪费了很多计算资源</li>
-<li>beacon——通过一种可证明的方式在路径之海中引导灰盒模糊测试
-<ul>
-<li>轻量级的静态分析——用于计算到达目标的先决条件——用于修剪无法到达 target 的路径</li>
-</ul>
-</li>
-</ul>
-<h2 id="引言">引言</h2>
-<ul>
-<li>传统模糊测试应用于
-<ul>
-<li>检测漏洞路径</li>
-<li>生成潜在漏洞的 poc</li>
-<li>崩溃复现</li>
-<li>追踪信息流</li>
-</ul>
-</li>
-<li>定向 fuzzing 现状
-<ul>
-<li>定向白盒模糊器依靠符号执行，通过求解路径约束来确定可达性，旨在为生成能够到达目标的输入提供理论保证。因此，它们对符号执行的固有使用从根本上限制了它们的扩展能力。</li>
-<li>定向灰盒模糊器通常不考虑拒绝不可达路径。它们依靠从执行反馈中收集的启发式方法，根据到达目标代码的可能性对种子进行优先排序。他们要么使用轻量级的元启发式，例如，到目标的距离，要么使用机器学习技术来预测可达性，但不能保证这种优先级会导致拒绝任何不可行的路径。因此，在 AFLGo 中提到的24小时实验中，95%以上的输入无法到达给定的程序点。</li>
-<li><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230510220114.png" alt="image.png"></li>
-</ul>
-</li>
-<li>定向 fuzzing 的关键在于尽可能早的剔除不能到达 target 的执行路径</li>
-<li>BEACON
-<ul>
-<li>耗费低的静态分析计算程序变量的合理近似值，这些值用于决定某条路径是否可以到达 target
-<ul>
-<li>为了使得静态分析精确又高效，采用了两种新的优化方法：关系保持和有界析取</li>
-</ul>
-</li>
-<li>基于此对模糊测试中要执行的路径进行修剪（作者称可以达到 80%以上的修剪）
-<ul>
-<li>在路径遇到控制流图上不能到达目标的指令时，直接对路径进行剪枝</li>
-<li>可到达目标但路径条件不满足的路径进行剪枝</li>
-<li><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230510220630.png" alt="image.png"></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>提高：
-<ul>
-<li>BEACON 平均可以早期拒绝82.94%的路径</li>
-<li>与传统的定向模糊器相比，速度提高了11.50倍</li>
-<li>对于 AFL、afl++和 Mopt 等 fuzzers, BEACON 可以分别加速6.31倍、11.86倍和10.92倍来重现目标 bug</li>
-<li>BEACON 发现了14个不完整的修复和8个新 bug</li>
-</ul>
-</li>
-</ul>
-<h2 id="概述">概述</h2>
-<p><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230510223142.png" alt="image.png"></p>
-<ul>
-<li>输入为程序源代码和模糊测试目标</li>
-<li>首先进行可达性分析，剔除无法到达任何目标的路径</li>
-<li>进行反向区间分析
-<ul>
-<li>因为选择了区间域作为先决条件的抽象，损失了精确度，所以采用以下两种优化方法</li>
-<li>关系保持——保留计算式类的约束条件</li>
-<li>边界提取——设定阈值，超过阈值才合并路径</li>
-</ul>
-</li>
-<li>有选择性的插桩
-<ul>
-<li>在 BEACON 中，我们检测两种语句: 变量定义语句和分支语句</li>
-<li>插桩用于修剪路径</li>
-</ul>
-</li>
-</ul>
-<h1 id="方法">方法</h1>
-<h3 id="预备工作">预备工作</h3>
-<p>作者给出了一个语言简化表示的语法
-<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230511102055.png" alt="image.png">
+代码地址： <a href=https://hub.docker.com/r/yguoaz/beacon>https://hub.docker.com/r/yguoaz/beacon</a>
+笔记建立时间： 2023-05-09 17:27</p><h2 id=摘要>摘要<a hidden class=anchor aria-hidden=true href=#摘要>#</a></h2><ul><li>当前的定向 fuzzer 不够高效，因为它们符号化或者具体的执行了很多不会到达 target code 到的 path，浪费了很多计算资源</li><li>beacon——通过一种可证明的方式在路径之海中引导灰盒模糊测试<ul><li>轻量级的静态分析——用于计算到达目标的先决条件——用于修剪无法到达 target 的路径</li></ul></li></ul><h2 id=引言>引言<a hidden class=anchor aria-hidden=true href=#引言>#</a></h2><ul><li>传统模糊测试应用于<ul><li>检测漏洞路径</li><li>生成潜在漏洞的 poc</li><li>崩溃复现</li><li>追踪信息流</li></ul></li><li>定向 fuzzing 现状<ul><li>定向白盒模糊器依靠符号执行，通过求解路径约束来确定可达性，旨在为生成能够到达目标的输入提供理论保证。因此，它们对符号执行的固有使用从根本上限制了它们的扩展能力。</li><li>定向灰盒模糊器通常不考虑拒绝不可达路径。它们依靠从执行反馈中收集的启发式方法，根据到达目标代码的可能性对种子进行优先排序。他们要么使用轻量级的元启发式，例如，到目标的距离，要么使用机器学习技术来预测可达性，但不能保证这种优先级会导致拒绝任何不可行的路径。因此，在 AFLGo 中提到的24小时实验中，95%以上的输入无法到达给定的程序点。</li><li><img loading=lazy src=https://gitee.com/juhuahua/chart-bed/raw/master/20230510220114.png alt=image.png></li></ul></li><li>定向 fuzzing 的关键在于尽可能早的剔除不能到达 target 的执行路径</li><li>BEACON<ul><li>耗费低的静态分析计算程序变量的合理近似值，这些值用于决定某条路径是否可以到达 target<ul><li>为了使得静态分析精确又高效，采用了两种新的优化方法：关系保持和有界析取</li></ul></li><li>基于此对模糊测试中要执行的路径进行修剪（作者称可以达到 80%以上的修剪）<ul><li>在路径遇到控制流图上不能到达目标的指令时，直接对路径进行剪枝</li><li>可到达目标但路径条件不满足的路径进行剪枝</li><li><img loading=lazy src=https://gitee.com/juhuahua/chart-bed/raw/master/20230510220630.png alt=image.png></li></ul></li></ul></li><li>提高：<ul><li>BEACON 平均可以早期拒绝82.94%的路径</li><li>与传统的定向模糊器相比，速度提高了11.50倍</li><li>对于 AFL、afl++和 Mopt 等 fuzzers, BEACON 可以分别加速6.31倍、11.86倍和10.92倍来重现目标 bug</li><li>BEACON 发现了14个不完整的修复和8个新 bug</li></ul></li></ul><h2 id=概述>概述<a hidden class=anchor aria-hidden=true href=#概述>#</a></h2><p><img loading=lazy src=https://gitee.com/juhuahua/chart-bed/raw/master/20230510223142.png alt=image.png></p><ul><li>输入为程序源代码和模糊测试目标</li><li>首先进行可达性分析，剔除无法到达任何目标的路径</li><li>进行反向区间分析<ul><li>因为选择了区间域作为先决条件的抽象，损失了精确度，所以采用以下两种优化方法</li><li>关系保持——保留计算式类的约束条件</li><li>边界提取——设定阈值，超过阈值才合并路径</li></ul></li><li>有选择性的插桩<ul><li>在 BEACON 中，我们检测两种语句: 变量定义语句和分支语句</li><li>插桩用于修剪路径</li></ul></li></ul><h1 id=方法>方法<a hidden class=anchor aria-hidden=true href=#方法>#</a></h1><h3 id=预备工作>预备工作<a hidden class=anchor aria-hidden=true href=#预备工作>#</a></h3><p>作者给出了一个语言简化表示的语法
+<img loading=lazy src=https://gitee.com/juhuahua/chart-bed/raw/master/20230511102055.png alt=image.png>
 转换规则
-<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230511105450.png" alt="image.png"></p>
-<h3 id="backward-interval-analysis">Backward Interval Analysis</h3>
-<p><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230511105901.png" alt="image.png">
+<img loading=lazy src=https://gitee.com/juhuahua/chart-bed/raw/master/20230511105450.png alt=image.png></p><h3 id=backward-interval-analysis>Backward Interval Analysis<a hidden class=anchor aria-hidden=true href=#backward-interval-analysis>#</a></h3><p><img loading=lazy src=https://gitee.com/juhuahua/chart-bed/raw/master/20230511105901.png alt=image.png>
 以图二为例，用该算法进行分析，从 18 行开始向上反向分析，初始的后置条件是 true，当分析到第 9 行时，碰到了第一个分支, 此时的先验条件分裂为两条，分别是：
-<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230511112200.png" alt="image.png">
+<img loading=lazy src=https://gitee.com/juhuahua/chart-bed/raw/master/20230511112200.png alt=image.png>
 在实际分析中可能会分裂为许多条，进行求解非常复杂，同时还需要在 18 行进行合并，还会丢失一定的精度。
 为了提高效率，我们建议使用区间抽象来支持路径条件的轻量级推理和反向路径的合理过度逼近。（算法 7-18 行）
-经过合并后的 pc 1 和 pc 2 如下图：<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230511182707.png" alt="image.png">
-综上，我们可以看到后向间隔分析负责得到一个合理逼近的 target 的先验条件</p>
-<h3 id="optimizations-for-maintaining-precision">Optimizations for Maintaining Precision</h3>
-<h4 id="relationship-preservation">Relationship Preservation</h4>
-<ul>
-<li>我们设计了如图5所示的推断规则来执行间隔抽象。</li>
-<li>与传统的区间分析不同，我们的分析不仅跟踪变量的区间，还跟踪路径条件中出现的表达式。
-<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230511185051.png" alt="image.png">
+经过合并后的 pc 1 和 pc 2 如下图：<img loading=lazy src=https://gitee.com/juhuahua/chart-bed/raw/master/20230511182707.png alt=image.png>
+综上，我们可以看到后向间隔分析负责得到一个合理逼近的 target 的先验条件</p><h3 id=optimizations-for-maintaining-precision>Optimizations for Maintaining Precision<a hidden class=anchor aria-hidden=true href=#optimizations-for-maintaining-precision>#</a></h3><h4 id=relationship-preservation>Relationship Preservation<a hidden class=anchor aria-hidden=true href=#relationship-preservation>#</a></h4><ul><li>我们设计了如图5所示的推断规则来执行间隔抽象。</li><li>与传统的区间分析不同，我们的分析不仅跟踪变量的区间，还跟踪路径条件中出现的表达式。
+<img loading=lazy src=https://gitee.com/juhuahua/chart-bed/raw/master/20230511185051.png alt=image.png>
 使用这些规则来分析 pc 2，与传统的分析的区别如下图所示
-<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230511185718.png" alt="image.png">
-可以看到分析结果要比传统的区间分析精度更高。</li>
-</ul>
-<h4 id="bounded-disjunctions">Bounded Disjunctions</h4>
-<ul>
-<li>当路径数量小于阈值的时候，不进行合并，保留了精度</li>
-<li>当路径大于阈值的时候，就需要合并，合并就意味着要丢失精度，
-<ul>
-<li><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230511194101.png" alt="image.png"></li>
-<li>上图的 AB 合并，就会损失中间部分的精度，下面 AB 合并不会有精度损失</li>
-<li><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230511195125.png" alt="image.png"></li>
-<li>依照上述公式进行计算损失，哪个合并损失少，就合并哪两个路径</li>
-<li>例子 <img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230511195251.png" alt="image.png"></li>
-</ul>
-</li>
-</ul>
-<h4 id="precondition-instrumentation">Precondition Instrumentation</h4>
-<ul>
-<li>我们首先将程序转换为 SSA 形式[42]，并且只考虑变量定义作为插装的候选程序位置。这是正确的，因为 SSA 表单保证变量在定义之后不会被写入。</li>
-<li>当变量 v1的值仅依赖于另一个变量 v2时，不应该检测 v1。这些信息可以通过定义数据流分析来计算[43]。例如，在图2中，v 仅依赖于 u 而不是 x 或 z。</li>
-</ul>
-<h2 id="评价">评价</h2>
-<h3 id="实现">实现</h3>
-<ul>
-<li>基于LLVM实现执行先决条件分析、检查先决条件的检测和其他与覆盖率相关的检测，输出可执行的二进制文件</li>
-<li>使用AFLGo作为模糊测试引擎</li>
-</ul>
-<h3 id="compared-to-the-state-of-the-art">Compared to the State of the Art</h3>
-<p><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230605141434.png" alt="image.png"></p>
-<ul>
-<li>和AFLGo比较
-<ul>
-<li>BEACON分别在Binutils、Ming和Lrzip中检测到3个、9个和2个不完整的补丁，以及8个额外的bug，而AFLGo只检测到6个不完整的补丁。</li>
-<li>对于那些可在AFLGo中重现的漏洞，BEACON需要较少的覆盖率 (平均91.2%)</li>
-<li>在某些场景下，特别是在AFLGo无法重现漏洞的情况下，BEACON可以实现更高的覆盖率。</li>
-</ul>
-</li>
-<li>和Hawkeye比较
-<ul>
-<li>BEACON对所有漏洞的再现均优于AFLGo和Hawkeye，且p值均小于0.05。特别是对于CVE-2016-4491和CVE-20166131, BEACON相比Hawkeye可以实现3.6倍和5.7倍的加速。</li>
-</ul>
-</li>
-<li>和AFL, AFL++, and Mopt比较
-<ul>
-<li><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230605142038.png" alt="image.png"></li>
-<li>与原始工具相比，AFL+BEACON AFL++ BEACON和Mopt+BEACON分别可以实现6.31倍、11.86倍和10.92倍的加速。</li>
-</ul>
-</li>
-</ul>
-<h3 id="路径切片的影响与前提条件检查">路径切片的影响与前提条件检查</h3>
-<p>在重现漏洞方面，BEACON比BEACON*要快得多 (1.1倍到18.4倍)，因为它平均比BEACON多修剪29.1%的路径。在某些情况下 (例如，CVE-2017-8397)， BEACON *甚至无法在120小时内重现漏洞。这一结果证明了前置条件分析的重要性和必要性，使我们的性能得到了显著的提高。
-<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230605142207.png" alt="image.png"></p>
-<h3 id="关系保持与有界析取的影响">关系保持与有界析取的影响</h3>
-<p><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230605142312.png" alt="image.png">
+<img loading=lazy src=https://gitee.com/juhuahua/chart-bed/raw/master/20230511185718.png alt=image.png>
+可以看到分析结果要比传统的区间分析精度更高。</li></ul><h4 id=bounded-disjunctions>Bounded Disjunctions<a hidden class=anchor aria-hidden=true href=#bounded-disjunctions>#</a></h4><ul><li>当路径数量小于阈值的时候，不进行合并，保留了精度</li><li>当路径大于阈值的时候，就需要合并，合并就意味着要丢失精度，<ul><li><img loading=lazy src=https://gitee.com/juhuahua/chart-bed/raw/master/20230511194101.png alt=image.png></li><li>上图的 AB 合并，就会损失中间部分的精度，下面 AB 合并不会有精度损失</li><li><img loading=lazy src=https://gitee.com/juhuahua/chart-bed/raw/master/20230511195125.png alt=image.png></li><li>依照上述公式进行计算损失，哪个合并损失少，就合并哪两个路径</li><li>例子 <img loading=lazy src=https://gitee.com/juhuahua/chart-bed/raw/master/20230511195251.png alt=image.png></li></ul></li></ul><h4 id=precondition-instrumentation>Precondition Instrumentation<a hidden class=anchor aria-hidden=true href=#precondition-instrumentation>#</a></h4><ul><li>我们首先将程序转换为 SSA 形式[42]，并且只考虑变量定义作为插装的候选程序位置。这是正确的，因为 SSA 表单保证变量在定义之后不会被写入。</li><li>当变量 v1的值仅依赖于另一个变量 v2时，不应该检测 v1。这些信息可以通过定义数据流分析来计算[43]。例如，在图2中，v 仅依赖于 u 而不是 x 或 z。</li></ul><h2 id=评价>评价<a hidden class=anchor aria-hidden=true href=#评价>#</a></h2><h3 id=实现>实现<a hidden class=anchor aria-hidden=true href=#实现>#</a></h3><ul><li>基于LLVM实现执行先决条件分析、检查先决条件的检测和其他与覆盖率相关的检测，输出可执行的二进制文件</li><li>使用AFLGo作为模糊测试引擎</li></ul><h3 id=compared-to-the-state-of-the-art>Compared to the State of the Art<a hidden class=anchor aria-hidden=true href=#compared-to-the-state-of-the-art>#</a></h3><p><img loading=lazy src=https://gitee.com/juhuahua/chart-bed/raw/master/20230605141434.png alt=image.png></p><ul><li>和AFLGo比较<ul><li>BEACON分别在Binutils、Ming和Lrzip中检测到3个、9个和2个不完整的补丁，以及8个额外的bug，而AFLGo只检测到6个不完整的补丁。</li><li>对于那些可在AFLGo中重现的漏洞，BEACON需要较少的覆盖率 (平均91.2%)</li><li>在某些场景下，特别是在AFLGo无法重现漏洞的情况下，BEACON可以实现更高的覆盖率。</li></ul></li><li>和Hawkeye比较<ul><li>BEACON对所有漏洞的再现均优于AFLGo和Hawkeye，且p值均小于0.05。特别是对于CVE-2016-4491和CVE-20166131, BEACON相比Hawkeye可以实现3.6倍和5.7倍的加速。</li></ul></li><li>和AFL, AFL++, and Mopt比较<ul><li><img loading=lazy src=https://gitee.com/juhuahua/chart-bed/raw/master/20230605142038.png alt=image.png></li><li>与原始工具相比，AFL+BEACON AFL++ BEACON和Mopt+BEACON分别可以实现6.31倍、11.86倍和10.92倍的加速。</li></ul></li></ul><h3 id=路径切片的影响与前提条件检查>路径切片的影响与前提条件检查<a hidden class=anchor aria-hidden=true href=#路径切片的影响与前提条件检查>#</a></h3><p>在重现漏洞方面，BEACON比BEACON*要快得多 (1.1倍到18.4倍)，因为它平均比BEACON多修剪29.1%的路径。在某些情况下 (例如，CVE-2017-8397)， BEACON *甚至无法在120小时内重现漏洞。这一结果证明了前置条件分析的重要性和必要性，使我们的性能得到了显著的提高。
+<img loading=lazy src=https://gitee.com/juhuahua/chart-bed/raw/master/20230605142207.png alt=image.png></p><h3 id=关系保持与有界析取的影响>关系保持与有界析取的影响<a hidden class=anchor aria-hidden=true href=#关系保持与有界析取的影响>#</a></h3><p><img loading=lazy src=https://gitee.com/juhuahua/chart-bed/raw/master/20230605142312.png alt=image.png>
 在重现漏洞时，BEACON比BEACON-rp和BEACON-bd分别快得多 (1.05倍到4.9倍，1.05倍到5.34倍)。这一结果证明了这两种策略的重要性和必要性，因为它们都有助于前提条件分析的精度，它们的组合可以使我们在模糊测试中获得更高的精度并修剪更多的路径。
-<img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230605142336.png" alt="image.png">
-当绑定阈值从5增加到50时，执行过滤率从0.9%略微提高到3.2%。然而，时间成本急剧增加，甚至耗尽了服务器内存。因此，BEACON使用5作为阈值，以获得效率和有效性的最佳点。</p>
-<h3 id="插桩开销">插桩开销</h3>
-<p><img src="https://gitee.com/juhuahua/chart-bed/raw/master/20230605142526.png" alt="image.png">
-其中显示了每个程序的执行次数 (Nexec)、原始时间成本 (Torig)和插装后的时间成本 (TBeacon)。我们观察到，BEACON引入了高达9.8%的运行时开销，平均为5.7%。我们认为这样低的开销在实践中是可以接受的，并且之前的评估表明BEACON比现有的模糊器要快得多。</p>
-<h2 id="相关工作">相关工作</h2>
-<h3 id="定向白盒fuzzing">定向白盒fuzzing</h3>
-<ul>
-<li>Klee[49]，以生成可利用的输入，用于漏洞复现</li>
-<li>然而，路径爆炸问题和众所周知的昂贵约束求解使得它们难以扩展到现实世界的程序中。</li>
-<li>现有的工作试图利用对漏洞的先验知识，使符号执行专注于相关的程序状态。一个方向是优先考虑程序路径，以供符号执行探索。例如，Hercules[50]使用了一个不健全的函数摘要来确定可达路径的优先级。其他人要么依赖bug报告[51]、关键系统调用[10]，要么依赖补丁中的变化[52]来识别潜在的bug踪迹。然而，这些工作通常需要手工专业知识来确保这些先验知识的质量，这可能导致不同程序的不同表现。另一个方向是加速符号执行本身，以便更快地接近目标。例如，现有的作品通过快照机制象征性地[53]或具体地[54]保留执行状态，以避免冗余的路径探索。Chopper[55]采用在线静态分析来提供状态合并策略，同时最小化动态分析路径的数量。DiSE[56]识别分支条件之间的关系，并逐步解决它们。</li>
-</ul>
-<h3 id="覆盖引导fuzzing">覆盖引导fuzzing</h3>
-<ul>
-<li>可以通过动态污染分析来优化输入生成。其基本思想是改变相关的输入偏移量以满足未覆盖的分支条件。
-<ul>
-<li>Angora[57]采用字节级污染跟踪来发现目标条件的相关输入字节，然后应用基于梯度下降的搜索策略。</li>
-<li>为了使基于梯度下降的搜索更加合理，Neuzz[58]提出使用神经网络平滑搜索过程。</li>
-<li>还有一些技术涉及轻量级程序分析和转换，以提高突变的有效性。Fairfuzz[59]识别了不需要改变值的输入偏移量，因此，最小化输入搜索空间提高了突变的效率。Mopt[13]提出了一种新的突变算子调度策略来调整不同程序的突变策略。</li>
-</ul>
-</li>
-<li>将模糊器与集合/符号执行相结合，即混合模糊，用于解决复杂和严格的路径约束。
-<ul>
-<li>Driller[60]提出解决那些未发现的路径进行模糊化，而不是用集合执行来探索所有路径。然而，如何有效地将协同执行与模糊测试相结合一直是人们关注的问题。</li>
-<li>QSYM[61]解决了基种子的部分路径约束，并对满足实际条件的验证输入利用了突变。</li>
-<li>Intriguer[62]进一步用动态污染分析取代符号仿真，这减少了建模大量类移动指令的开销。</li>
-<li>Pangolin[63]建议将约束保留为抽象，并重用它来指导进一步的输入生成。</li>
-</ul>
-</li>
-</ul>
-
-		</section>
-
-		<div class="post-tags">
-			
-			
-			<nav class="nav tags">
-				<ul class="tags">
-					
-					<li><a href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB">论文阅读</a></li>
-					
-				</ul>
-			</nav>
-			
-			
-		</div>
-		</article>
-</main>
-<footer>
-  <div style="display:flex"></div>
-  <div class="footer-info">
-    2023  © Athul |  <a
-      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
-  </div>
-</footer>
-
-
-</div>
-    </body>
-</html>
+<img loading=lazy src=https://gitee.com/juhuahua/chart-bed/raw/master/20230605142336.png alt=image.png>
+当绑定阈值从5增加到50时，执行过滤率从0.9%略微提高到3.2%。然而，时间成本急剧增加，甚至耗尽了服务器内存。因此，BEACON使用5作为阈值，以获得效率和有效性的最佳点。</p><h3 id=插桩开销>插桩开销<a hidden class=anchor aria-hidden=true href=#插桩开销>#</a></h3><p><img loading=lazy src=https://gitee.com/juhuahua/chart-bed/raw/master/20230605142526.png alt=image.png>
+其中显示了每个程序的执行次数 (Nexec)、原始时间成本 (Torig)和插装后的时间成本 (TBeacon)。我们观察到，BEACON引入了高达9.8%的运行时开销，平均为5.7%。我们认为这样低的开销在实践中是可以接受的，并且之前的评估表明BEACON比现有的模糊器要快得多。</p><h2 id=相关工作>相关工作<a hidden class=anchor aria-hidden=true href=#相关工作>#</a></h2><h3 id=定向白盒fuzzing>定向白盒fuzzing<a hidden class=anchor aria-hidden=true href=#定向白盒fuzzing>#</a></h3><ul><li>Klee[49]，以生成可利用的输入，用于漏洞复现</li><li>然而，路径爆炸问题和众所周知的昂贵约束求解使得它们难以扩展到现实世界的程序中。</li><li>现有的工作试图利用对漏洞的先验知识，使符号执行专注于相关的程序状态。一个方向是优先考虑程序路径，以供符号执行探索。例如，Hercules[50]使用了一个不健全的函数摘要来确定可达路径的优先级。其他人要么依赖bug报告[51]、关键系统调用[10]，要么依赖补丁中的变化[52]来识别潜在的bug踪迹。然而，这些工作通常需要手工专业知识来确保这些先验知识的质量，这可能导致不同程序的不同表现。另一个方向是加速符号执行本身，以便更快地接近目标。例如，现有的作品通过快照机制象征性地[53]或具体地[54]保留执行状态，以避免冗余的路径探索。Chopper[55]采用在线静态分析来提供状态合并策略，同时最小化动态分析路径的数量。DiSE[56]识别分支条件之间的关系，并逐步解决它们。</li></ul><h3 id=覆盖引导fuzzing>覆盖引导fuzzing<a hidden class=anchor aria-hidden=true href=#覆盖引导fuzzing>#</a></h3><ul><li>可以通过动态污染分析来优化输入生成。其基本思想是改变相关的输入偏移量以满足未覆盖的分支条件。<ul><li>Angora[57]采用字节级污染跟踪来发现目标条件的相关输入字节，然后应用基于梯度下降的搜索策略。</li><li>为了使基于梯度下降的搜索更加合理，Neuzz[58]提出使用神经网络平滑搜索过程。</li><li>还有一些技术涉及轻量级程序分析和转换，以提高突变的有效性。Fairfuzz[59]识别了不需要改变值的输入偏移量，因此，最小化输入搜索空间提高了突变的效率。Mopt[13]提出了一种新的突变算子调度策略来调整不同程序的突变策略。</li></ul></li><li>将模糊器与集合/符号执行相结合，即混合模糊，用于解决复杂和严格的路径约束。<ul><li>Driller[60]提出解决那些未发现的路径进行模糊化，而不是用集合执行来探索所有路径。然而，如何有效地将协同执行与模糊测试相结合一直是人们关注的问题。</li><li>QSYM[61]解决了基种子的部分路径约束，并对满足实际条件的验证输入利用了突变。</li><li>Intriguer[62]进一步用动态污染分析取代符号仿真，这减少了建模大量类移动指令的开销。</li><li>Pangolin[63]建议将约束保留为抽象，并重用它来指导进一步的输入生成。</li></ul></li></ul></div><footer class=post-footer><ul class=post-tags><li><a href=https://examplesite.com/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/>论文阅读</a></li></ul><nav class=paginav><a class=prev href=https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/automated-extraction-of-software-names-from-vulnerability-reports-using-lstm-and-expert-system/><span class=title>« Prev</span><br><span>Automated Extraction of Software Names from Vulnerability Reports using LSTM and Expert System</span></a>
+<a class=next href=https://examplesite.com/posts/1.%E5%AD%A6%E4%B9%A0/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/idea/dgf-generate-poc-base-known-information/><span class=title>Next »</span><br><span>DGF generate POC base known information</span></a></nav><div class=share-buttons><a target=_blank rel="noopener noreferrer" aria-label="share BEACON Directed Grey-Box Fuzzing with Provable Path Pruning on twitter" href="https://twitter.com/intent/tweet/?text=BEACON%20Directed%20Grey-Box%20Fuzzing%20with%20Provable%20Path%20Pruning&amp;url=https%3a%2f%2fexamplesite.com%2fposts%2f1.%25E5%25AD%25A6%25E4%25B9%25A0%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f2.%25E8%25AF%25A6%25E7%25BB%2586%25E7%25AC%2594%25E8%25AE%25B0%2fbeacon-directed-grey-box-fuzzing-with-provable-path-pruning%2f&amp;hashtags=%e8%ae%ba%e6%96%87%e9%98%85%e8%af%bb"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM195.519 424.544c135.939.0 210.268-112.643 210.268-210.268.0-3.218.0-6.437-.153-9.502 14.406-10.421 26.973-23.448 36.935-38.314-13.18 5.824-27.433 9.809-42.452 11.648 15.326-9.196 26.973-23.602 32.49-40.92-14.252 8.429-30.038 14.56-46.896 17.931-13.487-14.406-32.644-23.295-53.946-23.295-40.767.0-73.87 33.104-73.87 73.87.0 5.824.613 11.494 1.992 16.858-61.456-3.065-115.862-32.49-152.337-77.241-6.284 10.881-9.962 23.601-9.962 37.088.0 25.594 13.027 48.276 32.95 61.456-12.107-.307-23.448-3.678-33.41-9.196v.92c0 35.862 25.441 65.594 59.311 72.49-6.13 1.686-12.72 2.606-19.464 2.606-4.751.0-9.348-.46-13.946-1.38 9.349 29.426 36.628 50.728 68.965 51.341-25.287 19.771-57.164 31.571-91.8 31.571-5.977.0-11.801-.306-17.625-1.073 32.337 21.15 71.264 33.41 112.95 33.41z"/></svg></a><a target=_blank rel="noopener noreferrer" aria-label="share BEACON Directed Grey-Box Fuzzing with Provable Path Pruning on linkedin" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fexamplesite.com%2fposts%2f1.%25E5%25AD%25A6%25E4%25B9%25A0%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f2.%25E8%25AF%25A6%25E7%25BB%2586%25E7%25AC%2594%25E8%25AE%25B0%2fbeacon-directed-grey-box-fuzzing-with-provable-path-pruning%2f&amp;title=BEACON%20Directed%20Grey-Box%20Fuzzing%20with%20Provable%20Path%20Pruning&amp;summary=BEACON%20Directed%20Grey-Box%20Fuzzing%20with%20Provable%20Path%20Pruning&amp;source=https%3a%2f%2fexamplesite.com%2fposts%2f1.%25E5%25AD%25A6%25E4%25B9%25A0%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f2.%25E8%25AF%25A6%25E7%25BB%2586%25E7%25AC%2594%25E8%25AE%25B0%2fbeacon-directed-grey-box-fuzzing-with-provable-path-pruning%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM160.461 423.278V197.561h-75.04v225.717h75.04zm270.539.0V293.839c0-69.333-37.018-101.586-86.381-101.586-39.804.0-57.634 21.891-67.617 37.266v-31.958h-75.021c.995 21.181.0 225.717.0 225.717h75.02V297.222c0-6.748.486-13.492 2.474-18.315 5.414-13.475 17.767-27.434 38.494-27.434 27.135.0 38.007 20.707 38.007 51.037v120.768H431zM123.448 88.722C97.774 88.722 81 105.601 81 127.724c0 21.658 16.264 39.002 41.455 39.002h.484c26.165.0 42.452-17.344 42.452-39.002-.485-22.092-16.241-38.954-41.943-39.002z"/></svg></a><a target=_blank rel="noopener noreferrer" aria-label="share BEACON Directed Grey-Box Fuzzing with Provable Path Pruning on reddit" href="https://reddit.com/submit?url=https%3a%2f%2fexamplesite.com%2fposts%2f1.%25E5%25AD%25A6%25E4%25B9%25A0%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f2.%25E8%25AF%25A6%25E7%25BB%2586%25E7%25AC%2594%25E8%25AE%25B0%2fbeacon-directed-grey-box-fuzzing-with-provable-path-pruning%2f&title=BEACON%20Directed%20Grey-Box%20Fuzzing%20with%20Provable%20Path%20Pruning"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM446 265.638c0-22.964-18.616-41.58-41.58-41.58-11.211.0-21.361 4.457-28.841 11.666-28.424-20.508-67.586-33.757-111.204-35.278l18.941-89.121 61.884 13.157c.756 15.734 13.642 28.29 29.56 28.29 16.407.0 29.706-13.299 29.706-29.701.0-16.403-13.299-29.702-29.706-29.702-11.666.0-21.657 6.792-26.515 16.578l-69.105-14.69c-1.922-.418-3.939-.042-5.585 1.036-1.658 1.073-2.811 2.761-3.224 4.686l-21.152 99.438c-44.258 1.228-84.046 14.494-112.837 35.232-7.468-7.164-17.589-11.591-28.757-11.591-22.965.0-41.585 18.616-41.585 41.58.0 16.896 10.095 31.41 24.568 37.918-.639 4.135-.99 8.328-.99 12.576.0 63.977 74.469 115.836 166.33 115.836s166.334-51.859 166.334-115.836c0-4.218-.347-8.387-.977-12.493 14.564-6.47 24.735-21.034 24.735-38.001zM326.526 373.831c-20.27 20.241-59.115 21.816-70.534 21.816-11.428.0-50.277-1.575-70.522-21.82-3.007-3.008-3.007-7.882.0-10.889 3.003-2.999 7.882-3.003 10.885.0 12.777 12.781 40.11 17.317 59.637 17.317 19.522.0 46.86-4.536 59.657-17.321 3.016-2.999 7.886-2.995 10.885.008 3.008 3.011 3.003 7.882-.008 10.889zm-5.23-48.781c-16.373.0-29.701-13.324-29.701-29.698.0-16.381 13.328-29.714 29.701-29.714 16.378.0 29.706 13.333 29.706 29.714.0 16.374-13.328 29.698-29.706 29.698zM160.91 295.348c0-16.381 13.328-29.71 29.714-29.71 16.369.0 29.689 13.329 29.689 29.71.0 16.373-13.32 29.693-29.689 29.693-16.386.0-29.714-13.32-29.714-29.693z"/></svg></a><a target=_blank rel="noopener noreferrer" aria-label="share BEACON Directed Grey-Box Fuzzing with Provable Path Pruning on facebook" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fexamplesite.com%2fposts%2f1.%25E5%25AD%25A6%25E4%25B9%25A0%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f2.%25E8%25AF%25A6%25E7%25BB%2586%25E7%25AC%2594%25E8%25AE%25B0%2fbeacon-directed-grey-box-fuzzing-with-provable-path-pruning%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H342.978V319.085h66.6l12.672-82.621h-79.272v-53.617c0-22.603 11.073-44.636 46.58-44.636H425.6v-70.34s-32.71-5.582-63.982-5.582c-65.288.0-107.96 39.569-107.96 111.204v62.971h-72.573v82.621h72.573V512h-191.104c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892z"/></svg></a><a target=_blank rel="noopener noreferrer" aria-label="share BEACON Directed Grey-Box Fuzzing with Provable Path Pruning on whatsapp" href="https://api.whatsapp.com/send?text=BEACON%20Directed%20Grey-Box%20Fuzzing%20with%20Provable%20Path%20Pruning%20-%20https%3a%2f%2fexamplesite.com%2fposts%2f1.%25E5%25AD%25A6%25E4%25B9%25A0%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f2.%25E8%25AF%25A6%25E7%25BB%2586%25E7%25AC%2594%25E8%25AE%25B0%2fbeacon-directed-grey-box-fuzzing-with-provable-path-pruning%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zm-58.673 127.703c-33.842-33.881-78.847-52.548-126.798-52.568-98.799.0-179.21 80.405-179.249 179.234-.013 31.593 8.241 62.428 23.927 89.612l-25.429 92.884 95.021-24.925c26.181 14.28 55.659 21.807 85.658 21.816h.074c98.789.0 179.206-80.413 179.247-179.243.018-47.895-18.61-92.93-52.451-126.81zM263.976 403.485h-.06c-26.734-.01-52.954-7.193-75.828-20.767l-5.441-3.229-56.386 14.792 15.05-54.977-3.542-5.637c-14.913-23.72-22.791-51.136-22.779-79.287.033-82.142 66.867-148.971 149.046-148.971 39.793.014 77.199 15.531 105.329 43.692 28.128 28.16 43.609 65.592 43.594 105.4-.034 82.149-66.866 148.983-148.983 148.984zm81.721-111.581c-4.479-2.242-26.499-13.075-30.604-14.571-4.105-1.495-7.091-2.241-10.077 2.241-2.986 4.483-11.569 14.572-14.182 17.562-2.612 2.988-5.225 3.364-9.703 1.12-4.479-2.241-18.91-6.97-36.017-22.23C231.8 264.15 222.81 249.484 220.198 245s-.279-6.908 1.963-9.14c2.016-2.007 4.48-5.232 6.719-7.847 2.24-2.615 2.986-4.484 4.479-7.472 1.493-2.99.747-5.604-.374-7.846-1.119-2.241-10.077-24.288-13.809-33.256-3.635-8.733-7.327-7.55-10.077-7.688-2.609-.13-5.598-.158-8.583-.158-2.986.0-7.839 1.121-11.944 5.604-4.105 4.484-15.675 15.32-15.675 37.364.0 22.046 16.048 43.342 18.287 46.332 2.24 2.99 31.582 48.227 76.511 67.627 10.685 4.615 19.028 7.371 25.533 9.434 10.728 3.41 20.492 2.929 28.209 1.775 8.605-1.285 26.499-10.833 30.231-21.295 3.732-10.464 3.732-19.431 2.612-21.298-1.119-1.869-4.105-2.99-8.583-5.232z"/></svg></a><a target=_blank rel="noopener noreferrer" aria-label="share BEACON Directed Grey-Box Fuzzing with Provable Path Pruning on telegram" href="https://telegram.me/share/url?text=BEACON%20Directed%20Grey-Box%20Fuzzing%20with%20Provable%20Path%20Pruning&amp;url=https%3a%2f%2fexamplesite.com%2fposts%2f1.%25E5%25AD%25A6%25E4%25B9%25A0%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f2.%25E8%25AF%25A6%25E7%25BB%2586%25E7%25AC%2594%25E8%25AE%25B0%2fbeacon-directed-grey-box-fuzzing-with-provable-path-pruning%2f"><svg viewBox="2 2 28 28" height="30" width="30" fill="currentcolor"><path d="M26.49 29.86H5.5a3.37 3.37.0 01-2.47-1 3.35 3.35.0 01-1-2.47V5.48A3.36 3.36.0 013 3 3.37 3.37.0 015.5 2h21A3.38 3.38.0 0129 3a3.36 3.36.0 011 2.46V26.37a3.35 3.35.0 01-1 2.47 3.38 3.38.0 01-2.51 1.02zm-5.38-6.71a.79.79.0 00.85-.66L24.73 9.24a.55.55.0 00-.18-.46.62.62.0 00-.41-.17q-.08.0-16.53 6.11a.59.59.0 00-.41.59.57.57.0 00.43.52l4 1.24 1.61 4.83a.62.62.0 00.63.43.56.56.0 00.4-.17L16.54 20l4.09 3A.9.9.0 0021.11 23.15zM13.8 20.71l-1.21-4q8.72-5.55 8.78-5.55c.15.0.23.0.23.16a.18.18.0 010 .06s-2.51 2.3-7.52 6.8z"/></svg></a></div></footer></article></main><footer class=footer><span>&copy; 2023 <a href=https://examplesite.com/>BLOG</a></span>
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script></body></html>

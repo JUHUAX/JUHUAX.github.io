@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>建站 on Blog</title>
-    <link>https://example.com/categories/%E5%BB%BA%E7%AB%99/</link>
-    <description>Recent content in 建站 on Blog</description>
+    <title>建站 on BLOG</title>
+    <link>https://examplesite.com/categories/%E5%BB%BA%E7%AB%99/</link>
+    <description>Recent content in 建站 on BLOG</description>
+    <image>
+      <title>BLOG</title>
+      <url>https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <copyright>© Athul</copyright>
-    <lastBuildDate>Sun, 11 Jun 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://example.com/categories/%E5%BB%BA%E7%AB%99/index.xml" rel="self" type="application/rss+xml" />
+    <language>en</language>
+    <lastBuildDate>Sun, 11 Jun 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://examplesite.com/categories/%E5%BB%BA%E7%AB%99/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>建站第一天</title>
-      <link>https://example.com/posts/%E5%BB%BA%E7%AB%99/%E5%BB%BA%E7%AB%99/</link>
+      <title>建站</title>
+      <link>https://examplesite.com/posts/%E5%BB%BA%E7%AB%99/%E5%BB%BA%E7%AB%99/</link>
       <pubDate>Sun, 11 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/posts/%E5%BB%BA%E7%AB%99/%E5%BB%BA%E7%AB%99/</guid>
-      <description>想到一个比较不错的方式平衡obsidian和hugo的标签，整体写在&amp;mdash;之间，然后在&amp;mdash;之外补obsidian的#
-写更新脚本 添加一个category 部署到服务器上 我希望有category和tags，category作为文件夹的逻辑，tags作为标签
-头模板
-title: &amp;#34;建站第一天&amp;#34; date: 2023-06-11T02:01:58+05:30 description: 建站小tips tags: [建站] categories: [123] tags：论文阅读、论文复现
-categories：二进制编译优化分析、模糊测试</description>
+      <guid>https://examplesite.com/posts/%E5%BB%BA%E7%AB%99/%E5%BB%BA%E7%AB%99/</guid>
+      <description>建站小tips</description>
     </item>
     
   </channel>
