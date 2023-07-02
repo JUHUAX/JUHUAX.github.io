@@ -134,8 +134,8 @@ if (!doNotTrack) {
   "keywords": [
     
   ],
-  "articleBody": "TODO 写更新脚本 添加一个category 部署到服务器上 图片加载不出来 皮肤也不对 公式不渲染 实现侧边栏 实现搜索 实现评论 更新 2023.6.30 图片加载不出来是因为gitee有防盗链，之后就拿github当图床吧 markdown换行的标准写法是两个空格+一个换行 公式正常渲染了 2023.7.1 进行了一系列细小的更新 增加了主页面的两个button 增加了search功能 增加了友链 参考 hugo配置说明 Hello Hugo - Codec Labs PaperMod 折腾记 | 限时活跃 (feyesu.gitlab.io) Hugo + PaperMod搭建技术博客 | Kunyang’s Blog (kyxie.github.io) [置顶] hugo博客搭建 | PaperMod主题 | Sulv’s Blog (sulvblog. cn) 关于后续如果要添加新的页面，可以参考这篇博客 关于换行 1 2 3 4 5 6 [markup] defaultMarkdownHandler = \"goldmark\" [markup.goldmark] [markup.goldmark.renderer] unsafe = true 将上述参数添加到配置文件中，hugo将支持使用换行 然后markdown的换行是两个空格+回车。这样转成html才会是换行。\n头模板 1 2 3 4 5 6 title: \"建站第一天\" date: 2023-06-11T02:01:58+05:30 description: 建站小tips math: true tags: [建站] categories: [123] papermod的头模板\n1 2 3 4 5 6 7 8 9 10 11 title: \"{{ replace .TranslationBaseName \"-\" \" \" | title }}\" slug: \"\" # 配合 config.toml 中的 permalinks 参数，自定义文章链接 description: \"\" # 显示在文章标题下，与 summary 不同 summary: \"\" # 文章摘要 date: {{ .Date }} lastmod: {{ .Date }} draft: false showToc: true categories: [\"\"] tags: [\"\"] weight: # 输入1可以顶置文章，用来给文章展示排序，不填就默认按时间排序 tags：论文阅读、论文复现\ncategories：二进制编译优化分析、模糊测试\n公式渲染测试 $\\tfrac{x}{y\\rhd} \\omega \\lim q$ $$ \\tfrac{x}{y\\rhd} \\omega \\lim q $$\n",
-  "wordCount" : "575",
+  "articleBody": "TODO 写更新脚本 添加一个category 部署到服务器上 图片加载不出来 皮肤也不对 公式不渲染 实现侧边栏 实现搜索 实现评论 更新 2023.6.30 图片加载不出来是因为gitee有防盗链，之后就拿github当图床吧 markdown换行的标准写法是两个空格+一个换行 公式正常渲染了 2023.7.1 进行了一系列细小的更新 增加了主页面的两个button 增加了search功能 增加了友链 参考 hugo配置说明 Hello Hugo - Codec Labs PaperMod 折腾记 | 限时活跃 (feyesu.gitlab.io) Hugo + PaperMod搭建技术博客 | Kunyang’s Blog (kyxie.github.io) [置顶] hugo博客搭建 | PaperMod主题 | Sulv’s Blog (sulvblog. cn) 关于后续如果要添加新的页面，可以参考这篇博客 关于换行 1 2 3 4 5 6 [markup] defaultMarkdownHandler = \"goldmark\" [markup.goldmark] [markup.goldmark.renderer] unsafe = true 将上述参数添加到配置文件中，hugo将支持使用换行 然后markdown的换行是两个空格+回车。这样转成html才会是换行。\n头模板 1 2 3 4 5 6 title: \"建站第一天\" date: 2023-06-11T02:01:58+05:30 description: 建站小tips math: true tags: [建站] categories: [123] papermod的头模板\n1 2 3 4 5 6 7 8 9 10 11 title: \"{{ replace .TranslationBaseName \"-\" \" \" | title }}\" slug: \"\" # 配合 config.toml 中的 permalinks 参数，自定义文章链接 description: \"\" # 显示在文章标题下，与 summary 不同 summary: \"\" # 文章摘要 date: {{ .Date }} lastmod: {{ .Date }} draft: false showToc: true categories: [\"\"] tags: [\"\"] weight: # 输入1可以顶置文章，用来给文章展示排序，不填就默认按时间排序 tags：论文阅读、论文复现\ncategories：二进制编译优化分析、模糊测试\n公式渲染测试 $ErrSeq = [ErrPt1, ErrPt2, …, ErrPtx], ErrPti = {0, 1}$ $$ \\tfrac{x}{y\\rhd} \\omega \\lim q $$\n",
+  "wordCount" : "581",
   "inLanguage": "en",
   "datePublished": "2023-06-11T00:00:00Z",
   "dateModified": "2023-06-11T00:00:00Z",
@@ -245,6 +245,20 @@ if (!doNotTrack) {
     <div class="post-description">
       建站小tips
     </div>
+    <div class="post-meta"><span title='2023-06-11 00:00:00 +0000 UTC'>June 11, 2023</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;581 words&nbsp;·&nbsp;JUHUA
+
+
+
+
+
+
+
+
+
+
+创建:&nbsp;<span title='2023-06-11 00:00:00 +0000 UTC'>June 11, 2023</span>&nbsp;|&nbsp;更新:&nbsp;June 11, 2023&nbsp;|&nbsp;时长: 2分钟&nbsp;|&nbsp;JUHUA
+
+</div>
   </header> <aside id="toc-container" class="toc-container wide">
     <div class="toc">
         <details  open>
@@ -441,7 +455,7 @@ if (!doNotTrack) {
 </div><p>tags：论文阅读、论文复现<br>
 categories：二进制编译优化分析、模糊测试</p>
 <h2 id="公式渲染测试">公式渲染测试<a hidden class="anchor" aria-hidden="true" href="#公式渲染测试">#</a></h2>
-<p>$\tfrac{x}{y\rhd} \omega \lim  q$
+<p>$ErrSeq = [ErrPt1, ErrPt2, &hellip;, ErrPtx], ErrPti = {0, 1}$
 $$
 \tfrac{x}{y\rhd} \omega \lim  q
 $$</p>
