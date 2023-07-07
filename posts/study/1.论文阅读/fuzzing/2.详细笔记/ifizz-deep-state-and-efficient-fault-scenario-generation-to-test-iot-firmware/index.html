@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>fuzz待读 | JUHUA&#39;s Blog</title>
-<meta name="keywords" content="论文总结">
-<meta name="description" content="(84条消息) 一个网安博士生的收藏夹_fuzzwiki_破落之实的博客-CSDN博客 2023-06-22 15:53 The Progress, Challenges, and Perspectives of Directed Greybox Fuzzing 的阅读笔记 https://zhuanlan.zhihu.com/p/415316061 What You Corrupt Is Not What You Crash_ Challenges in Fuzzing">
+<title>IFIZZ: Deep-State and Efficient Fault-Scenario Generation to Test IoT Firmware | JUHUA&#39;s Blog</title>
+<meta name="keywords" content="论文阅读">
+<meta name="description" content="IFIZZ:深度状态和高效的故障场景生成来测试物联网固件">
 <meta name="author" content="JUHUA">
-<link rel="canonical" href="https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/1.%E5%8E%9F%E6%96%87/%E5%BE%85%E8%AF%BB/">
+<link rel="canonical" href="https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/ifizz-deep-state-and-efficient-fault-scenario-generation-to-test-iot-firmware/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.6fe7a734c938045d38ba208ee06988876feb2f2b31ad362b01be1af9ca77256f.css" integrity="sha256-b&#43;enNMk4BF04uiCO4GmIh2/rLysxrTYrAb4a&#43;cp3JW8=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
@@ -57,6 +57,26 @@
 
     </style>
 </noscript>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous"> 
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+<script> 
+	document.addEventListener("DOMContentLoaded", function() { 
+		renderMathInElement(document.body, { 
+			
+			
+			delimiters: [ 
+				{left: '$$', right: '$$', display: true}, 
+				{left: '$', right: '$', display: false}, 
+				{left: '\\(', right: '\\)', display: false}, 
+				{left: '\\[', right: '\\]', display: true} 
+			], 
+			
+			throwOnError : false 
+		}); 
+	}); 
+</script>
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css" />
 
 <script type="application/javascript">
@@ -70,18 +90,18 @@ if (!doNotTrack) {
 	
 	ga('send', 'pageview');
 }
-</script><meta property="og:title" content="fuzz待读" />
-<meta property="og:description" content="(84条消息) 一个网安博士生的收藏夹_fuzzwiki_破落之实的博客-CSDN博客 2023-06-22 15:53 The Progress, Challenges, and Perspectives of Directed Greybox Fuzzing 的阅读笔记 https://zhuanlan.zhihu.com/p/415316061 What You Corrupt Is Not What You Crash_ Challenges in Fuzzing" />
+</script><meta property="og:title" content="IFIZZ: Deep-State and Efficient Fault-Scenario Generation to Test IoT Firmware" />
+<meta property="og:description" content="IFIZZ:深度状态和高效的故障场景生成来测试物联网固件" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/1.%E5%8E%9F%E6%96%87/%E5%BE%85%E8%AF%BB/" /><meta property="og:image" content="https://juhuax.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2023-06-22T00:00:00+00:00" />
-<meta property="article:modified_time" content="2023-06-22T00:00:00+00:00" /><meta property="og:site_name" content="JUHUA&#39;s Blog" />
+<meta property="og:url" content="https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/ifizz-deep-state-and-efficient-fault-scenario-generation-to-test-iot-firmware/" /><meta property="og:image" content="https://juhuax.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-07-06T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-07-06T00:00:00+00:00" /><meta property="og:site_name" content="JUHUA&#39;s Blog" />
 
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://juhuax.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/>
 
-<meta name="twitter:title" content="fuzz待读"/>
-<meta name="twitter:description" content="(84条消息) 一个网安博士生的收藏夹_fuzzwiki_破落之实的博客-CSDN博客 2023-06-22 15:53 The Progress, Challenges, and Perspectives of Directed Greybox Fuzzing 的阅读笔记 https://zhuanlan.zhihu.com/p/415316061 What You Corrupt Is Not What You Crash_ Challenges in Fuzzing"/>
+<meta name="twitter:title" content="IFIZZ: Deep-State and Efficient Fault-Scenario Generation to Test IoT Firmware"/>
+<meta name="twitter:description" content="IFIZZ:深度状态和高效的故障场景生成来测试物联网固件"/>
 
 
 <script type="application/ld+json">
@@ -104,8 +124,8 @@ if (!doNotTrack) {
     {
       "@type": "ListItem",
       "position":  3 ,
-      "name": "fuzz待读",
-      "item": "https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/1.%E5%8E%9F%E6%96%87/%E5%BE%85%E8%AF%BB/"
+      "name": "IFIZZ: Deep-State and Efficient Fault-Scenario Generation to Test IoT Firmware",
+      "item": "https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/ifizz-deep-state-and-efficient-fault-scenario-generation-to-test-iot-firmware/"
     }
   ]
 }
@@ -114,24 +134,24 @@ if (!doNotTrack) {
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "fuzz待读",
-  "name": "fuzz待读",
-  "description": "(84条消息) 一个网安博士生的收藏夹_fuzzwiki_破落之实的博客-CSDN博客 2023-06-22 15:53 The Progress, Challenges, and Perspectives of Directed Greybox Fuzzing 的阅读笔记 https://zhuanlan.zhihu.com/p/415316061 What You Corrupt Is Not What You Crash_ Challenges in Fuzzing",
+  "headline": "IFIZZ: Deep-State and Efficient Fault-Scenario Generation to Test IoT Firmware",
+  "name": "IFIZZ: Deep-State and Efficient Fault-Scenario Generation to Test IoT Firmware",
+  "description": "IFIZZ:深度状态和高效的故障场景生成来测试物联网固件",
   "keywords": [
-    "论文总结"
+    "论文阅读"
   ],
-  "articleBody": "(84条消息) 一个网安博士生的收藏夹_fuzzwiki_破落之实的博客-CSDN博客 2023-06-22 15:53\nThe Progress, Challenges, and Perspectives of Directed Greybox Fuzzing 的阅读笔记 https://zhuanlan.zhihu.com/p/415316061 What You Corrupt Is Not What You Crash_ Challenges in Fuzzing Embedded Devices 的笔记 http://www.hackdig.com/09/hack-487712.htm 针对 UAF 类漏洞的定向 Fuzz 论文分享 http://www.hackdig.com/08/hack-442272.htm Binary-level Directed Fuzzing for Use-After-Free Vulnerabilities（论文名字） 物联网固件安全缺陷检测研究进展 (2022 年) 物联网固件安全缺陷检测研究进展-Research Progress on Security Defect Detection of IoT Firmware (iie.ac.cn) ![[What You Corrupt Is Not What You Crash Challenges in Fuzzing Embedded Devices#^eea5b5]] [[What You Corrupt Is Not What You Crash_ Challenges in Fuzzing Embedded Devices.pdf]] 第四页 instrumentation 处提到的几个消毒剂 AddressSanitizer [43]、ThreadSanitizer [44]、MemorySantizer [48] 了解 Pin [31], Valgrind [37], and DynamoRio [7]. 看看别人的对 What You Corrupt Is Not What You Crash Challenges in Fuzzing Embedded Devices 的笔记 （活跃度检测是个啥） boofuzz 安装 AFLGO 安装 EcoFuzz 解决了勘探阶段和开发阶段的不灵活协调 FIRM-AFL: High-Throughput Greybox Fuzzing of IoT Firmware via Augmented Process Emulation 2019 年一篇对固件的 fuzz 论文 Hawkeye: Towards a Desired Directed Grey-box Fuzzer 物联网固件安全缺陷检测研究进展 2.1.2 上面的漏洞复现 Firm-AFL[66]基于 FIRMADYNE 实现了对基于 Linux 的物联网固件的高性能灰盒模糊测试, 这是第一个针对固件的灰盒模糊测试系统, 而且提高了固件模拟执行的效率。 FIRM-AFL 的复现 论文FirmAFL固件模糊测试工具——复现之路_h0_yang的博客-CSDN博客 FIRM-AFL 引言中提到的几个 IOTFUZZER 了解 QEMU 仿真 V. D’Silva, M. Payer, and D. Song. The correctnesssecurity gap in compiler optimization. In IEEE Security and Privacy Workshops, pages 73–87, 2015. 有效覆盖引导的定向灰盒模糊测试（软件所的一篇） 找点机器学习应用的 看完鹰眼再回看一下 aflgo 包含式指针分析 Lars Ole Andersen. 1994. Program Analysis and Specialization for the C Programming Language. Technical Report. DIKU, University of Copenhagen. Skyfire Weiguang Wang, Hao Sun, and Qingkai Zeng. 2016. SeededFuzz: Selecting and Generating Seeds for Directed Fuzzing. 49–56. Directed Symbolic Execution (DSE) 先找一下 2023 和 22 年顶会有没有定向 fuzz HAL 那篇文章里面的“现有解决在剥离二进制文件中查找函数问题的方法[24、33、35]\" 调研一下 QEMU 和 Avatar2 IoT固件Rehosting综述 - FreeBuf网络安全行业门户 啥是符号执行的路径爆炸 ",
-  "wordCount" : "741",
+  "articleBody": "中文译名：IFIZZ: 深度状态和高效的故障场景生成来测试物联网固件\n作者：刘peiyu\n单位：浙江大学\n国家： #中国\n年份： #2021年\n来源： #IEEE_ASE_CCFB 关键字： #fuzzing #故障注入\n代码地址：\n笔记建立时间： 2023-07-06 10:39\n#TODO\n摘要 现有模糊测试不能有效的测试物联网设备的错误处理代码 错误处理代码难触发 难以深入错误处理代码路径（因为一触发错误处理代码程序就嘎了） IFIZZ，一个专门设计用于测试基于linux的物联网固件中的错误处理代码的新的错误检测系统。 首先采用基于二进制的自动化方法，通过分析闭源物联网固件中的错误和错误条件来识别实际的运行时错误 然后采用状态感知和有界错误生成来有效地到达深度错误路径 背景 物联网设备中的错误 输入相关错误：由无效输入引起，相对较少 输入无关错误：偶尔的运行时事件（如内存耗尽、硬件故障、网络不可达）引起的输入无关错误更为常见 故障注入用于测试物联网固件的错误处理代码的挑战 如何自动识别与输入无关的错误（基于二进制的自动化识别方法解决） 测试如何深入错误路径（状态感知和有界错误生成解决） 方法 目的： 方法： 意义： 效果：\n",
+  "wordCount" : "449",
   "inLanguage": "en",
-  "datePublished": "2023-06-22T00:00:00Z",
-  "dateModified": "2023-06-22T00:00:00Z",
+  "datePublished": "2023-07-06T00:00:00Z",
+  "dateModified": "2023-07-06T00:00:00Z",
   "author":{
     "@type": "Person",
     "name": "JUHUA"
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/1.%E5%8E%9F%E6%96%87/%E5%BE%85%E8%AF%BB/"
+    "@id": "https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/ifizz-deep-state-and-efficient-fault-scenario-generation-to-test-iot-firmware/"
   },
   "publisher": {
     "@type": "Organization",
@@ -226,9 +246,12 @@ if (!doNotTrack) {
   <header class="post-header">
     <div class="breadcrumbs"><a href="https://juhuax.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://juhuax.github.io/posts/">Posts</a>&nbsp;»&nbsp;<a href="https://juhuax.github.io/posts/study/">学习</a></div>
     <h1 class="post-title">
-      fuzz待读
+      IFIZZ: Deep-State and Efficient Fault-Scenario Generation to Test IoT Firmware
     </h1>
-    <div class="post-meta"><span title='2023-06-22 00:00:00 +0000 UTC'>June 22, 2023</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;741 words&nbsp;·&nbsp;JUHUA
+    <div class="post-description">
+      IFIZZ:深度状态和高效的故障场景生成来测试物联网固件
+    </div>
+    <div class="post-meta"><span title='2023-07-06 00:00:00 +0000 UTC'>July 6, 2023</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;449 words&nbsp;·&nbsp;JUHUA
 
 
 
@@ -239,110 +262,198 @@ if (!doNotTrack) {
 
 
 
-创建:&nbsp;<span title='2023-06-22 00:00:00 +0000 UTC'>June 22, 2023</span>&nbsp;|&nbsp;更新:&nbsp;June 22, 2023&nbsp;|&nbsp;时长: 2分钟&nbsp;|&nbsp;JUHUA
+创建:&nbsp;<span title='2023-07-06 00:00:00 +0000 UTC'>July 6, 2023</span>&nbsp;|&nbsp;更新:&nbsp;July 6, 2023&nbsp;|&nbsp;时长: 1分钟&nbsp;|&nbsp;JUHUA
 
 </div>
-  </header> 
+  </header> <aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details  open>
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">Table of Contents</span>
+            </summary>
 
-  <div class="post-content"><p><a href="https://blog.csdn.net/u013648063/article/details/122048461">(84条消息) 一个网安博士生的收藏夹_fuzzwiki_破落之实的博客-CSDN博客</a>
-2023-06-22  15:53</p>
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#%e6%91%98%e8%a6%81" aria-label="摘要">摘要</a></li>
+                    <li>
+                        <a href="#%e8%83%8c%e6%99%af" aria-label="背景">背景</a><ul>
+                            
+                    <li>
+                        <a href="#%e7%89%a9%e8%81%94%e7%bd%91%e8%ae%be%e5%a4%87%e4%b8%ad%e7%9a%84%e9%94%99%e8%af%af" aria-label="物联网设备中的错误">物联网设备中的错误</a></li>
+                    <li>
+                        <a href="#%e6%95%85%e9%9a%9c%e6%b3%a8%e5%85%a5%e7%94%a8%e4%ba%8e%e6%b5%8b%e8%af%95%e7%89%a9%e8%81%94%e7%bd%91%e5%9b%ba%e4%bb%b6%e7%9a%84%e9%94%99%e8%af%af%e5%a4%84%e7%90%86%e4%bb%a3%e7%a0%81%e7%9a%84%e6%8c%91%e6%88%98" aria-label="故障注入用于测试物联网固件的错误处理代码的挑战">故障注入用于测试物联网固件的错误处理代码的挑战</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e6%96%b9%e6%b3%95" aria-label="方法">方法</a>
+                    </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+
+  <div class="post-content"><p>中文译名：IFIZZ: 深度状态和高效的故障场景生成来测试物联网固件<br>
+作者：刘peiyu<br>
+单位：浙江大学<br>
+国家： #中国<br>
+年份： #2021年<br>
+来源： #IEEE_ASE_CCFB
+关键字： #fuzzing #故障注入<br>
+代码地址：<br>
+笔记建立时间： 2023-07-06  10:39<br>
+#TODO</p>
+<h2 id="摘要">摘要<a hidden class="anchor" aria-hidden="true" href="#摘要">#</a></h2>
 <ul>
-<li><input checked="" disabled="" type="checkbox"> The Progress, Challenges, and Perspectives of Directed Greybox Fuzzing 的阅读笔记 <a href="https://zhuanlan.zhihu.com/p/415316061">https://zhuanlan.zhihu.com/p/415316061</a></li>
-<li><input checked="" disabled="" type="checkbox"> What You Corrupt Is Not What You Crash_ Challenges in Fuzzing Embedded Devices 的笔记 <a href="http://www.hackdig.com/09/hack-487712.htm">http://www.hackdig.com/09/hack-487712.htm</a></li>
-<li><input disabled="" type="checkbox"> 针对 UAF 类漏洞的定向 Fuzz 论文分享 <a href="http://www.hackdig.com/08/hack-442272.htm">http://www.hackdig.com/08/hack-442272.htm</a>  Binary-level Directed Fuzzing for Use-After-Free Vulnerabilities（论文名字）</li>
-<li><input checked="" disabled="" type="checkbox"> 物联网固件安全缺陷检测研究进展 (2022 年) <a href="http://jcs.iie.ac.cn/ch/reader/view_abstract.aspx?file_no=20210309&amp;flag=1">物联网固件安全缺陷检测研究进展-Research Progress on Security Defect Detection of IoT Firmware (iie.ac.cn)</a></li>
-<li><input disabled="" type="checkbox"> ![[What You Corrupt Is Not What You Crash Challenges in Fuzzing Embedded Devices#^eea5b5]]</li>
-<li><input disabled="" type="checkbox"> [[What You Corrupt Is Not What You Crash_ Challenges in Fuzzing Embedded Devices.pdf]] 第四页 instrumentation 处提到的几个消毒剂 AddressSanitizer [43]、ThreadSanitizer [44]、MemorySantizer [48]</li>
-<li><input disabled="" type="checkbox"> 了解 Pin [31], Valgrind [37], and DynamoRio [7].</li>
-<li><input checked="" disabled="" type="checkbox"> 看看别人的对 What You Corrupt Is Not What You Crash Challenges in Fuzzing Embedded Devices 的笔记 （活跃度检测是个啥）</li>
-<li><input disabled="" type="checkbox"> boofuzz 安装</li>
-<li><input disabled="" type="checkbox"> AFLGO 安装</li>
-<li><input disabled="" type="checkbox"> EcoFuzz 解决了勘探阶段和开发阶段的不灵活协调</li>
-<li><input checked="" disabled="" type="checkbox"> FIRM-AFL: High-Throughput Greybox Fuzzing of IoT Firmware via Augmented Process Emulation  2019 年一篇对固件的 fuzz 论文</li>
-<li><input checked="" disabled="" type="checkbox"> Hawkeye: Towards a Desired Directed Grey-box Fuzzer</li>
-<li><input checked="" disabled="" type="checkbox"> 物联网固件安全缺陷检测研究进展
+<li>现有模糊测试不能有效的测试物联网设备的错误处理代码
 <ul>
-<li>2.1.2 上面的漏洞复现</li>
+<li>错误处理代码难触发</li>
+<li>难以深入错误处理代码路径（因为一触发错误处理代码程序就嘎了）</li>
 </ul>
 </li>
-<li><input checked="" disabled="" type="checkbox"> Firm-AFL[66]基于 FIRMADYNE 实现了对基于 Linux 的物联网固件的高性能灰盒模糊测试, 这是第一个针对固件的灰盒模糊测试系统, 而且提高了固件模拟执行的效率。</li>
-<li><input disabled="" type="checkbox"> FIRM-AFL 的复现   <a href="https://blog.csdn.net/weixin_43695001/article/details/123486237">论文FirmAFL固件模糊测试工具——复现之路_h0_yang的博客-CSDN博客</a></li>
-<li><input disabled="" type="checkbox"> FIRM-AFL 引言中提到的几个 IOTFUZZER</li>
-<li><input disabled="" type="checkbox"> 了解 QEMU 仿真</li>
-<li><input disabled="" type="checkbox"> V. D’Silva, M. Payer, and D. Song. The correctnesssecurity gap in compiler optimization. In IEEE Security and Privacy Workshops, pages 73–87, 2015.</li>
-<li><input disabled="" type="checkbox"> 有效覆盖引导的定向灰盒模糊测试（软件所的一篇）</li>
-<li><input disabled="" type="checkbox"> 找点机器学习应用的</li>
-<li><input disabled="" type="checkbox"> 看完鹰眼再回看一下 aflgo</li>
-<li><input disabled="" type="checkbox"> 包含式指针分析  Lars Ole Andersen. 1994. Program Analysis and Specialization for the C Programming Language. Technical Report. DIKU, University of Copenhagen.</li>
-<li><input disabled="" type="checkbox"> Skyfire</li>
-<li><input disabled="" type="checkbox"> Weiguang Wang, Hao Sun, and Qingkai Zeng. 2016. SeededFuzz: Selecting and Generating Seeds for Directed Fuzzing. 49–56.</li>
-<li><input disabled="" type="checkbox"> Directed Symbolic Execution (DSE)</li>
-<li><input disabled="" type="checkbox"> 先找一下 2023 和 22 年顶会有没有定向 fuzz</li>
-<li><input disabled="" type="checkbox"> HAL 那篇文章里面的“现有解决在剥离二进制文件中查找函数问题的方法[24、33、35]&quot;</li>
-<li><input disabled="" type="checkbox"> 调研一下 QEMU 和 Avatar2</li>
-<li><input disabled="" type="checkbox"> <a href="https://www.freebuf.com/articles/endpoint/335783.html">IoT固件Rehosting综述 - FreeBuf网络安全行业门户</a></li>
-<li><input disabled="" type="checkbox"> 啥是符号执行的路径爆炸</li>
+<li>IFIZZ，一个专门设计用于测试基于linux的物联网固件中的错误处理代码的新的错误检测系统。
+<ul>
+<li>首先采用基于二进制的自动化方法，通过分析闭源物联网固件中的错误和错误条件来识别实际的运行时错误</li>
+<li>然后采用状态感知和有界错误生成来有效地到达深度错误路径</li>
 </ul>
+</li>
+</ul>
+<h2 id="背景">背景<a hidden class="anchor" aria-hidden="true" href="#背景">#</a></h2>
+<h3 id="物联网设备中的错误">物联网设备中的错误<a hidden class="anchor" aria-hidden="true" href="#物联网设备中的错误">#</a></h3>
+<ul>
+<li>输入相关错误：由无效输入引起，相对较少</li>
+<li>输入无关错误：偶尔的运行时事件（如内存耗尽、硬件故障、网络不可达）引起的输入无关错误更为常见</li>
+</ul>
+<h3 id="故障注入用于测试物联网固件的错误处理代码的挑战">故障注入用于测试物联网固件的错误处理代码的挑战<a hidden class="anchor" aria-hidden="true" href="#故障注入用于测试物联网固件的错误处理代码的挑战">#</a></h3>
+<ul>
+<li>如何自动识别与输入无关的错误（基于二进制的自动化识别方法解决）</li>
+<li>测试如何深入错误路径（状态感知和有界错误生成解决）</li>
+</ul>
+<h2 id="方法">方法<a hidden class="anchor" aria-hidden="true" href="#方法">#</a></h2>
+<p><img loading="lazy" src="https://raw.githubusercontent.com/JUHUAX/Chart-bed/master/20230706154442.png" alt="image.png"  />
+</p>
+<p>目的：
+方法：
+意义：
+效果：</p>
 
 
   </div>
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://juhuax.github.io/tags/%E8%AE%BA%E6%96%87%E6%80%BB%E7%BB%93/">论文总结</a></li>
+      <li><a href="https://juhuax.github.io/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/firm-afl_-high-throughput-greybox-fuzzing-of-iot-firmware-via-augmented-process-emulation/">
+  <a class="prev" href="https://juhuax.github.io/posts/%E5%BB%BA%E7%AB%99/%E5%AF%B9%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98%E7%9A%84%E8%AF%B4%E6%98%8E/">
     <span class="title">« Prev</span>
     <br>
-    <span>FIRM-AFL: High-Throughput Greybox Fuzzing of IoT Firmware via Augmented Process Emulation</span>
+    <span>对一些问题的说明</span>
   </a>
-  <a class="next" href="https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/3.%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/fuzz%E6%95%B4%E7%90%86/">
+  <a class="next" href="https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/learning-seed-adaptive-mutation-strategies-for-greybox-fuzzing/">
     <span class="title">Next »</span>
     <br>
-    <span>fuzz整理</span>
+    <span>Learning Seed-Adaptive Mutation Strategies for Greybox Fuzzing</span>
   </a>
 </nav>
 
 
 <div class="share-buttons">
-    <a target="_blank" rel="noopener noreferrer" aria-label="share fuzz待读 on twitter"
-        href="https://twitter.com/intent/tweet/?text=fuzz%e5%be%85%e8%af%bb&amp;url=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f1.%25E5%258E%259F%25E6%2596%2587%2f%25E5%25BE%2585%25E8%25AF%25BB%2f&amp;hashtags=%e8%ae%ba%e6%96%87%e6%80%bb%e7%bb%93">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share IFIZZ: Deep-State and Efficient Fault-Scenario Generation to Test IoT Firmware on twitter"
+        href="https://twitter.com/intent/tweet/?text=IFIZZ%3a%20Deep-State%20and%20Efficient%20Fault-Scenario%20Generation%20to%20Test%20IoT%20Firmware&amp;url=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f2.%25E8%25AF%25A6%25E7%25BB%2586%25E7%25AC%2594%25E8%25AE%25B0%2fifizz-deep-state-and-efficient-fault-scenario-generation-to-test-iot-firmware%2f&amp;hashtags=%e8%ae%ba%e6%96%87%e9%98%85%e8%af%bb">
         <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
             <path
                 d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
         </svg>
     </a>
-    <a target="_blank" rel="noopener noreferrer" aria-label="share fuzz待读 on linkedin"
-        href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f1.%25E5%258E%259F%25E6%2596%2587%2f%25E5%25BE%2585%25E8%25AF%25BB%2f&amp;title=fuzz%e5%be%85%e8%af%bb&amp;summary=fuzz%e5%be%85%e8%af%bb&amp;source=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f1.%25E5%258E%259F%25E6%2596%2587%2f%25E5%25BE%2585%25E8%25AF%25BB%2f">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share IFIZZ: Deep-State and Efficient Fault-Scenario Generation to Test IoT Firmware on linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f2.%25E8%25AF%25A6%25E7%25BB%2586%25E7%25AC%2594%25E8%25AE%25B0%2fifizz-deep-state-and-efficient-fault-scenario-generation-to-test-iot-firmware%2f&amp;title=IFIZZ%3a%20Deep-State%20and%20Efficient%20Fault-Scenario%20Generation%20to%20Test%20IoT%20Firmware&amp;summary=IFIZZ%3a%20Deep-State%20and%20Efficient%20Fault-Scenario%20Generation%20to%20Test%20IoT%20Firmware&amp;source=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f2.%25E8%25AF%25A6%25E7%25BB%2586%25E7%25AC%2594%25E8%25AE%25B0%2fifizz-deep-state-and-efficient-fault-scenario-generation-to-test-iot-firmware%2f">
         <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
             <path
                 d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
         </svg>
     </a>
-    <a target="_blank" rel="noopener noreferrer" aria-label="share fuzz待读 on reddit"
-        href="https://reddit.com/submit?url=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f1.%25E5%258E%259F%25E6%2596%2587%2f%25E5%25BE%2585%25E8%25AF%25BB%2f&title=fuzz%e5%be%85%e8%af%bb">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share IFIZZ: Deep-State and Efficient Fault-Scenario Generation to Test IoT Firmware on reddit"
+        href="https://reddit.com/submit?url=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f2.%25E8%25AF%25A6%25E7%25BB%2586%25E7%25AC%2594%25E8%25AE%25B0%2fifizz-deep-state-and-efficient-fault-scenario-generation-to-test-iot-firmware%2f&title=IFIZZ%3a%20Deep-State%20and%20Efficient%20Fault-Scenario%20Generation%20to%20Test%20IoT%20Firmware">
         <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
             <path
                 d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
         </svg>
     </a>
-    <a target="_blank" rel="noopener noreferrer" aria-label="share fuzz待读 on facebook"
-        href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f1.%25E5%258E%259F%25E6%2596%2587%2f%25E5%25BE%2585%25E8%25AF%25BB%2f">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share IFIZZ: Deep-State and Efficient Fault-Scenario Generation to Test IoT Firmware on facebook"
+        href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f2.%25E8%25AF%25A6%25E7%25BB%2586%25E7%25AC%2594%25E8%25AE%25B0%2fifizz-deep-state-and-efficient-fault-scenario-generation-to-test-iot-firmware%2f">
         <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
             <path
                 d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
         </svg>
     </a>
-    <a target="_blank" rel="noopener noreferrer" aria-label="share fuzz待读 on whatsapp"
-        href="https://api.whatsapp.com/send?text=fuzz%e5%be%85%e8%af%bb%20-%20https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f1.%25E5%258E%259F%25E6%2596%2587%2f%25E5%25BE%2585%25E8%25AF%25BB%2f">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share IFIZZ: Deep-State and Efficient Fault-Scenario Generation to Test IoT Firmware on whatsapp"
+        href="https://api.whatsapp.com/send?text=IFIZZ%3a%20Deep-State%20and%20Efficient%20Fault-Scenario%20Generation%20to%20Test%20IoT%20Firmware%20-%20https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f2.%25E8%25AF%25A6%25E7%25BB%2586%25E7%25AC%2594%25E8%25AE%25B0%2fifizz-deep-state-and-efficient-fault-scenario-generation-to-test-iot-firmware%2f">
         <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
             <path
                 d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
         </svg>
     </a>
-    <a target="_blank" rel="noopener noreferrer" aria-label="share fuzz待读 on telegram"
-        href="https://telegram.me/share/url?text=fuzz%e5%be%85%e8%af%bb&amp;url=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f1.%25E5%258E%259F%25E6%2596%2587%2f%25E5%25BE%2585%25E8%25AF%25BB%2f">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share IFIZZ: Deep-State and Efficient Fault-Scenario Generation to Test IoT Firmware on telegram"
+        href="https://telegram.me/share/url?text=IFIZZ%3a%20Deep-State%20and%20Efficient%20Fault-Scenario%20Generation%20to%20Test%20IoT%20Firmware&amp;url=https%3a%2f%2fjuhuax.github.io%2fposts%2fstudy%2f1.%25E8%25AE%25BA%25E6%2596%2587%25E9%2598%2585%25E8%25AF%25BB%2ffuzzing%2f2.%25E8%25AF%25A6%25E7%25BB%2586%25E7%25AC%2594%25E8%25AE%25B0%2fifizz-deep-state-and-efficient-fault-scenario-generation-to-test-iot-firmware%2f">
         <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
             <path
                 d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />

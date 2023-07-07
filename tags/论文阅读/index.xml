@@ -12,7 +12,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <copyright>JUHUA</copyright>
-    <lastBuildDate>Sun, 02 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://juhuax.github.io/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 06 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://juhuax.github.io/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>IFIZZ: Deep-State and Efficient Fault-Scenario Generation to Test IoT Firmware</title>
+      <link>https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/ifizz-deep-state-and-efficient-fault-scenario-generation-to-test-iot-firmware/</link>
+      <pubDate>Thu, 06 Jul 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/ifizz-deep-state-and-efficient-fault-scenario-generation-to-test-iot-firmware/</guid>
+      <description>IFIZZ:深度状态和高效的故障场景生成来测试物联网固件</description>
+    </item>
+    
     <item>
       <title>Learning Seed-Adaptive Mutation Strategies for Greybox Fuzzing</title>
       <link>https://juhuax.github.io/posts/study/1.%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/fuzzing/2.%E8%AF%A6%E7%BB%86%E7%AC%94%E8%AE%B0/learning-seed-adaptive-mutation-strategies-for-greybox-fuzzing/</link>
