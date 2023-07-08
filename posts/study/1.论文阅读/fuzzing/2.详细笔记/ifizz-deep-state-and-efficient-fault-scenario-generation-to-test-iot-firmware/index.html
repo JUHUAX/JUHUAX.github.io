@@ -140,8 +140,8 @@ if (!doNotTrack) {
   "keywords": [
     "论文阅读"
   ],
-  "articleBody": "中文译名：IFIZZ: 深度状态和高效的故障场景生成来测试物联网固件\n作者：刘peiyu\n单位：浙江大学\n国家： #中国\n年份： #2021年\n来源： #IEEE_ASE_CCFB 关键字： #fuzzing #故障注入\n代码地址：\n笔记建立时间： 2023-07-06 10:39\n#TODO\n摘要 现有模糊测试不能有效的测试物联网设备的错误处理代码 错误处理代码难触发 难以深入错误处理代码路径（因为一触发错误处理代码程序就嘎了） IFIZZ，一个专门设计用于测试基于linux的物联网固件中的错误处理代码的新的错误检测系统。 首先采用基于二进制的自动化方法，通过分析闭源物联网固件中的错误和错误条件来识别实际的运行时错误 然后采用状态感知和有界错误生成来有效地到达深度错误路径 背景 物联网设备中的错误 输入相关错误：由无效输入引起，相对较少 输入无关错误：偶尔的运行时事件（如内存耗尽、硬件故障、网络不可达）引起的输入无关错误更为常见 故障注入用于测试物联网固件的错误处理代码的挑战 如何自动识别与输入无关的错误（基于二进制的自动化识别方法解决） 测试如何深入错误路径（状态感知和有界错误生成解决） 方法 目的： 方法： 意义： 效果：\n",
-  "wordCount" : "449",
+  "articleBody": "中文译名：IFIZZ: 深度状态和高效的故障场景生成来测试物联网固件\n作者：刘peiyu\n单位：浙江大学\n国家： #中国\n年份： #2021年\n来源： #IEEE_ASE_CCFB 关键字： #fuzzing #故障注入\n代码地址：decentL/iFIZZ-ASE21 (github.com)\n笔记建立时间： 2023-07-06 10:39\n#TODO\n摘要 现有模糊测试不能有效的测试物联网设备的错误处理代码 错误处理代码难触发 难以深入错误处理代码路径（因为一触发错误处理代码程序就嘎了） IFIZZ，一个专门设计用于测试基于linux的物联网固件中的错误处理代码的新的错误检测系统。 首先采用基于二进制的自动化方法，通过分析闭源物联网固件中的错误和错误条件来识别实际的运行时错误 然后采用状态感知和有界错误生成来有效地到达深度错误路径 背景 物联网设备中的错误 输入相关错误：由无效输入引起，相对较少 输入无关错误：偶尔的运行时事件（如内存耗尽、硬件故障、网络不可达）引起的输入无关错误更为常见 故障注入用于测试物联网固件的错误处理代码的挑战 如何自动识别与输入无关的错误（基于二进制的自动化识别方法解决） 测试如何深入错误路径（状态感知和有界错误生成解决） 方法 预定义 基于二进制文件的自动运行时错误识别 作者在分析了20个EF后，得到EF的两个特征\n返回值是error code 与输入无关 基于此作者设计了EF识别算法。 首先扫描汇编代码收集二进制程序中所有函数的的所有返回值（getreturnvalues ()）和caller（getcallers ()） 然后算法检查函数f的caller是否对函数f的返回值进行了check（ischecked ()），如果ischecked则说明该返回值是error code 对得到的error code在函数f中向后搜索找到error code如何生成（也就是检查条件 getcondition ()） 对得到的code condition执行向后的过程间数据流分析，收集codecondition依赖的source，检查这个source是否是程序参数（也就是是否和输入相关），如果不是，则该error code是我们要的。 状态感知和有界故障场景生成 （这个方法是为了覆盖尽可能多的错误路径、在有限的时间内到达深度错误路径）\n作者指出在故障注入的时候会产生两个问题：\nearly crashes：一个RT中有很多error site，触发一个就会导致程序崩溃，如果在RT早期程序就崩溃了，那么后面的error site就覆盖不到了——状态感知解决 遍历生成FS会产生相当多的数量（爆炸）——有界故障生成解决 状态感知 作者通过将每次的崩溃的error site和site state记录为日志，当在运行时碰到error site时，如果此时的site和state已经记录在日志中，那么就不对这个error site进行故障注入（如line 9）。这样可以避免冗余崩溃，并且深入后续的error site。\n有界故障生成 首先，大多数崩溃都是由少量错误引起的，生成具有大量错误的故障场景通常是不必要的。因此，我们提出第一条规则: 故障场景中的最大错误数 (ME)应该是有界的 (算法2中的第2行)。其次，我们还观察到大多数崩溃是由相邻错误引起的。因此，我们提出第二条规则: 在故障场景中，第一个错误和最后一个错误 (MBE)之间的最大距离 (即错误站点的数量)也应该是有界的 (算法2中的第4行)。\n实现 error-function analyser：FIRMADYNE对固件解包，IDA脚本分析二进制程序 Firmware packer：设置被测对象，使其可以用于测试 Fault-scenario generator：编写了一个库函数利用劫持函数来记录崩溃日志和故障注入 Runtime monitor：运行测试固件并跟踪运行时进程信息，以获得目标物联网程序及其相应的运行命令（无需源代码） Bug checker：分析崩溃日志以生成崩溃报告，一个IDA脚本 存在的问题和我的疑问 在error function识别的时候存在无法处理间接调用和数据流爆炸的问题 作者指出“一旦数据流证明一个源与输入无关，分析就完成了，而不是不断地分析其他源”，但是实际上这种逻辑并不sound，必须证明所有的源都和输入无关才可以保证该error function是输入无关的 貌似只找到一个源头与输入无关便可，如果非要考虑所有源头，且不说数据流分析爆炸，最后估计一大批function被筛掉，剩下的error function没几个了。但是即便如此，最好的方法还是不断搜索源头，直到找到一个和输入无关，那么最坏情况是O(n)。比较稳妥的操作应该是设置一个阈值。 其实我一直不太清楚（包括在上下文敏感sfi那篇论文中）这个error site sequence（这篇文章称之为runtime trace）中的error site彼此是独立的还是互相有调用顺序的 Fault-scenario generator、Runtime monitor如何实现的，要知道本文不需要程序源码 “在测试固件映像之前，IFIZZ首先对被测试固件进行动态分析以获得目标程序。总的来说，IFIZZ获得112个供应商特定的程序和509个运行命令来运行这些程序”这是如何实现的 对生成RT的变异策略进行研究!!! ",
+  "wordCount" : "2038",
   "inLanguage": "en",
   "datePublished": "2023-07-06T00:00:00Z",
   "dateModified": "2023-07-06T00:00:00Z",
@@ -251,7 +251,7 @@ if (!doNotTrack) {
     <div class="post-description">
       IFIZZ:深度状态和高效的故障场景生成来测试物联网固件
     </div>
-    <div class="post-meta"><span title='2023-07-06 00:00:00 +0000 UTC'>July 6, 2023</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;449 words&nbsp;·&nbsp;JUHUA
+    <div class="post-meta"><span title='2023-07-06 00:00:00 +0000 UTC'>July 6, 2023</span>&nbsp;·&nbsp;5 min&nbsp;·&nbsp;2038 words&nbsp;·&nbsp;JUHUA
 
 
 
@@ -262,7 +262,7 @@ if (!doNotTrack) {
 
 
 
-创建:&nbsp;<span title='2023-07-06 00:00:00 +0000 UTC'>July 6, 2023</span>&nbsp;|&nbsp;更新:&nbsp;July 6, 2023&nbsp;|&nbsp;时长: 1分钟&nbsp;|&nbsp;JUHUA
+创建:&nbsp;<span title='2023-07-06 00:00:00 +0000 UTC'>July 6, 2023</span>&nbsp;|&nbsp;更新:&nbsp;July 6, 2023&nbsp;|&nbsp;时长: 5分钟&nbsp;|&nbsp;JUHUA
 
 </div>
   </header> <aside id="toc-container" class="toc-container wide">
@@ -284,7 +284,25 @@ if (!doNotTrack) {
                         <a href="#%e6%95%85%e9%9a%9c%e6%b3%a8%e5%85%a5%e7%94%a8%e4%ba%8e%e6%b5%8b%e8%af%95%e7%89%a9%e8%81%94%e7%bd%91%e5%9b%ba%e4%bb%b6%e7%9a%84%e9%94%99%e8%af%af%e5%a4%84%e7%90%86%e4%bb%a3%e7%a0%81%e7%9a%84%e6%8c%91%e6%88%98" aria-label="故障注入用于测试物联网固件的错误处理代码的挑战">故障注入用于测试物联网固件的错误处理代码的挑战</a></li></ul>
                     </li>
                     <li>
-                        <a href="#%e6%96%b9%e6%b3%95" aria-label="方法">方法</a>
+                        <a href="#%e6%96%b9%e6%b3%95" aria-label="方法">方法</a><ul>
+                            
+                    <li>
+                        <a href="#%e9%a2%84%e5%ae%9a%e4%b9%89" aria-label="预定义">预定义</a></li>
+                    <li>
+                        <a href="#%e5%9f%ba%e4%ba%8e%e4%ba%8c%e8%bf%9b%e5%88%b6%e6%96%87%e4%bb%b6%e7%9a%84%e8%87%aa%e5%8a%a8%e8%bf%90%e8%a1%8c%e6%97%b6%e9%94%99%e8%af%af%e8%af%86%e5%88%ab" aria-label="基于二进制文件的自动运行时错误识别">基于二进制文件的自动运行时错误识别</a></li>
+                    <li>
+                        <a href="#%e7%8a%b6%e6%80%81%e6%84%9f%e7%9f%a5%e5%92%8c%e6%9c%89%e7%95%8c%e6%95%85%e9%9a%9c%e5%9c%ba%e6%99%af%e7%94%9f%e6%88%90" aria-label="状态感知和有界故障场景生成">状态感知和有界故障场景生成</a><ul>
+                            
+                    <li>
+                        <a href="#%e7%8a%b6%e6%80%81%e6%84%9f%e7%9f%a5" aria-label="状态感知">状态感知</a></li>
+                    <li>
+                        <a href="#%e6%9c%89%e7%95%8c%e6%95%85%e9%9a%9c%e7%94%9f%e6%88%90" aria-label="有界故障生成">有界故障生成</a></li></ul>
+                    </li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e5%ae%9e%e7%8e%b0" aria-label="实现">实现</a></li>
+                    <li>
+                        <a href="#%e5%ad%98%e5%9c%a8%e7%9a%84%e9%97%ae%e9%a2%98%e5%92%8c%e6%88%91%e7%9a%84%e7%96%91%e9%97%ae" aria-label="存在的问题和我的疑问">存在的问题和我的疑问</a>
                     </li>
                 </ul>
             </div>
@@ -358,7 +376,7 @@ if (!doNotTrack) {
 年份： #2021年<br>
 来源： #IEEE_ASE_CCFB
 关键字： #fuzzing #故障注入<br>
-代码地址：<br>
+代码地址：<a href="https://github.com/decentL/iFIZZ-ASE21">decentL/iFIZZ-ASE21 (github.com)</a><br>
 笔记建立时间： 2023-07-06  10:39<br>
 #TODO</p>
 <h2 id="摘要">摘要<a hidden class="anchor" aria-hidden="true" href="#摘要">#</a></h2>
@@ -390,10 +408,57 @@ if (!doNotTrack) {
 <h2 id="方法">方法<a hidden class="anchor" aria-hidden="true" href="#方法">#</a></h2>
 <p><img loading="lazy" src="https://raw.githubusercontent.com/JUHUAX/Chart-bed/master/20230706154442.png" alt="image.png"  />
 </p>
-<p>目的：
-方法：
-意义：
-效果：</p>
+<h3 id="预定义">预定义<a hidden class="anchor" aria-hidden="true" href="#预定义">#</a></h3>
+<p><img loading="lazy" src="https://raw.githubusercontent.com/JUHUAX/Chart-bed/master/20230708111603.png" alt="image.png"  />
+</p>
+<h3 id="基于二进制文件的自动运行时错误识别">基于二进制文件的自动运行时错误识别<a hidden class="anchor" aria-hidden="true" href="#基于二进制文件的自动运行时错误识别">#</a></h3>
+<p>作者在分析了20个EF后，得到EF的两个特征</p>
+<ul>
+<li>返回值是error code</li>
+<li>与输入无关
+基于此作者设计了EF识别算法。</li>
+<li>首先扫描汇编代码收集二进制程序中所有函数的的所有返回值（getreturnvalues ()）和caller（getcallers ()）</li>
+<li>然后算法检查函数f的caller是否对函数f的返回值进行了check（ischecked ()），如果ischecked则说明该返回值是error code</li>
+<li>对得到的error code在函数f中向后搜索找到error code如何生成（也就是检查条件 getcondition ()）</li>
+<li>对得到的code condition执行向后的过程间数据流分析，收集codecondition依赖的source，检查这个source是否是程序参数（也就是是否和输入相关），如果不是，则该error code是我们要的。
+<img loading="lazy" src="https://raw.githubusercontent.com/JUHUAX/Chart-bed/master/20230708142958.png" alt="image.png"  />
+</li>
+</ul>
+<h3 id="状态感知和有界故障场景生成">状态感知和有界故障场景生成<a hidden class="anchor" aria-hidden="true" href="#状态感知和有界故障场景生成">#</a></h3>
+<p>（这个方法是为了覆盖尽可能多的错误路径、在有限的时间内到达深度错误路径）<br>
+作者指出在故障注入的时候会产生两个问题：</p>
+<ul>
+<li>early crashes：一个RT中有很多error site，触发一个就会导致程序崩溃，如果在RT早期程序就崩溃了，那么后面的error site就覆盖不到了——状态感知解决</li>
+<li>遍历生成FS会产生相当多的数量（爆炸）——有界故障生成解决
+<img loading="lazy" src="https://raw.githubusercontent.com/JUHUAX/Chart-bed/master/20230708160341.png" alt="image.png"  />
+</li>
+</ul>
+<h4 id="状态感知">状态感知<a hidden class="anchor" aria-hidden="true" href="#状态感知">#</a></h4>
+<p>作者通过将每次的崩溃的error site和site state记录为日志，当在运行时碰到error site时，如果此时的site和state已经记录在日志中，那么就不对这个error site进行故障注入（如line 9）。这样可以避免冗余崩溃，并且深入后续的error site。</p>
+<h4 id="有界故障生成">有界故障生成<a hidden class="anchor" aria-hidden="true" href="#有界故障生成">#</a></h4>
+<p>首先，大多数崩溃都是由少量错误引起的，生成具有大量错误的故障场景通常是不必要的。因此，我们提出第一条规则: 故障场景中的最大错误数 (ME)应该是有界的 (算法2中的第2行)。其次，我们还观察到大多数崩溃是由相邻错误引起的。因此，我们提出第二条规则: 在故障场景中，第一个错误和最后一个错误 (MBE)之间的最大距离 (即错误站点的数量)也应该是有界的 (算法2中的第4行)。</p>
+<h2 id="实现">实现<a hidden class="anchor" aria-hidden="true" href="#实现">#</a></h2>
+<p><img loading="lazy" src="https://raw.githubusercontent.com/JUHUAX/Chart-bed/master/20230708162618.png" alt="image.png"  />
+</p>
+<ul>
+<li>error-function analyser：FIRMADYNE对固件解包，IDA脚本分析二进制程序</li>
+<li>Firmware packer：设置被测对象，使其可以用于测试</li>
+<li>Fault-scenario generator：编写了一个库函数利用劫持函数来记录崩溃日志和故障注入</li>
+<li>Runtime monitor：运行测试固件并跟踪运行时进程信息，以获得目标物联网程序及其相应的运行命令（无需源代码）</li>
+<li>Bug checker：分析崩溃日志以生成崩溃报告，一个IDA脚本</li>
+</ul>
+<h2 id="存在的问题和我的疑问">存在的问题和我的疑问<a hidden class="anchor" aria-hidden="true" href="#存在的问题和我的疑问">#</a></h2>
+<ul>
+<li>在error function识别的时候存在无法处理间接调用和数据流爆炸的问题
+<ul>
+<li>作者指出“一旦数据流证明一个源与输入无关，分析就完成了，而不是不断地分析其他源”，<del>但是实际上这种逻辑并不sound，必须证明所有的源都和输入无关才可以保证该error function是输入无关的</del> 貌似只找到一个源头与输入无关便可，如果非要考虑所有源头，且不说数据流分析爆炸，最后估计一大批function被筛掉，剩下的error function没几个了。但是即便如此，最好的方法还是不断搜索源头，直到找到一个和输入无关，那么最坏情况是O(n)。比较稳妥的操作应该是设置一个阈值。</li>
+</ul>
+</li>
+<li>其实我一直不太清楚（包括在上下文敏感sfi那篇论文中）这个error site sequence（这篇文章称之为runtime trace）中的error site彼此是独立的还是互相有调用顺序的</li>
+<li>Fault-scenario generator、Runtime monitor如何实现的，要知道本文不需要程序源码</li>
+<li>“在测试固件映像之前，IFIZZ首先对被测试固件进行动态分析以获得目标程序。总的来说，IFIZZ获得112个供应商特定的程序和509个运行命令来运行这些程序”这是如何实现的</li>
+<li>对生成RT的变异策略进行研究!!!</li>
+</ul>
 
 
   </div>
